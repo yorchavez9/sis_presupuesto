@@ -18,34 +18,46 @@
                     <h4 class="mb-12">Regístrate</h4>
                     <p class="mb-32 text-secondary-light text-lg">¡Bienvenido de nuevo! por favor ingresa tus datos</p>
                 </div>
-                <form action="#">
+                <form method="post">
+                    {% csrf_token %}
                     <div class="icon-field mb-16">
                         <span class="icon top-50 translate-middle-y">
                             <iconify-icon icon="f7:person"></iconify-icon>
                         </span>
-                        <input type="text" class="form-control h-56-px bg-neutral-50 radius-12" placeholder="Nombre de usuario">
+                        <input type="text" class="form-control h-56-px bg-neutral-50 radius-12" name="first_name" id="first_name" placeholder="Nombre de usuario">
                     </div>
                     <div class="icon-field mb-16">
                         <span class="icon top-50 translate-middle-y">
                             <iconify-icon icon="mage:email"></iconify-icon>
                         </span>
-                        <input type="email" class="form-control h-56-px bg-neutral-50 radius-12" placeholder="Correo electrónico">
+                        <input type="text" class="form-control h-56-px bg-neutral-50 radius-12" name="username" id="username" placeholder="Ingrese su usuario">
                     </div>
                     <div class="mb-20">
-                        <div class="position-relative ">
+                        <div class="position-relative">
                             <div class="icon-field">
                                 <span class="icon top-50 translate-middle-y">
                                     <iconify-icon icon="solar:lock-password-outline"></iconify-icon>
                                 </span>
-                                <input type="password" class="form-control h-56-px bg-neutral-50 radius-12"
-                                    id="your-password" placeholder="Contraseña">
+                                <input type="password" class="form-control h-56-px bg-neutral-50 radius-12" name="password1" id="password1" placeholder="Ingrese su contraseña">
                             </div>
-                            <span
-                                class="toggle-password ri-eye-line cursor-pointer position-absolute end-0 top-50 translate-middle-y me-16 text-secondary-light"
-                                data-toggle="#your-password"></span>
+                            <span class="toggle-password ri-eye-line cursor-pointer position-absolute end-0 top-50 translate-middle-y me-16 text-secondary-light"
+                                  data-toggle="#password1"></span>
                         </div>
-                        <span class="mt-12 text-sm text-secondary-light">Tu contraseña debe tener al menos 8 caracteres</span>
+                        <span class="mt-12 text-sm text-secondary-light">Tu contraseña debe tener al menos 6 caracteres</span>
                     </div>
+                    <div class="mb-20">
+                        <div class="position-relative">
+                            <div class="icon-field">
+                                <span class="icon top-50 translate-middle-y">
+                                    <iconify-icon icon="solar:lock-password-outline"></iconify-icon>
+                                </span>
+                                <input type="password" class="form-control h-56-px bg-neutral-50 radius-12" name="password2" id="password2" placeholder="Repita su contraseña">
+                            </div>
+                            <span class="toggle-password ri-eye-line cursor-pointer position-absolute end-0 top-50 translate-middle-y me-16 text-secondary-light"
+                                  data-toggle="#password2"></span>
+                        </div>
+                    </div>
+                    
                     <div class="">
                         <div class="d-flex justify-content-between gap-2">
                             <div class="form-check style-check d-flex align-items-start">
