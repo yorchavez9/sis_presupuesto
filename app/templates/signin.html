@@ -17,6 +17,9 @@
                     <h4 class="mb-12">Inicie sesión</h4>
                     <p class="mb-32 text-secondary-light text-lg">¡Bienvenido de nuevo! por favor ingrese sus datos</p>
                 </div>
+                <div>
+                    <p class="text-danger">{{error}}</p>
+                </div>
                 <form method="post">
                     {% csrf_token %}
                     <div class="icon-field mb-16">
