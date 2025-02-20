@@ -1,0 +1,22 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    {% include 'layouts/_partials/head.html' %}
+    {% block extra_css %}{% endblock %}  <!-- Bloques para CSS adicionales -->
+</head>
+
+<body>
+    {% comment %} Nav Bar de la página de inicio {% endcomment %}  
+    {% include 'layouts/_partials/navbar.html' %}
+
+    {% comment %} Contenido de la página  {% endcomment %}
+    {% block content %}
+    
+    {% endblock content %}
+            
+    {% include 'layouts/_partials/footer.html' %}
+    {% block extra_js %}{% endblock %}  <!-- Bloques para JS adicionales -->
+</body>
+
+</html>
