@@ -31,8 +31,8 @@
 <script src="{% static 'assets/js/homeOneChart.js' %}"></script>
 
 <script>
+    //SCRIPT PARA OCULTAR Y MOSTRAR CONTRASEÑAS
     $(document).ready(function() {
-        // Función para alternar la visibilidad de la contraseña
         $('.toggle-password').on('click', function() {
             $(this).toggleClass("ri-eye-off-line ri-eye-line");
             var input = $($(this).attr("data-toggle"));
@@ -43,4 +43,7 @@
             }
         });
     });
+
+    //SCRIPT PARA EL DATATABLES
+    let table = new DataTable('#tabla_usuarios');
 </script>
