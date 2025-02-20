@@ -42,7 +42,7 @@ def signin(request):
             })
         else:
             login(request, user)
-            return redirect('inicio')
+            return redirect('index')
 
 @login_required        
 def signout(request):
