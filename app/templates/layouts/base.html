@@ -7,14 +7,29 @@
 </head>
 
 <body>
-    {% comment %} Nav Bar de la página de inicio {% endcomment %}  
-    {% include 'layouts/_partials/navbar.html' %}
 
-    {% comment %} Contenido de la página  {% endcomment %}
-    {% block content %}
     
-    {% endblock content %}
+    {% if user.is_authenticated %}
+        {% include 'layouts/_partials/sidebar.html' %}
+        <main class="dashboard-main">
+            {% include 'layouts/_partials/navbar-header.html' %}
             
+            {% block content_admin %}
+                
+            {% endblock content_admin %}
+                
+            {% include 'layouts/_partials/footer_content.html' %}
+        </main>
+    {% else %}
+        {% comment %} Nav Bar de la página de inicio {% endcomment %}  
+        {% include 'layouts/_partials/navbar.html' %}
+
+        {% comment %} Contenido de la página  {% endcomment %}
+        {% block content %}
+        
+        {% endblock content %}
+    {% endif %}
+                    
     {% include 'layouts/_partials/footer.html' %}
     {% block extra_js %}{% endblock %}  <!-- Bloques para JS adicionales -->
 </body>
