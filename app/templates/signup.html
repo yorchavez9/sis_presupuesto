@@ -1,103 +1,97 @@
 {% extends 'layouts/base.html' %}
 {% load static %}
-{% block title %}Lista de Ventas{% endblock %}
+{% block title %}Registrarse{% endblock %}
 
 {% block content %}
-    <section class="auth bg-base d-flex flex-wrap">
-        <div class="auth-left d-lg-block d-none">
-            <div class="d-flex align-items-center flex-column h-100 justify-content-center">
-                <img src="{% static 'assets/images/auth/auth-img.png' %}" alt="">
+    <div class="position-absolute start-0 end-0 start-0 bottom-0 w-100 h-100" style="z-index: -1;">
+        <svg xmlns='http://www.w3.org/2000/svg' width='100%' height='100%' viewBox='0 0 800 800'>
+            <g fill-opacity='0.22'>
+                <circle style="fill: rgba(var(--ct-primary-rgb), 0.1);" cx='400' cy='400' r='600' />
+                <circle style="fill: rgba(var(--ct-primary-rgb), 0.2);" cx='400' cy='400' r='500' />
+                <circle style="fill: rgba(var(--ct-primary-rgb), 0.3);" cx='400' cy='400' r='300' />
+                <circle style="fill: rgba(var(--ct-primary-rgb), 0.4);" cx='400' cy='400' r='200' />
+                <circle style="fill: rgba(var(--ct-primary-rgb), 0.5); z-index: -1;" cx='400' cy='400' r='100' />
+            </g>
+        </svg>
+    </div>
+    <div class="account-pages pt-2 pt-sm-5 pb-4 pb-sm-5 position-relative">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-xxl-4 col-lg-5">
+                    <div class="card">
+                        <!-- Logo-->
+                        <div class="card-header py-4 text-center bg-primary">
+                            <a href="index.html">
+                                <span><img src="{% static 'assets/images/logo.png' %}" alt="logo" height="22"></span>
+                            </a>
+                        </div>
+
+                        <div class="card-body p-4">
+
+                            <div class="text-center w-75 m-auto">
+                                <h4 class="text-dark-50 text-center mt-0 fw-bold">Registrarse</h4>
+                                <p class="text-muted mb-4">¿No tienes una cuenta? Crea tu cuenta, toma menos de un minuto</p>
+                            </div>
+
+                            <form method="POST">
+                                {% csrf_token %}
+                                <div class="mb-3">
+                                    <label for="first_name" class="form-label">Nombre Completo</label>
+                                    <input class="form-control" type="text" id="first_name" name="first_name" placeholder="Ingresa tu nombre" required>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="username" class="form-label">Usuario</label>
+                                    <input class="form-control" type="text" id="username" name="username" required placeholder="Ingrese su usuario">
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="password" class="form-label">Contraseña</label>
+                                    <div class="input-group input-group-merge">
+                                        <input type="password" id="password" name="password1" class="form-control" placeholder="Ingresa tu contraseña" required>
+                                        <div class="input-group-text" data-password="false">
+                                            <span class="password-eye"></span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="confirm_password" class="form-label">Confirmar Contraseña</label>
+                                    <div class="input-group input-group-merge">
+                                        <input type="password" id="confirm_password" name="password2" class="form-control" placeholder="Repite tu contraseña" required>
+                                        <div class="input-group-text" data-password="false">
+                                            <span class="password-eye"></span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <div class="form-check">
+                                        <input type="checkbox" class="form-check-input" id="checkbox-signup">
+                                        <label class="form-check-label" for="checkbox-signup">Acepto los <a href="#" class="text-muted">Términos y Condiciones</a></label>
+                                    </div>
+                                </div>
+
+                                <div class="mb-3 text-center">
+                                    <button class="btn btn-primary" type="submit"> Registrarse </button>
+                                </div>
+
+                            </form>
+                        </div> <!-- end card-body -->
+                    </div>
+                    <!-- end card -->
+
+                    <div class="row mt-3">
+                        <div class="col-12 text-center">
+                            <p class="text-muted">¿Ya tienes una cuenta? <a href="{% url 'signin' %}" class="text-muted ms-1"><b>Iniciar Sesión</b></a></p>
+                        </div> <!-- end col-->
+                    </div>
+                    <!-- end row -->
+
+                </div> <!-- end col -->
             </div>
+            <!-- end row -->
         </div>
-        <div class="auth-right py-32 px-24 d-flex flex-column justify-content-center">
-            <div class="max-w-464-px mx-auto w-100">
-                <div class="text-center">
-                    <a href="index.html" class="mb-40 max-w-290-px">
-                        <img src="{% static 'assets/images/logo.png' %}" alt="">
-                    </a>
-                    <h4 class="mb-12">Regístrate</h4>
-                    <p class="mb-32 text-secondary-light text-lg">¡Bienvenido de nuevo! por favor ingresa tus datos</p>
-                </div>
-                <form method="post">
-                    {% csrf_token %}
-                    <div class="icon-field mb-16">
-                        <span class="icon top-50 translate-middle-y">
-                            <iconify-icon icon="f7:person"></iconify-icon>
-                        </span>
-                        <input type="text" class="form-control h-56-px bg-neutral-50 radius-12" name="first_name" id="first_name" placeholder="Nombre de usuario">
-                    </div>
-                    <div class="icon-field mb-16">
-                        <span class="icon top-50 translate-middle-y">
-                            <iconify-icon icon="mage:email"></iconify-icon>
-                        </span>
-                        <input type="text" class="form-control h-56-px bg-neutral-50 radius-12" name="username" id="username" placeholder="Ingrese su usuario">
-                    </div>
-                    <div class="mb-20">
-                        <div class="position-relative">
-                            <div class="icon-field">
-                                <span class="icon top-50 translate-middle-y">
-                                    <iconify-icon icon="solar:lock-password-outline"></iconify-icon>
-                                </span>
-                                <input type="password" class="form-control h-56-px bg-neutral-50 radius-12" name="password1" id="password1" placeholder="Ingrese su contraseña">
-                            </div>
-                            <span class="toggle-password ri-eye-line cursor-pointer position-absolute end-0 top-50 translate-middle-y me-16 text-secondary-light"
-                                  data-toggle="#password1"></span>
-                        </div>
-                        <span class="mt-12 text-sm text-secondary-light">Tu contraseña debe tener al menos 6 caracteres</span>
-                    </div>
-                    <div class="mb-20">
-                        <div class="position-relative">
-                            <div class="icon-field">
-                                <span class="icon top-50 translate-middle-y">
-                                    <iconify-icon icon="solar:lock-password-outline"></iconify-icon>
-                                </span>
-                                <input type="password" class="form-control h-56-px bg-neutral-50 radius-12" name="password2" id="password2" placeholder="Repita su contraseña">
-                            </div>
-                            <span class="toggle-password ri-eye-line cursor-pointer position-absolute end-0 top-50 translate-middle-y me-16 text-secondary-light"
-                                  data-toggle="#password2"></span>
-                        </div>
-                    </div>
-                    
-                    <div class="">
-                        <div class="d-flex justify-content-between gap-2">
-                            <div class="form-check style-check d-flex align-items-start">
-                                <input class="form-check-input border border-neutral-300 mt-4" type="checkbox" value=""
-                                    id="condition">
-                                <label class="form-check-label text-sm" for="condition">
-                                    Al crear una cuenta, aceptas los
-                                    <a href="javascript:void(0)" class="text-primary-600 fw-semibold">Términos y Condiciones</a> y nuestra
-                                    <a href="javascript:void(0)" class="text-primary-600 fw-semibold">Política de Privacidad</a>
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-
-                    <button type="submit" class="btn btn-primary text-sm btn-sm px-12 py-16 w-100 radius-12 mt-32"> Registrarse</button>
-
-                    <div class="mt-32 center-border-horizontal text-center">
-                        <span class="bg-base z-1 px-4">O regístrate con</span>
-                    </div>
-                    <div class="mt-32 d-flex align-items-center gap-3">
-                        <button type="button"
-                            class="fw-semibold text-primary-light py-16 px-24 w-50 border radius-12 text-md d-flex align-items-center justify-content-center gap-12 line-height-1 bg-hover-primary-50">
-                            <iconify-icon icon="ic:baseline-facebook"
-                                class="text-primary-600 text-xl line-height-1"></iconify-icon>
-                            Facebook
-                        </button>
-                        <button type="button"
-                            class="fw-semibold text-primary-light py-16 px-24 w-50 border radius-12 text-md d-flex align-items-center justify-content-center gap-12 line-height-1 bg-hover-primary-50">
-                            <iconify-icon icon="logos:google-icon"
-                                class="text-primary-600 text-xl line-height-1"></iconify-icon>
-                            Google
-                        </button>
-                    </div>
-                    <div class="mt-32 text-center text-sm">
-                        <p class="mb-0">¿Ya tienes una cuenta? <a href="sign-in.html"
-                                class="text-primary-600 fw-semibold">Iniciar sesión</a></p>
-                    </div>
-
-                </form>
-            </div>
-        </div>
-    </section>
+        <!-- end container -->
+    </div>
 {% endblock content %}
