@@ -1,287 +1,531 @@
 {% load static %}
-<div class="dashboard-main-body">
-    <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-24">
-        <h6 class="fw-semibold mb-0">Panel de control</h6>
-        <ul class="d-flex align-items-center gap-2">
-            <li class="fw-medium">
-                <a href="{% url 'index' %}" class="d-flex align-items-center gap-1 hover-text-primary"><iconify-icon icon="solar:home-smile-angle-outline" class="icon text-lg"></iconify-icon>Inicio</a>
-            </li>
-            <li>-</li>
-            <li class="fw-medium">Presupuesto</li>
-        </ul>
-    </div>
+<!-- Start Content-->
+<div class="container-fluid">
 
-    <div class="row row-cols-xxxl-5 row-cols-lg-3 row-cols-sm-2 row-cols-1 gy-4">
-        <div class="col">
-            <div class="card shadow-none border bg-gradient-start-1 h-100">
-                <div class="card-body p-20">
-                    <div class="d-flex flex-wrap align-items-center justify-content-between gap-3">
-                        <div>
-                            <p class="fw-medium text-primary-light mb-1">Total de clientes</p>
-                            <h6 class="mb-0">20,000</h6>
+    <div class="row">
+        <div class="col-12">
+            <div class="page-title-box">
+                <div class="page-title-right">
+                    <form class="d-flex">
+                        <div class="input-group">
+                            <input type="text" class="form-control form-control-light" id="dash-daterange">
+                            <span class="input-group-text bg-primary border-primary text-white">
+                                <i class="mdi mdi-calendar-range font-13"></i>
+                            </span>
                         </div>
-                        <div class="w-50-px h-50-px bg-cyan rounded-circle d-flex justify-content-center align-items-center">
-                            <iconify-icon icon="gridicons:multiple-users" class="text-white text-2xl mb-0"></iconify-icon>
-                        </div>
-                    </div>
-                    <p class="fw-medium text-sm text-primary-light mt-12 mb-0 d-flex align-items-center gap-2">
-                        <span class="d-inline-flex align-items-center gap-1 text-success-main"><iconify-icon icon="bxs:up-arrow" class="text-xs"></iconify-icon>+5000</span>
-                        Últimos 30 días
-                    </p>
+                        <a href="javascript: void(0);" class="btn btn-primary ms-2">
+                            <i class="mdi mdi-autorenew"></i>
+                        </a>
+                        <a href="javascript: void(0);" class="btn btn-primary ms-1">
+                            <i class="mdi mdi-filter-variant"></i>
+                        </a>
+                    </form>
                 </div>
-            </div>
-            <!-- card end -->
-        </div>
-        <div class="col">
-            <div class="card shadow-none border bg-gradient-start-2 h-100">
-                <div class="card-body p-20">
-                    <div class="d-flex flex-wrap align-items-center justify-content-between gap-3">
-                        <div>
-                            <p class="fw-medium text-primary-light mb-1">Total de suscripciones</p>
-                            <h6 class="mb-0">15,000</h6>
-                        </div>
-                        <div class="w-50-px h-50-px bg-purple rounded-circle d-flex justify-content-center align-items-center">
-                            <iconify-icon icon="fa-solid:award" class="text-white text-2xl mb-0"></iconify-icon>
-                        </div>
-                    </div>
-                    <p class="fw-medium text-sm text-primary-light mt-12 mb-0 d-flex align-items-center gap-2">
-                        <span class="d-inline-flex align-items-center gap-1 text-danger-main"><iconify-icon icon="bxs:down-arrow" class="text-xs"></iconify-icon>-800</span>
-                        Últimos 30 días
-                    </p>
-                </div>
-            </div>
-            <!-- card end -->
-        </div>
-        <div class="col">
-            <div class="card shadow-none border bg-gradient-start-3 h-100">
-                <div class="card-body p-20">
-                    <div class="d-flex flex-wrap align-items-center justify-content-between gap-3">
-                        <div>
-                            <p class="fw-medium text-primary-light mb-1">Total de usuarios</p>
-                            <h6 class="mb-0">5,000</h6>
-                        </div>
-                        <div class="w-50-px h-50-px bg-info rounded-circle d-flex justify-content-center align-items-center">
-                            <iconify-icon icon="fluent:people-20-filled" class="text-white text-2xl mb-0"></iconify-icon>
-                        </div>
-                    </div>
-                    <p class="fw-medium text-sm text-primary-light mt-12 mb-0 d-flex align-items-center gap-2">
-                        <span class="d-inline-flex align-items-center gap-1 text-success-main"><iconify-icon icon="bxs:up-arrow" class="text-xs"></iconify-icon>+200</span>
-                        Últimos 30 días
-                    </p>
-                </div>
-            </div>
-            <!-- card end -->
-        </div>
-        <div class="col">
-            <div class="card shadow-none border bg-gradient-start-4 h-100">
-                <div class="card-body p-20">
-                    <div class="d-flex flex-wrap align-items-center justify-content-between gap-3">
-                        <div>
-                            <p class="fw-medium text-primary-light mb-1">Total de ingresos</p>
-                            <h6 class="mb-0">$42,000</h6>
-                        </div>
-                        <div class="w-50-px h-50-px bg-success-main rounded-circle d-flex justify-content-center align-items-center">
-                            <iconify-icon icon="solar:wallet-bold" class="text-white text-2xl mb-0"></iconify-icon>
-                        </div>
-                    </div>
-                    <p class="fw-medium text-sm text-primary-light mt-12 mb-0 d-flex align-items-center gap-2">
-                        <span class="d-inline-flex align-items-center gap-1 text-success-main"><iconify-icon icon="bxs:up-arrow" class="text-xs"></iconify-icon>+$20,000</span>
-                        Últimos 30 días
-                    </p>
-                </div>
-            </div>
-            <!-- card end -->
-        </div>
-        <div class="col">
-            <div class="card shadow-none border bg-gradient-start-5 h-100">
-                <div class="card-body p-20">
-                    <div class="d-flex flex-wrap align-items-center justify-content-between gap-3">
-                        <div>
-                            <p class="fw-medium text-primary-light mb-1">Total de gastos</p>
-                            <h6 class="mb-0">$30,000</h6>
-                        </div>
-                        <div class="w-50-px h-50-px bg-red rounded-circle d-flex justify-content-center align-items-center">
-                            <iconify-icon icon="fa6-solid:file-invoice-dollar" class="text-white text-2xl mb-0"></iconify-icon>
-                        </div>
-                    </div>
-                    <p class="fw-medium text-sm text-primary-light mt-12 mb-0 d-flex align-items-center gap-2">
-                        <span class="d-inline-flex align-items-center gap-1 text-success-main"><iconify-icon icon="bxs:up-arrow" class="text-xs"></iconify-icon>+$5,000</span>
-                        Últimos 30 días
-                    </p>
-                </div>
-            </div>
-            <!-- card end -->
-        </div>
-    </div>
-
-    <div class="col-xxl-6 mt-3">
-        <div class="card h-100">
-            <div class="card-body">
-                <div class="d-flex align-items-center flex-wrap gap-2 justify-content-between">
-                    <h6 class="mb-2 fw-bold text-lg mb-0">Contenido Generado</h6>
-                    <select class="form-select form-select-sm w-auto bg-base border text-secondary-light">
-                        <option>Hoy</option>
-                        <option>Semanal</option>
-                        <option>Mensual</option>
-                        <option>Anual</option>
-                    </select>
-                </div>
-
-                <ul class="d-flex flex-wrap align-items-center mt-3 gap-3">
-                    <li class="d-flex align-items-center gap-2">
-                        <span class="w-12-px h-12-px rounded-circle bg-primary-600"></span>
-                        <span class="text-secondary-light text-sm fw-semibold">
-                            Palabra:
-                            <span class="text-primary-light fw-bold">500</span>
-                        </span>
-                    </li>
-                    <li class="d-flex align-items-center gap-2">
-                        <span class="w-12-px h-12-px rounded-circle bg-yellow"></span>
-                        <span class="text-secondary-light text-sm fw-semibold">
-                            Imagen:
-                            <span class="text-primary-light fw-bold">300</span>
-                        </span>
-                    </li>
-                </ul>
-
-                <div class="mt-40">
-                    <div id="paymentStatusChart" class="margin-16-minus"></div>
-                </div>
+                <h4 class="page-title">Dashboard</h4>
             </div>
         </div>
     </div>
 
-    <div class="row gy-4 mt-1">
-        <div class="col-xxl-3 col-xl-6">
-            <div class="card h-100 radius-8 border">
-                <div class="card-body p-24">
-                    <h6 class="mb-12 fw-semibold text-lg mb-16">Total de suscriptores</h6>
-                    <div class="d-flex align-items-center gap-2 mb-20">
-                        <h6 class="fw-semibold mb-0">5,000</h6>
-                        <p class="text-sm mb-0">
-                            <span class="bg-danger-focus border br-danger px-8 py-2 rounded-pill fw-semibold text-danger-main text-sm d-inline-flex align-items-center gap-1">10%<iconify-icon icon="iconamoon:arrow-down-2-fill" class="icon"></iconify-icon></span>
-                            - 20 Por Día
+    <div class="row">
+        <div class="col-xl-5 col-lg-6">
+
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="card widget-flat">
+                        <div class="card-body">
+                            <div class="float-end">
+                                <i class="mdi mdi-account-multiple widget-icon"></i>
+                            </div>
+                            <h5 class="text-muted fw-normal mt-0" title="Number of Customers">Customers</h5>
+                            <h3 class="mt-3 mb-3">36,254</h3>
+                            <p class="mb-0 text-muted">
+                                <span class="text-success me-2"><i class="mdi mdi-arrow-up-bold"></i> 5.27%</span>
+                                <span class="text-nowrap">Since last month</span>
+                            </p>
+                        </div> <!-- end card-body-->
+                    </div> <!-- end card-->
+                </div> <!-- end col-->
+
+                <div class="col-sm-6">
+                    <div class="card widget-flat">
+                        <div class="card-body">
+                            <div class="float-end">
+                                <i class="mdi mdi-cart-plus widget-icon"></i>
+                            </div>
+                            <h5 class="text-muted fw-normal mt-0" title="Number of Orders">Orders</h5>
+                            <h3 class="mt-3 mb-3">5,543</h3>
+                            <p class="mb-0 text-muted">
+                                <span class="text-danger me-2"><i class="mdi mdi-arrow-down-bold"></i> 1.08%</span>
+                                <span class="text-nowrap">Since last month</span>
+                            </p>
+                        </div> <!-- end card-body-->
+                    </div> <!-- end card-->
+                </div> <!-- end col-->
+            </div> <!-- end row -->
+
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="card widget-flat">
+                        <div class="card-body">
+                            <div class="float-end">
+                                <i class="mdi mdi-currency-usd widget-icon"></i>
+                            </div>
+                            <h5 class="text-muted fw-normal mt-0" title="Average Revenue">Revenue</h5>
+                            <h3 class="mt-3 mb-3">$6,254</h3>
+                            <p class="mb-0 text-muted">
+                                <span class="text-danger me-2"><i class="mdi mdi-arrow-down-bold"></i> 7.00%</span>
+                                <span class="text-nowrap">Since last month</span>
+                            </p>
+                        </div> <!-- end card-body-->
+                    </div> <!-- end card-->
+                </div> <!-- end col-->
+
+                <div class="col-sm-6">
+                    <div class="card widget-flat">
+                        <div class="card-body">
+                            <div class="float-end">
+                                <i class="mdi mdi-pulse widget-icon"></i>
+                            </div>
+                            <h5 class="text-muted fw-normal mt-0" title="Growth">Growth</h5>
+                            <h3 class="mt-3 mb-3">+ 30.56%</h3>
+                            <p class="mb-0 text-muted">
+                                <span class="text-success me-2"><i class="mdi mdi-arrow-up-bold"></i> 4.87%</span>
+                                <span class="text-nowrap">Since last month</span>
+                            </p>
+                        </div> <!-- end card-body-->
+                    </div> <!-- end card-->
+                </div> <!-- end col-->
+            </div> <!-- end row -->
+
+        </div> <!-- end col -->
+
+        <div class="col-xl-7 col-lg-6">
+            <div class="card card-h-100">
+                <div class="d-flex card-header justify-content-between align-items-center">
+                    <h4 class="header-title">Projections Vs Actuals</h4>
+                    <div class="dropdown">
+                        <a href="#" class="dropdown-toggle arrow-none card-drop" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="mdi mdi-dots-vertical"></i>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-end">
+                            <!-- item-->
+                            <a href="javascript:void(0);" class="dropdown-item">Sales Report</a>
+                            <!-- item-->
+                            <a href="javascript:void(0);" class="dropdown-item">Export Report</a>
+                            <!-- item-->
+                            <a href="javascript:void(0);" class="dropdown-item">Profit</a>
+                            <!-- item-->
+                            <a href="javascript:void(0);" class="dropdown-item">Action</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body pt-0">
+                    <div dir="ltr">
+                        <div id="high-performing-product" class="apex-charts" data-colors="#727cf5,#91a6bd40"></div>
+                    </div>
+
+                </div> <!-- end card-body-->
+            </div> <!-- end card-->
+
+        </div> <!-- end col -->
+    </div>
+    <!-- end row -->
+
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="d-flex card-header justify-content-between align-items-center">
+                    <h4 class="header-title">Revenue</h4>
+                    <div class="dropdown">
+                        <a href="#" class="dropdown-toggle arrow-none card-drop" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="mdi mdi-dots-vertical"></i>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-end">
+                            <!-- item-->
+                            <a href="javascript:void(0);" class="dropdown-item">Sales Report</a>
+                            <!-- item-->
+                            <a href="javascript:void(0);" class="dropdown-item">Export Report</a>
+                            <!-- item-->
+                            <a href="javascript:void(0);" class="dropdown-item">Profit</a>
+                            <!-- item-->
+                            <a href="javascript:void(0);" class="dropdown-item">Action</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body pt-0">
+                    <div class="chart-content-bg">
+                        <div class="row text-center">
+                            <div class="col-sm-6">
+                                <p class="text-muted mb-0 mt-3">Current Week</p>
+                                <h2 class="fw-normal mb-3">
+                                    <small class="mdi mdi-checkbox-blank-circle text-primary align-middle me-1"></small>
+                                    <span>$58,254</span>
+                                </h2>
+                            </div>
+                            <div class="col-sm-6">
+                                <p class="text-muted mb-0 mt-3">Previous Week</p>
+                                <h2 class="fw-normal mb-3">
+                                    <small class="mdi mdi-checkbox-blank-circle text-success align-middle me-1"></small>
+                                    <span>$69,524</span>
+                                </h2>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="dash-item-overlay d-none d-md-block" dir="ltr">
+                        <h5>Today's Earning: $2,562.30</h5>
+                        <p class="text-muted font-13 mb-3 mt-2">Etiam ultricies nisi vel augue. Curabitur ullamcorper ultricies nisi. Nam eget dui.
+                            Etiam rhoncus...</p>
+                        <a href="javascript: void(0);" class="btn btn-outline-primary">View Statements
+                            <i class="mdi mdi-arrow-right ms-2"></i>
+                        </a>
+                    </div>
+                    <div dir="ltr">
+                        <div id="revenue-chart" class="apex-charts mt-3" data-colors="#727cf5,#0acf97"></div>
+                    </div>
+                </div> <!-- end card-body-->
+            </div> <!-- end card-->
+        </div> <!-- end col-->
+
+        <div class="col-lg-4">
+            <div class="card">
+                <div class="d-flex card-header justify-content-between align-items-center">
+                    <h4 class="header-title">Revenue By Location</h4>
+                    <div class="dropdown">
+                        <a href="#" class="dropdown-toggle arrow-none card-drop" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="mdi mdi-dots-vertical"></i>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-end">
+                            <!-- item-->
+                            <a href="javascript:void(0);" class="dropdown-item">Sales Report</a>
+                            <!-- item-->
+                            <a href="javascript:void(0);" class="dropdown-item">Export Report</a>
+                            <!-- item-->
+                            <a href="javascript:void(0);" class="dropdown-item">Profit</a>
+                            <!-- item-->
+                            <a href="javascript:void(0);" class="dropdown-item">Action</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-body pt-0">
+                    <div class="mb-4 mt-3">
+                        <div id="world-map-markers" style="height: 217px"></div>
+                    </div>
+
+                    <h5 class="mb-1 mt-0 fw-normal">New York</h5>
+                    <div class="progress-w-percent">
+                        <span class="progress-value fw-bold">72k </span>
+                        <div class="progress progress-sm">
+                            <div class="progress-bar" role="progressbar" style="width: 72%;" aria-valuenow="72" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                    </div>
+
+                    <h5 class="mb-1 mt-0 fw-normal">San Francisco</h5>
+                    <div class="progress-w-percent">
+                        <span class="progress-value fw-bold">39k </span>
+                        <div class="progress progress-sm">
+                            <div class="progress-bar" role="progressbar" style="width: 39%;" aria-valuenow="39" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                    </div>
+
+                    <h5 class="mb-1 mt-0 fw-normal">Sydney</h5>
+                    <div class="progress-w-percent">
+                        <span class="progress-value fw-bold">25k </span>
+                        <div class="progress progress-sm">
+                            <div class="progress-bar" role="progressbar" style="width: 39%;" aria-valuenow="39" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                    </div>
+
+                    <h5 class="mb-1 mt-0 fw-normal">Singapore</h5>
+                    <div class="progress-w-percent mb-0">
+                        <span class="progress-value fw-bold">61k </span>
+                        <div class="progress progress-sm">
+                            <div class="progress-bar" role="progressbar" style="width: 61%;" aria-valuenow="61" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                    </div>
+                </div> <!-- end card-body-->
+            </div> <!-- end card-->
+        </div> <!-- end col-->
+    </div>
+    <!-- end row -->
+
+    <div class="row">
+        <div class="col-xl-6 col-lg-12 order-lg-2 order-xl-1">
+            <div class="card">
+                <div class="d-flex card-header justify-content-between align-items-center">
+                    <h4 class="header-title">Top Selling Products</h4>
+                    <a href="javascript:void(0);" class="btn btn-sm btn-light">Export <i class="mdi mdi-download ms-1"></i></a>
+                </div>
+
+                <div class="card-body pt-0">
+                    <div class="table-responsive">
+                        <table class="table table-centered table-nowrap table-hover mb-0">
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <h5 class="font-14 my-1 fw-normal">ASOS Ridley High Waist</h5>
+                                        <span class="text-muted font-13">07 April 2018</span>
+                                    </td>
+                                    <td>
+                                        <h5 class="font-14 my-1 fw-normal">$79.49</h5>
+                                        <span class="text-muted font-13">Price</span>
+                                    </td>
+                                    <td>
+                                        <h5 class="font-14 my-1 fw-normal">82</h5>
+                                        <span class="text-muted font-13">Quantity</span>
+                                    </td>
+                                    <td>
+                                        <h5 class="font-14 my-1 fw-normal">$6,518.18</h5>
+                                        <span class="text-muted font-13">Amount</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <h5 class="font-14 my-1 fw-normal">Marco Lightweight Shirt</h5>
+                                        <span class="text-muted font-13">25 March 2018</span>
+                                    </td>
+                                    <td>
+                                        <h5 class="font-14 my-1 fw-normal">$128.50</h5>
+                                        <span class="text-muted font-13">Price</span>
+                                    </td>
+                                    <td>
+                                        <h5 class="font-14 my-1 fw-normal">37</h5>
+                                        <span class="text-muted font-13">Quantity</span>
+                                    </td>
+                                    <td>
+                                        <h5 class="font-14 my-1 fw-normal">$4,754.50</h5>
+                                        <span class="text-muted font-13">Amount</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <h5 class="font-14 my-1 fw-normal">Half Sleeve Shirt</h5>
+                                        <span class="text-muted font-13">17 March 2018</span>
+                                    </td>
+                                    <td>
+                                        <h5 class="font-14 my-1 fw-normal">$39.99</h5>
+                                        <span class="text-muted font-13">Price</span>
+                                    </td>
+                                    <td>
+                                        <h5 class="font-14 my-1 fw-normal">64</h5>
+                                        <span class="text-muted font-13">Quantity</span>
+                                    </td>
+                                    <td>
+                                        <h5 class="font-14 my-1 fw-normal">$2,559.36</h5>
+                                        <span class="text-muted font-13">Amount</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <h5 class="font-14 my-1 fw-normal">Lightweight Jacket</h5>
+                                        <span class="text-muted font-13">12 March 2018</span>
+                                    </td>
+                                    <td>
+                                        <h5 class="font-14 my-1 fw-normal">$20.00</h5>
+                                        <span class="text-muted font-13">Price</span>
+                                    </td>
+                                    <td>
+                                        <h5 class="font-14 my-1 fw-normal">184</h5>
+                                        <span class="text-muted font-13">Quantity</span>
+                                    </td>
+                                    <td>
+                                        <h5 class="font-14 my-1 fw-normal">$3,680.00</h5>
+                                        <span class="text-muted font-13">Amount</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <h5 class="font-14 my-1 fw-normal">Marco Shoes</h5>
+                                        <span class="text-muted font-13">05 March 2018</span>
+                                    </td>
+                                    <td>
+                                        <h5 class="font-14 my-1 fw-normal">$28.49</h5>
+                                        <span class="text-muted font-13">Price</span>
+                                    </td>
+                                    <td>
+                                        <h5 class="font-14 my-1 fw-normal">69</h5>
+                                        <span class="text-muted font-13">Quantity</span>
+                                    </td>
+                                    <td>
+                                        <h5 class="font-14 my-1 fw-normal">$1,965.81</h5>
+                                        <span class="text-muted font-13">Amount</span>
+                                    </td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+                    </div> <!-- end table-responsive-->
+                </div> <!-- end card-body-->
+            </div> <!-- end card-->
+        </div> <!-- end col-->
+
+        <div class="col-xl-3 col-lg-6 order-lg-1">
+            <div class="card">
+                <div class="d-flex card-header justify-content-between align-items-center">
+                    <h4 class="header-title">Total Sales</h4>
+                    <div class="dropdown">
+                        <a href="#" class="dropdown-toggle arrow-none card-drop" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="mdi mdi-dots-vertical"></i>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-end">
+                            <!-- item-->
+                            <a href="javascript:void(0);" class="dropdown-item">Sales Report</a>
+                            <!-- item-->
+                            <a href="javascript:void(0);" class="dropdown-item">Export Report</a>
+                            <!-- item-->
+                            <a href="javascript:void(0);" class="dropdown-item">Profit</a>
+                            <!-- item-->
+                            <a href="javascript:void(0);" class="dropdown-item">Action</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-body pt-0">
+                    <div id="average-sales" class="apex-charts mb-4 mt-2" data-colors="#727cf5,#0acf97,#fa5c7c,#ffbc00"></div>
+
+
+                    <div class="chart-widget-list">
+                        <p>
+                            <i class="mdi mdi-square text-primary"></i> Direct
+                            <span class="float-end">$300.56</span>
+                        </p>
+                        <p>
+                            <i class="mdi mdi-square text-danger"></i> Affilliate
+                            <span class="float-end">$135.18</span>
+                        </p>
+                        <p>
+                            <i class="mdi mdi-square text-success"></i> Sponsored
+                            <span class="float-end">$48.96</span>
+                        </p>
+                        <p class="mb-0">
+                            <i class="mdi mdi-square text-warning"></i> E-mail
+                            <span class="float-end">$154.02</span>
                         </p>
                     </div>
+                </div> <!-- end card-body-->
+            </div> <!-- end card-->
+        </div> <!-- end col-->
 
-                    <div id="barChart" class="barChart"></div>
-                </div>
-            </div>
-        </div>
-        <div class="col-xxl-3 col-xl-6">
-            <div class="card h-100 radius-8 border-0 overflow-hidden">
-                <div class="card-body p-24">
-                    <div class="d-flex align-items-center flex-wrap gap-2 justify-content-between">
-                        <h6 class="mb-2 fw-bold text-lg">Resumen de Usuarios</h6>
-                        <div class="">
-                            <select class="form-select form-select-sm w-auto bg-base border text-secondary-light">
-                                <option>Hoy</option>
-                                <option>Semanal</option>
-                                <option>Mensual</option>
-                                <option>Anual</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div id="userOverviewDonutChart" class="apexcharts-tooltip-z-none"></div>
-
-                    <ul class="d-flex flex-wrap align-items-center justify-content-between mt-3 gap-3">
-                        <li class="d-flex align-items-center gap-2">
-                            <span class="w-12-px h-12-px radius-2 bg-primary-600"></span>
-                            <span class="text-secondary-light text-sm fw-normal">
-                                Nuevo:
-                                <span class="text-primary-light fw-semibold">500</span>
-                            </span>
-                        </li>
-                        <li class="d-flex align-items-center gap-2">
-                            <span class="w-12-px h-12-px radius-2 bg-yellow"></span>
-                            <span class="text-secondary-light text-sm fw-normal">
-                                Suscrito:
-                                <span class="text-primary-light fw-semibold">300</span>
-                            </span>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-xxl-3 col-xl-12">
-            <div class="card h-100">
-                <div class="card-body">
-                    <div class="d-flex align-items-center flex-wrap gap-2 justify-content-between">
-                        <h6 class="mb-2 fw-bold text-lg mb-0">Mejores Desempeños</h6>
-                        <a href="javascript:void(0)" class="text-primary-600 hover-text-primary d-flex align-items-center gap-1">Ver Todos<iconify-icon icon="solar:alt-arrow-right-linear" class="icon"></iconify-icon></a>
-                    </div>
-
-                    <div class="mt-32">
-                        <div class="d-flex align-items-center justify-content-between gap-3 mb-24">
-                            <div class="d-flex align-items-center">
-                                <img src="assets/images/users/user1.png" alt="" class="w-40-px h-40-px rounded-circle flex-shrink-0 me-12 overflow-hidden" />
-                                <div class="flex-grow-1">
-                                    <h6 class="text-md mb-0 fw-medium">Dianne Russell</h6>
-                                    <span class="text-sm text-secondary-light fw-medium">ID del Agente: 36254</span>
-                                </div>
-                            </div>
-                            <span class="text-primary-light text-md fw-medium">$20</span>
-                        </div>
-
-                        <div class="d-flex align-items-center justify-content-between gap-3 mb-24">
-                            <div class="d-flex align-items-center">
-                                <img src="assets/images/users/user2.png" alt="" class="w-40-px h-40-px rounded-circle flex-shrink-0 me-12 overflow-hidden" />
-                                <div class="flex-grow-1">
-                                    <h6 class="text-md mb-0 fw-medium">Wade Warren</h6>
-                                    <span class="text-sm text-secondary-light fw-medium">ID del Agente: 36254</span>
-                                </div>
-                            </div>
-                            <span class="text-primary-light text-md fw-medium">$20</span>
-                        </div>
-
-                        <div class="d-flex align-items-center justify-content-between gap-3 mb-24">
-                            <div class="d-flex align-items-center">
-                                <img src="assets/images/users/user3.png" alt="" class="w-40-px h-40-px rounded-circle flex-shrink-0 me-12 overflow-hidden" />
-                                <div class="flex-grow-1">
-                                    <h6 class="text-md mb-0 fw-medium">Albert Flores</h6>
-                                    <span class="text-sm text-secondary-light fw-medium">ID del Agente: 36254</span>
-                                </div>
-                            </div>
-                            <span class="text-primary-light text-md fw-medium">$30</span>
-                        </div>
-
-                        <div class="d-flex align-items-center justify-content-between gap-3 mb-24">
-                            <div class="d-flex align-items-center">
-                                <img src="assets/images/users/user4.png" alt="" class="w-40-px h-40-px rounded-circle flex-shrink-0 me-12 overflow-hidden" />
-                                <div class="flex-grow-1">
-                                    <h6 class="text-md mb-0 fw-medium">Bessie Cooper</h6>
-                                    <span class="text-sm text-secondary-light fw-medium">ID del Agente: 36254</span>
-                                </div>
-                            </div>
-                            <span class="text-primary-light text-md fw-medium">$40</span>
-                        </div>
-
-                        <div class="d-flex align-items-center justify-content-between gap-3 mb-24">
-                            <div class="d-flex align-items-center">
-                                <img src="assets/images/users/user5.png" alt="" class="w-40-px h-40-px rounded-circle flex-shrink-0 me-12 overflow-hidden" />
-                                <div class="flex-grow-1">
-                                    <h6 class="text-md mb-0 fw-medium">Arlene McCoy</h6>
-                                    <span class="text-sm text-secondary-light fw-medium">ID del Agente: 36254</span>
-                                </div>
-                            </div>
-                            <span class="text-primary-light text-md fw-medium">$10</span>
-                        </div>
-
-                        <div class="d-flex align-items-center justify-content-between gap-3">
-                            <div class="d-flex align-items-center">
-                                <img src="assets/images/users/user1.png" alt="" class="w-40-px h-40-px rounded-circle flex-shrink-0 me-12 overflow-hidden" />
-                                <div class="flex-grow-1">
-                                    <h6 class="text-md mb-0 fw-medium">Arlene McCoy</h6>
-                                    <span class="text-sm text-secondary-light fw-medium">ID del Agente: 36254</span>
-                                </div>
-                            </div>
-                            <span class="text-primary-light text-md fw-medium">$10</span>
+        <div class="col-xl-3 col-lg-6 order-lg-1">
+            <div class="card">
+                <div class="d-flex card-header justify-content-between align-items-center">
+                    <h4 class="header-title">Recent Activity</h4>
+                    <div class="dropdown">
+                        <a href="#" class="dropdown-toggle arrow-none card-drop" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="mdi mdi-dots-vertical"></i>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-end">
+                            <!-- item-->
+                            <a href="javascript:void(0);" class="dropdown-item">Sales Report</a>
+                            <!-- item-->
+                            <a href="javascript:void(0);" class="dropdown-item">Export Report</a>
+                            <!-- item-->
+                            <a href="javascript:void(0);" class="dropdown-item">Profit</a>
+                            <!-- item-->
+                            <a href="javascript:void(0);" class="dropdown-item">Action</a>
                         </div>
                     </div>
                 </div>
+
+                <div class="card-body py-0 mb-3" data-simplebar style="max-height: 403px;">
+                    <div class="timeline-alt py-0">
+                        <div class="timeline-item">
+                            <i class="mdi mdi-upload bg-info-lighten text-info timeline-icon"></i>
+                            <div class="timeline-item-info">
+                                <a href="javascript:void(0);" class="text-info fw-bold mb-1 d-block">You sold an item</a>
+                                <small>Paul Burgess just purchased “Hyper - Admin Dashboard”!</small>
+                                <p class="mb-0 pb-2">
+                                    <small class="text-muted">5 minutes ago</small>
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <i class="mdi mdi-airplane bg-primary-lighten text-primary timeline-icon"></i>
+                            <div class="timeline-item-info">
+                                <a href="javascript:void(0);" class="text-primary fw-bold mb-1 d-block">Product on the Bootstrap Market</a>
+                                <small>Dave Gamache added
+                                    <span class="fw-bold">Admin Dashboard</span>
+                                </small>
+                                <p class="mb-0 pb-2">
+                                    <small class="text-muted">30 minutes ago</small>
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <i class="mdi mdi-microphone bg-info-lighten text-info timeline-icon"></i>
+                            <div class="timeline-item-info">
+                                <a href="javascript:void(0);" class="text-info fw-bold mb-1 d-block">Robert Delaney</a>
+                                <small>Send you message
+                                    <span class="fw-bold">"Are you there?"</span>
+                                </small>
+                                <p class="mb-0 pb-2">
+                                    <small class="text-muted">2 hours ago</small>
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <i class="mdi mdi-upload bg-primary-lighten text-primary timeline-icon"></i>
+                            <div class="timeline-item-info">
+                                <a href="javascript:void(0);" class="text-primary fw-bold mb-1 d-block">Audrey Tobey</a>
+                                <small>Uploaded a photo
+                                    <span class="fw-bold">"Error.jpg"</span>
+                                </small>
+                                <p class="mb-0 pb-2">
+                                    <small class="text-muted">14 hours ago</small>
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <i class="mdi mdi-upload bg-info-lighten text-info timeline-icon"></i>
+                            <div class="timeline-item-info">
+                                <a href="javascript:void(0);" class="text-info fw-bold mb-1 d-block">You sold an item</a>
+                                <small>Paul Burgess just purchased “Hyper - Admin Dashboard”!</small>
+                                <p class="mb-0 pb-2">
+                                    <small class="text-muted">16 hours ago</small>
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <i class="mdi mdi-airplane bg-primary-lighten text-primary timeline-icon"></i>
+                            <div class="timeline-item-info">
+                                <a href="javascript:void(0);" class="text-primary fw-bold mb-1 d-block">Product on the Bootstrap Market</a>
+                                <small>Dave Gamache added
+                                    <span class="fw-bold">Admin Dashboard</span>
+                                </small>
+                                <p class="mb-0 pb-2">
+                                    <small class="text-muted">22 hours ago</small>
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <i class="mdi mdi-microphone bg-info-lighten text-info timeline-icon"></i>
+                            <div class="timeline-item-info">
+                                <a href="javascript:void(0);" class="text-info fw-bold mb-1 d-block">Robert Delaney</a>
+                                <small>Send you message
+                                    <span class="fw-bold">"Are you there?"</span>
+                                </small>
+                                <p class="mb-0 pb-2">
+                                    <small class="text-muted">2 days ago</small>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end timeline -->
+                </div> <!-- end simplebar -->
             </div>
+            <!-- end card-->
         </div>
+        <!-- end col -->
+
     </div>
+    <!-- end row -->
+
 </div>
+<!-- container -->

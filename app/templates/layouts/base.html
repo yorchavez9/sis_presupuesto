@@ -9,18 +9,20 @@
 
 <body>
 
-    
     {% if user.is_authenticated %}
-        {% include 'layouts/_partials/sidebar.html' %}
-        <main class="dashboard-main">
+        <div class="wrapper">
             {% include 'layouts/_partials/navbar-header.html' %}
-            
-            {% block content_admin %}
-                {% include 'inicio/inicio.html' %}
-            {% endblock content_admin %}
-                
-            {% include 'layouts/_partials/footer_content.html' %}
-        </main>
+            {% include 'layouts/_partials/sidebar.html' %}
+            <div class="content-page">
+                <div class="content">
+                    {% block content_admin %}
+                        {% include 'inicio/inicio.html' %}
+                    {% endblock content_admin %}
+                </div>
+                {% include 'layouts/_partials/footer_content.html' %}
+            </div>
+        </div>
+        {% include "layouts/_partials/settings.html" %}
     {% else %}
         {% comment %} Nav Bar de la página de inicio {% endcomment %}  
         {% include 'layouts/_partials/navbar.html' %}
