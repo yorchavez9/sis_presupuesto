@@ -23,26 +23,26 @@
 
         <div class="row">
             <div class="col-12">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between align-items-center mb-3">
-                            <h4 class="header-title mb-0">Tabla de usuarios</h4>
-                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal_nuevo_usuario"> <i class="uil-plus"></i> Nuevo usuario</button>
-                        </div>
-                        <div class="tab-content">
-                            <div class="tab-pane show active" id="basic-datatable-preview">
-                                <table id="basic-datatable" class="tabla_usuarios table table-striped dt-responsive nowrap w-100">
-                                    <thead>
-                                        <tr>
-                                            <th>N°</th>
-                                            <th>Nombre</th>
-                                            <th>Usuario</th>
-                                            <th>Correo</th>
-                                            <th>Estado</th>
-                                            <th>Fecha</th>
-                                            <th>Acciones</th>
-                                        </tr>
-                                    </thead>
+            <div class="card">
+                <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h4 class="header-title mb-0">Tabla de usuarios</h4>
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal_nuevo_usuario"> <i class="uil-plus"></i> Nuevo usuario</button>
+                </div>
+                <div class="tab-content">
+                    <div class="tab-pane show active" id="basic-datatable-preview">
+                    <table id="basic-datatable" class="tabla_usuarios table table-striped dt-responsive nowrap w-100">
+                        <thead>
+                        <tr>
+                            <th>N°</th>
+                            <th>Nombre</th>
+                            <th>Usuario</th>
+                            <th>Correo</th>
+                            <th>Estado</th>
+                            <th>Fecha</th>
+                            <th>Acciones</th>
+                        </tr>
+                        </thead>
 
                                     <tbody id="datos_usuarios">
                                         
@@ -55,7 +55,6 @@
             </div><!-- end col-->
         </div> <!-- end row-->
 
-        <!-- Standard modal content -->
         <div id="modal_nuevo_usuario" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="standard-modalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -107,9 +106,66 @@
                         </div>
                     </form>
                 </div><!-- /.modal-content -->
-            </div><!-- /.modal-dialog -->
-        </div><!-- /.modal -->
-    </div> <!-- container -->
+            </div>
+        </div>
+
+        <div id="modal_editar_usuario" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="standard-modalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="standard-modalLabel">Editar usuario</h4>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form method="post" id="form_actualizar_usuario">
+                        <input type="text" id="user_id_edit" name="user_id_edit" hidden>
+                        <div class="modal-body">
+                            <div class="form-group mb-2">
+                                <label for="first_name" class="form-label">Ingrese el nombre</label>
+                                <input type="text" name="first_name_edit" id="first_name_edit" class="form-control" placeholder="Ingrese el nombre completo">
+                                <span class="text-danger" id="error_first_name_usuario_edit"></span>
+                            </div>
+                            <div class="form-group mb-2">
+                                <label for="email" class="form-label">Ingrese el correo</label>
+                                <input type="email" name="email_edit" id="email_edit" class="form-control" placeholder="Ingrese el correo">
+                                <span class="text-danger" id="error_email_usuario_edit"></span>
+                            </div>
+                            <div class="form-group mb-2">
+                                <label for="username_edit" class="form-label">Ingrese el usuario</label>
+                                <input type="text" name="username_edit" id="username_edit" class="form-control" placeholder="Ingrese el usuario">
+                                <span class="text-danger" id="error_username_usuario_edit"></span>
+                            </div>
+                            <div class="form-group mb-2">
+                                <label for="password1" class="form-label">Ingrese la contraseña</label>
+                                <input type="text" id="password1_actual_edit" name="password1_actual_edit" hidden>
+                                <div class="input-group input-group-merge">
+                                    <input type="password" id="password1_edit" name="password1_edit" class="form-control" placeholder="Ingrese la contraseña">
+                                    <div class="input-group-text" data-password="false">
+                                        <span class="password-eye"></span>
+                                    </div>
+                                </div>
+                                <span class="text-danger" id="error_password1_usuario_edit"></span>
+                            </div>
+                            <div class="form-group mb-2">
+                                <label for="password2" class="form-label">Repita la contraseña</label>
+                                <div class="input-group input-group-merge">
+                                    <input type="password" id="password2_edit" name="password2_edit" class="form-control" placeholder="Ingrese la contraseña">
+                                    <div class="input-group-text" data-password="false">
+                                        <span class="password-eye"></span>
+                                    </div>
+                                </div>
+                                <span class="text-danger" id="error_password2_usuario_edit"></span>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cerrar</button>
+                            <button type="button" id="btn_actualizar_usuario" class="btn btn-primary">Guardar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    </div> 
     
 {% endblock content_admin %}
 

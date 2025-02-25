@@ -53,6 +53,19 @@ def crear_usuario(request):
     return JsonResponse({'status': False, 'message': 'Método no permitido'}, status=405)
 
 @csrf_exempt
+def activar_usuario(request):
+    if request.method == 'POST':
+        user_id = request.POST.get('user_id')
+        user_estado = request.POST.get('user_estado')
+        user = get_object_or_404(User, pk=user_id)
+        user.is_active = user_estado
+        user.save()
+        return JsonResponse({'status': True, 'message': 'Usuario actualizado correctamente'})
+    return JsonResponse({'status': False, 'message': 'Método no permitido'}, status=405)
+
+
+
+@csrf_exempt
 def borrar_usuario(request, user_id):
     if request.method == 'POST':
         user = get_object_or_404(User, pk=user_id)
@@ -61,12 +74,34 @@ def borrar_usuario(request, user_id):
     return JsonResponse({'status': False, 'message': 'Método no permitido'}, status=405)
 
 @csrf_exempt
-def activar_usuario(request):
+def editar_usuario(request):
     if request.method == 'POST':
         user_id = request.POST.get('user_id')
-        user_estado = request.POST.get('user_estado')
         user = get_object_or_404(User, pk=user_id)
-        user.is_active = user_estado
+        
+        user_data = {
+            'id': user.id,
+            'first_name': user.first_name,
+            'email': user.email,
+            'username': user.username,
+            'password': user.password
+        }
+        
+        return JsonResponse({'status': True, 'message': 'Datos del usuario obtenidos correctamente', 'user': user_data})
+    
+    return JsonResponse({'status': False, 'message': 'Método no permitido'}, status=405)
+
+@csrf_exempt
+def actualizar_usuario(request):
+    if request.method == 'POST':
+        user_id = request.POST.get('user_id')
+        user = get_object_or_404(User, pk=user_id)
+        user.first_name = request.POST.get('first_name')
+        user.email = request.POST.get('email')
+        user.username = request.POST.get('username')
+        password1 = request.POST.get('password1')
+        if password1:
+            user.password = make_password(password1)
         user.save()
         return JsonResponse({'status': True, 'message': 'Usuario actualizado correctamente'})
     return JsonResponse({'status': False, 'message': 'Método no permitido'}, status=405)

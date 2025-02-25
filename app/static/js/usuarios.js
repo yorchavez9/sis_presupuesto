@@ -28,7 +28,7 @@ $(document).ready(function() {
                         dato.date_joined || "Sin fecha",
                         `
                         <div class="text-center">
-                            <a href="#" class="me-3 btnEditarCategoria" idCategoria="${dato.id}" data-bs-toggle="modal" data-bs-target="#modalEditarCategoria">
+                            <a href="#" class="me-3 btnEditarUsuario" idUsuario="${dato.id}" data-bs-toggle="modal" data-bs-target="#modal_editar_usuario">
                                 <i class="ri-edit-box-line text-warning fs-3"></i>
                             </a>
                             <a href="#" class="me-3 confirm-text btnEliminarUsuario" idUsuario="${dato.id}">
@@ -143,7 +143,110 @@ $(document).ready(function() {
     /* =========================================
     EDITAR USUARIO
     ========================================= */
-    
+    $(".tabla_usuarios").on("click", '.btnEditarUsuario', function(e){
+        e.preventDefault();
+        let user_id = $(this).attr("idUsuario");
+        const datos = new FormData();
+        datos.append("user_id", user_id);
+        $.ajax({
+            url: "editar/",
+            type: 'POST',
+            data: datos,
+            processData: false,
+            contentType: false,
+            success: function(response) {
+                if (response.status) {
+                    $("#user_id_edit").val(response.user.id);
+                    $("#first_name_edit").val(response.user.first_name);
+                    $("#email_edit").val(response.user.email);
+                    $("#username_edit").val(response.user.username);
+                    $("#password1_actual_edit").val(response.user.password);
+                } else {
+                    Swal.fire({
+                        title: "¡Error!",
+                        text: response.message,
+                        icon: "error",
+                    });
+                }
+            },
+            error: function(error) {
+                console.error("Error al editar usuario:", error);
+            }
+        })
+    });
+
+    /* =========================================
+    ACTUALIZAR USUARIO
+    ========================================= */
+    $("#btn_actualizar_usuario").click(function() {
+        let isValid = true;
+
+        let user_id = $("#user_id_edit").val();
+        let first_name = $("#first_name_edit").val();
+        let email = $("#email_edit").val();
+        let username = $("#username_edit").val();
+        let password_actual = $("#password1_actual_edit").val();
+        let password1 = $("#password1_edit").val();
+        let password2 = $("#password2_edit").val();
+
+        if (first_name == "" || first_name == null) {
+            $("#error_first_name_edit").html("El nombre es obligatorio");
+            isValid = false;
+        } else {
+            $("#error_first_name_edit").html("");
+        }
+
+        if (email == "" || email == null) {
+            $("#error_email_edit").html("El correo es obligatorio");
+            isValid = false;
+        } else {
+            $("#error_email_edit").html("");
+        }
+
+        if (username == "" || username == null) {
+            $("#error_username_edit").html("El usuario es obligatorio");
+            isValid = false;
+        } else {
+            $("#error_username_edit").html("");
+        }
+
+        if (isValid) {
+            const datos  = new FormData();
+            datos.append("user_id", user_id);
+            datos.append("first_name", first_name);
+            datos.append("email", email);
+            datos.append("username", username);
+            datos.append("password_actual", password_actual);
+            datos.append("password1", password1);
+            datos.append("password2", password2);
+
+            $.ajax({
+                url: "actualizar/",
+                type: 'POST',
+                data: datos,
+                processData: false,
+                contentType: false,
+                success: function(response) {
+                    if(response.status) {
+                        cargarUsuarios();
+                        $("#modal_editar_usuario").modal("hide");
+                        $("#form_actualizar_usuario")[0].reset();
+                        Swal.fire({
+                            title: "¡Correcto!",
+                            text: response.message,
+                            icon: "success",
+                        });
+                    }else{
+                        Swal.fire({
+                            title: "¡Error!",
+                            text: response.message,
+                            icon: "error",
+                        });
+                    }
+                }
+            })
+        }
+    })
 
 
     /* =========================================
@@ -245,7 +348,6 @@ $(document).ready(function() {
             }
         });
     });
-
 
 
 
