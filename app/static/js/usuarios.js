@@ -1,4 +1,5 @@
 $(document).ready(function() {
+
     let tabla = $('.tabla_usuarios').DataTable({
         "destroy": true,
         "responsive": true,
@@ -30,7 +31,7 @@ $(document).ready(function() {
                             <a href="#" class="me-3 btnEditarCategoria" idCategoria="${dato.id}" data-bs-toggle="modal" data-bs-target="#modalEditarCategoria">
                                 <i class="ri-edit-box-line text-warning fs-3"></i>
                             </a>
-                            <a href="#" class="me-3 confirm-text btnEliminarCategoria" idCategoria="${dato.id}">
+                            <a href="#" class="me-3 confirm-text btnEliminarUsuario" idUsuario="${dato.id}">
                                 <i class="ri-delete-bin-line text-danger fs-3"></i>
                             </a>
                         </div>
@@ -119,8 +120,17 @@ $(document).ready(function() {
                         cargarUsuarios();
                         $("#modal_nuevo_usuario").modal("hide");
                         $("#form_crear_usuario")[0].reset();
+                        Swal.fire({
+                            title: "¡Correcto!",
+                            text: response.message,
+                            icon: "success",
+                          });
                     } else {
-                        alert(response.message);
+                        Swal.fire({
+                            title: "¡Error!",
+                            text: response.message,
+                            icon: "error",
+                          });
                     }
                 },
                 error: function(error) {
@@ -129,5 +139,114 @@ $(document).ready(function() {
             })
         }
     });
+
+    /* =========================================
+    EDITAR USUARIO
+    ========================================= */
     
+
+
+    /* =========================================
+    ACTIVAR O DESACTIVAR USUARIO
+    ========================================= */
+    $(".tabla_usuarios").on("click", '.btnActivar', function(e){
+        e.preventDefault();
+        let user_id = $(this).attr("idUsuario");
+        let user_estado = $(this).attr("estadoUsuario");
+
+        const datos = new FormData();
+        datos.append("user_id", user_id);
+        datos.append("user_estado", user_estado);
+
+        $.ajax({
+            url: "activar/",
+            type: 'POST',
+            data: datos,
+            processData: false,
+            contentType: false,
+            success: function (response) {
+                if (response.status) {
+                    cargarUsuarios();
+                    Swal.fire({
+                        title: "¡Correcto!",
+                        text: response.message,
+                        icon: "success",
+                    });
+                } else {
+                    Swal.fire({
+                        title: "¡Error!",
+                        text: response.message,
+                        icon: "error",
+                    });
+                }
+            },
+            error: function (xhr, status, error) {
+                Swal.fire({
+                    title: "¡Error!",
+                    text: "Ocurrió un error al activar o desactivar el usuario.",
+                    icon: "error",
+                });
+                console.log(xhr);
+                console.log(status);
+                console.log(error);
+            }
+        });
+    });
+
+    
+    /* =========================================
+    ELIMINAR USUARIO
+    ========================================= */
+    $(".tabla_usuarios").on("click", '.btnEliminarUsuario', function(e){
+        e.preventDefault();
+        let idUsuario = $(this).attr("idUsuario");
+    
+        Swal.fire({
+            title: "¿Está seguro de borrar el usuario?",
+            text: "¡Si no lo está puede cancelar la acción!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#6973E3",
+            cancelButtonColor: "#FF4D4D",
+            cancelButtonText: "Cancelar",
+            confirmButtonText: "Si, borrar!",
+        }).then(function (result) {
+            if (result.value) {
+                $.ajax({
+                    url: `borrar/${idUsuario}/`,
+                    method: "POST",
+                    headers: {
+                        'X-CSRFToken': '{{ csrf_token }}'
+                    },
+                    success: function (response) {
+                        if (response.status) {
+                            cargarUsuarios();
+                            Swal.fire({
+                                title: "¡Eliminado!",
+                                text: response.message,
+                                icon: "success",
+                            })
+                        } else {
+                            Swal.fire({
+                                title: "Error",
+                                text: response.message,
+                                icon: "error",
+                            });
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        Swal.fire({
+                            title: "Error",
+                            text: "Ocurrió un error al eliminar el usuario.",
+                            icon: "error",
+                        });
+                    }
+                });
+            }
+        });
+    });
+
+
+
+
 });
