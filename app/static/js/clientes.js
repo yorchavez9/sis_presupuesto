@@ -1,6 +1,6 @@
 $(document).ready(function() {
 
-    let tabla = $('.tabla_usuarios').DataTable({
+    let tabla = $('.tabla_clientes').DataTable({
         "destroy": true,
         "responsive": true,
         "pageLength": 10,
@@ -9,30 +9,31 @@ $(document).ready(function() {
         }
     });
 
-    function cargarUsuarios() {
+    function cargarClientes() {
         $.ajax({
             url: "lista/",
             type: 'GET',
             dataType: 'json',
-            success: function(usuarios) {
+            success: function(clientes) {
                 tabla.clear();
-                usuarios.forEach(function(dato, index) {
+                clientes.forEach(function(dato, index) {
                     tabla.row.add([
                         index + 1,
-                        dato.first_name || "Sin nombre",
-                        dato.username || "Sin usuario",
-                        dato.email || "Sin correo",
-                        dato.is_active ?
-                            '<button class="btn bg-success text-white badges btn-sm rounded btnActivar" idUsuario="' + dato.id + '" estadoUsuario="0">Activado</button>' :
-                            '<button class="btn bg-danger text-white badges btn-sm rounded btnActivar" idUsuario="' + dato.id + '" estadoUsuario="1">Desactivado</button>',
-                        dato.date_joined || "Sin fecha",
+                        dato.nombre,
+                        `${dato.tipo_documento}: ${dato.num_documento}`,
+                        dato.direccion || "Sin direción",
+                        dato.telefono || "Sin telefono",
+                        dato.correo || "Sin correo",
+                        dato.estado ?
+                            '<button class="btn bg-success text-white badges btn-sm rounded btnActivar" idCliente="' + dato.id + '" estadoCliente="0">Activado</button>' :
+                            '<button class="btn bg-danger text-white badges btn-sm rounded btnActivar" idCliente="' + dato.id + '" estadoCliente="1">Desactivado</button>',
                         `
                         <div class="text-center">
-                            <a href="#" class="me-3 btnEditarUsuario" idUsuario="${dato.id}" data-bs-toggle="modal" data-bs-target="#modal_editar_usuario">
-                                <i class="ri-edit-box-line text-warning fs-3"></i>
+                            <a href="#" class="me-3 btnEditarCliente" idCliente="${dato.id}" data-bs-toggle="modal" data-bs-target="#modal_editar_cliente">
+                            <i class="ri-edit-box-line text-warning fs-3"></i>
                             </a>
-                            <a href="#" class="me-3 confirm-text btnEliminarUsuario" idUsuario="${dato.id}">
-                                <i class="ri-delete-bin-line text-danger fs-3"></i>
+                            <a href="#" class="me-3 confirm-text btnEliminarCliente" idCliente="${dato.id}">
+                            <i class="ri-delete-bin-line text-danger fs-3"></i>
                             </a>
                         </div>
                         `
@@ -41,73 +42,62 @@ $(document).ready(function() {
                 tabla.draw();
             },
             error: function(error) {
-               /*  console.error("Error al cargar usuarios:", error); */
+                console.error("Error al cargar usuarios:", error);
             }
         });
     }
 
-    cargarUsuarios();
+    cargarClientes();
 
     /* =========================================
-    CREAR USUARIO
+    CREAR CLIENTE
     ========================================= */
-    $("#btn_guardar_usuario").click(function() {
+    $("#btn_guardar_cliente").click(function(e) {
+        e.preventDefault();
         let isValid = true;
 
-        let first_name = $("#first_name").val();
-        let email = $("#email").val();
-        let username = $("#username").val();
-        let password1 = $("#password1").val();
-        let password2 = $("#password2").val();
+        let tipo_documento = $("#tipo_documento").val();
+        let num_documento = $("#num_documento").val();
+        let nombre = $("#nombre").val();
+        let direccion = $("#direccion").val();
+        let telefono = $("#telefono").val();
+        let correo = $("#correo").val();
 
-        if (first_name == "" || first_name == null) {
-            $("#error_first_name_usuario").html("El nombre es obligatorio");
+        if (tipo_documento == "" || tipo_documento == null) {
+            $("#error_tipo_documento").html("Selecione el tipo de documento");
             isValid = false;
         } else {
-            $("#error_first_name_usuario").html("");
+            $("#error_tipo_documento").html("");
         }
 
-        if (email == "" || email == null) {
-            $("#error_email_usuario").html("El correo es obligatorio");
+        if (num_documento == "" || num_documento == null) {
+            $("#error_num_documento_cliente").html("El número de documento es obligatorio");
+            isValid = false;
+        } else if (!/^\d+$/.test(num_documento)) {
+            $("#error_num_documento_cliente").html("El número de documento debe contener solo números");
+            isValid = false;
+        } else if (num_documento.length >= 15) {
+            $("#error_num_documento_cliente").html("El número de documento debe tener menos de 15 caracteres");
             isValid = false;
         } else {
-            $("#error_email_usuario").html("");
+            $("#error_num_documento_cliente").html("");
         }
 
-        if (username == "" || username == null) {
-            $("#error_username_usuario").html("El usuario es obligatorio");
+        if (nombre == "" || nombre == null) {
+            $("#error_nombre_cliente").html("El nombre es obligatorio");
             isValid = false;
         } else {
-            $("#error_username_usuario").html("");
-        }
-
-        if (password1 == "" || password1 == null) {
-            $("#error_password1_usuario").html("La contraseña es obligatoria");
-            isValid = false;
-        } else if (password1.length < 6) {
-            $("#error_password1_usuario").html("La contraseña debe tener al menos 6 caracteres");
-            isValid = false;
-        } else {
-            $("#error_password1_usuario").html("");
-        }
-
-        if (password2 == "" || password2 == null) {
-            $("#error_password2_usuario").html("Confirmar la contraseña es obligatorio");
-            isValid = false;
-        } else if (password1 !== password2) {
-            $("#error_password2_usuario").html("Las contraseñas no coinciden");
-            isValid = false;
-        } else {
-            $("#error_password2_usuario").html("");
+            $("#error_nombre_cliente").html("");
         }
 
         if (isValid) {
             const datos  = new FormData();
-            datos.append("first_name", first_name);
-            datos.append("email", email);
-            datos.append("username", username);
-            datos.append("password1", password1);
-            datos.append("password2", password2);
+            datos.append("tipo_documento", tipo_documento);
+            datos.append("num_documento", num_documento);
+            datos.append("nombre", nombre);
+            datos.append("direccion", direccion);
+            datos.append("telefono", telefono);
+            datos.append("correo", correo);
 
             $.ajax({
                 url: "crear/",
@@ -117,9 +107,18 @@ $(document).ready(function() {
                 contentType: false,
                 success: function(response) {
                     if (response.status) {
-                        cargarUsuarios();
-                        $("#modal_nuevo_usuario").modal("hide");
-                        $("#form_crear_usuario")[0].reset();
+                        cargarClientes();
+                        tabla.destroy();
+                        tabla = $('.tabla_clientes').DataTable({
+                            "destroy": true,
+                            "responsive": true,
+                            "pageLength": 10,
+                            "language": {
+                                "url": "//cdn.datatables.net/plug-ins/1.10.25/i18n/Spanish.json"
+                            }
+                        });
+                        $("#modal_nuevo_cliente").modal("hide");
+                        $("#form_crear_cliente")[0].reset();
                         Swal.fire({
                             title: "¡Correcto!",
                             text: response.message,
@@ -141,11 +140,11 @@ $(document).ready(function() {
     });
 
     /* =========================================
-    EDITAR USUARIO
+    EDITAR CLIENTE
     ========================================= */
-    $(".tabla_usuarios").on("click", '.btnEditarUsuario', function(e){
+    $(".tabla_clientes").on("click", '.btnEditarCliente', function(e){
         e.preventDefault();
-        let user_id = $(this).attr("idUsuario");
+        let user_id = $(this).attr("idCliente");
         const datos = new FormData();
         datos.append("user_id", user_id);
         $.ajax({
@@ -176,7 +175,7 @@ $(document).ready(function() {
     });
 
     /* =========================================
-    ACTUALIZAR USUARIO
+    ACTUALIZAR CLIENTE
     ========================================= */
     $("#btn_actualizar_usuario").click(function() {
         let isValid = true;
@@ -228,7 +227,7 @@ $(document).ready(function() {
                 contentType: false,
                 success: function(response) {
                     if(response.status) {
-                        cargarUsuarios();
+                        cargarClientes();
                         $("#modal_editar_usuario").modal("hide");
                         $("#form_actualizar_usuario")[0].reset();
                         Swal.fire({
@@ -248,9 +247,8 @@ $(document).ready(function() {
         }
     })
 
-
     /* =========================================
-    ACTIVAR O DESACTIVAR USUARIO
+    ACTIVAR O DESACTIVAR CLIENTE
     ========================================= */
     $(".tabla_usuarios").on("click", '.btnActivar', function(e){
         e.preventDefault();
@@ -269,7 +267,7 @@ $(document).ready(function() {
             contentType: false,
             success: function (response) {
                 if (response.status) {
-                    cargarUsuarios();
+                    cargarClientes();
                     Swal.fire({
                         title: "¡Correcto!",
                         text: response.message,
@@ -295,15 +293,16 @@ $(document).ready(function() {
             }
         });
     });
-
     
     /* =========================================
-    ELIMINAR USUARIO
+    ELIMINAR CLIENTE
     ========================================= */
-    $(".tabla_usuarios").on("click", '.btnEliminarUsuario', function(e){
+    $(".tabla_clientes").on("click", '.btnEliminarCliente', function(e){
         e.preventDefault();
-        let idUsuario = $(this).attr("idUsuario");
-    
+        let cliente_id = $(this).attr("idCliente");
+        const datos = new FormData();
+        datos.append("cliente_id", cliente_id);
+
         Swal.fire({
             title: "¿Está seguro de borrar el usuario?",
             text: "¡Si no lo está puede cancelar la acción!",
@@ -316,14 +315,14 @@ $(document).ready(function() {
         }).then(function (result) {
             if (result.value) {
                 $.ajax({
-                    url: `borrar/${idUsuario}/`,
-                    method: "POST",
-                    headers: {
-                        'X-CSRFToken': '{{ csrf_token }}'
-                    },
+                    url: "eliminar/",
+                    type: 'POST',
+                    data: datos,
+                    processData: false,
+                    contentType: false,
                     success: function (response) {
                         if (response.status) {
-                            cargarUsuarios();
+                            cargarClientes();
                             Swal.fire({
                                 title: "¡Eliminado!",
                                 text: response.message,
@@ -348,7 +347,5 @@ $(document).ready(function() {
             }
         });
     });
-
-
 
 });

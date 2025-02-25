@@ -1,0 +1,129 @@
+{% extends 'layouts/base.html' %}
+{% block title %}Clientes{% endblock title %}
+{% block content_admin %}
+  <!-- Start Content -->
+  <div class="container-fluid">
+    <!-- start page title -->
+    <div class="row">
+      <div class="col-12">
+        <div class="page-title-box">
+          <div class="page-title-right">
+            <ol class="breadcrumb m-0">
+              <li class="breadcrumb-item">
+                <a href="{% url 'index' %}">Inicio</a>
+              </li>
+              <li class="breadcrumb-item">
+                <a href="{% url 'index_clientes' %}">Clientes</a>
+              </li>
+              <li class="breadcrumb-item active">Lista de clientes</li>
+            </ol>
+          </div>
+          <h4 class="page-title">Administrar clientes</h4>
+        </div>
+      </div>
+    </div>
+    <!-- end page title -->
+
+    <div class="row">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <h4 class="header-title mb-0">Tabla de clientes</h4>
+              <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal_nuevo_cliente"><i class="uil-plus"></i> Nuevo cliente</button>
+            </div>
+            <div class="tab-content">
+              <div class="tab-pane show active" id="basic-datatable-preview">
+                <table id="basic-datatable" class="tabla_clientes table table-striped dt-responsive nowrap w-100">
+                  <thead>
+                    <tr>
+                      <th>N°</th>
+                      <th>Nombre</th>
+                      <th>Numero documento</th>
+                      <th>Dirección</th>
+                      <th>telefono</th>
+                      <th>correo</th>
+                      <th>Estado</th>
+                      <th>Acciones</th>
+                    </tr>
+                  </thead>
+                  <tbody id="datos_clientes"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div id="modal_nuevo_cliente" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="standard-modalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title" id="standard-modalLabel">Nuevo Cliente</h4>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <form method="post" id="form_crear_cliente">
+            <div class="modal-body">
+
+              <div class="form-group mb-2">
+                <label for="" class="form-label">Selecion el tipo de documento <span class="text-danger">(*)</span> </label>
+                <select name="tipo_documento" id="tipo_documento" class="form-select">
+                    <option selected disabled>Selecionar</option>
+                    <option value="DNI">DNI</option>
+                    <option value="RUC">RUC</option>
+                    <option value="PASAPORTE">Pasaporte</option>
+                    <option value="OTRO">Otro</option>
+                </select>
+                <span class="text-danger" id="error_tipo_documento"></span>
+              </div>
+
+              <div class="form-group mb-2">
+                <label for="" class="form-label">Número de documento <span class="text-danger">(*)</span></label>
+                <input type="text" name="num_documento" id="num_documento" class="form-control" placeholder="Ingrese el número de documento" />
+                <span class="text-danger" id="error_num_documento_cliente"></span>
+              </div>
+
+              <div class="form-group mb-2">
+                <label for="" class="form-label">Nombre <span class="text-danger">(*)</span></label>
+                <input type="text" name="nombre" id="nombre" class="form-control" placeholder="Ingrese el nombre" />
+                <span class="text-danger" id="error_nombre_cliente"></span>
+              </div>
+
+              <div class="form-group mb-2">
+                <label for="" class="form-label">Dirección</label>
+                <input type="text" name="direccion" id="direccion" class="form-control" placeholder="Ingrese la dirección" />
+              </div>
+
+              <div class="form-group mb-2">
+                <label for="" class="form-label">Teléfono</label>
+                <input type="text" name="telefono" id="telefono" class="form-control" placeholder="Ingrese el teléfono" />
+              </div>
+
+              <div class="form-group mb-2">
+                <label for="" class="form-label">Correo</label>
+                <input type="email" name="correo" id="correo" class="form-control" placeholder="Ingrese el correo" />
+              </div>
+
+            </div>
+
+            <div class="modal-footer">
+              <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cerrar</button>
+              <button type="button" id="btn_guardar_cliente" class="btn btn-primary">Guardar</button>
+            </div>
+
+          </form>
+        </div>
+        <!-- /.modal-content -->
+      </div>
+    </div>
+
+
+
+  </div>
+{% endblock %}
+
+{% block extra_js %}
+
+{% endblock %}
