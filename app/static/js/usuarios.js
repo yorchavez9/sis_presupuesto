@@ -1,61 +1,47 @@
-$(document).ready(function(){
-    function cargarUsuarios(){
+$(document).ready(function() {
+    let tabla = $('.tabla_usuarios').DataTable({
+        "destroy": true,
+        "responsive": true,
+        "pageLength": 10,
+        "language": {
+            "url": "//cdn.datatables.net/plug-ins/1.10.25/i18n/Spanish.json"
+        }
+    });
+
+    function cargarUsuarios() {
         $.ajax({
             url: "lista/",
             type: 'GET',
             dataType: 'json',
-            success: function(usuarios){
-                let tabla = $('#tabla_usuarios');
-                let tbody = tabla.find('tbody');
-                tbody.empty();
-                
-                usuarios.forEach((usuario, index) => {
-                    tbody.append(`
-                        <tr>
-                            <td>
-                            <div class="form-check style-check d-flex align-items-center">
-                                <input class="form-check-input" type="checkbox">
-                                <label class="form-check-label">
-                                ${index + 1}
-                                </label>
-                            </div>
-                            </td>
-                            <td><a href="javascript:void(0)" class="text-primary-600">${ usuario.first_name }</a></td>
-                            <td>
-                            <div class="d-flex align-items-center">
-                                <h6 class="text-md mb-0 fw-medium flex-grow-1">${ usuario.username }</h6>
-                            </div>
-                            </td>
-                            <td>${ usuario.email }</td>
-                            <td>
-                                ${usuario.is_active == 1 ? 
-                                    '<a href="" class="btn btn-success-500 text-white radius-8 px-14 py-6 text-sm">Activo</a>' : 
-                                    '<a href="" class="btn btn-danger-600 text-white radius-8 px-14 py-6 text-sm">Desactivo</a>'
-                                }
-                            </td>
-                            <td>${ usuario.date_joined }</td>
-                            <td>
-                            <a href="javascript:void(0)"
-                                class="w-32-px h-32-px bg-primary-light text-primary-600 rounded-circle d-inline-flex align-items-center justify-content-center">
-                                <iconify-icon icon="iconamoon:eye-light"></iconify-icon>
+            success: function(usuarios) {
+                console.log("Datos recibidos:", usuarios);
+                tabla.clear();
+                usuarios.forEach(function(dato, index) {
+                    tabla.row.add([
+                        index + 1,
+                        dato.first_name || "Sin nombre",
+                        dato.username || "Sin usuario",
+                        dato.email || "Sin correo",
+                        dato.is_active ?
+                            '<button class="btn bg-success text-white badges btn-sm rounded btnActivar" idUsuario="' + dato.id + '" estadoUsuario="0">Activado</button>' :
+                            '<button class="btn bg-danger text-white badges btn-sm rounded btnActivar" idUsuario="' + dato.id + '" estadoUsuario="1">Desactivado</button>',
+                        dato.date_joined || "Sin fecha",
+                        `
+                        <div class="text-center">
+                            <a href="#" class="me-3 btnEditarCategoria" idCategoria="${dato.id}" data-bs-toggle="modal" data-bs-target="#modalEditarCategoria">
+                                <i class="ri-edit-box-line text-warning fs-3"></i>
                             </a>
-                            <a href="javascript:void(0)"
-                                class="w-32-px h-32-px bg-success-focus text-success-main rounded-circle d-inline-flex align-items-center justify-content-center">
-                                <iconify-icon icon="lucide:edit"></iconify-icon>
+                            <a href="#" class="me-3 confirm-text btnEliminarCategoria" idCategoria="${dato.id}">
+                                <i class="ri-delete-bin-line text-danger fs-3"></i>
                             </a>
-                            <a href="javascript:void(0)"
-                                class="w-32-px h-32-px bg-danger-focus text-danger-main rounded-circle d-inline-flex align-items-center justify-content-center">
-                                <iconify-icon icon="mingcute:delete-2-line"></iconify-icon>
-                            </a>
-                            </td>
-                        </tr>
-                    `);
+                        </div>
+                        `
+                    ]);
                 });
-
-
+                tabla.draw();
             },
-            error: function(error){
-                console.error("Error:", error);
+            error: function(error) {
+                console.error("Error al cargar usuarios:", error);
             }
         });
     }

@@ -1,146 +1,127 @@
 {% extends 'layouts/base.html' %}
 
-
 {% block content_admin %}
-<div class="dashboard-main-body">
+    <!-- Start Content-->
+    <div class="container-fluid">
 
-    <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-24">
-      <h6 class="fw-semibold mb-0">Usuarios</h6>
-      <ul class="d-flex align-items-center gap-2">
-        <li class="fw-medium">
-          <a href="{% url 'index' %}" class="d-flex align-items-center gap-1 hover-text-primary">
-            <iconify-icon icon="solar:home-smile-angle-outline" class="icon text-lg"></iconify-icon>
-            Inicio
-          </a>
-        </li>
-        <li>-</li>
-        <li class="fw-medium">Usuarios</li>
-      </ul>
-    </div>
-
-    <div class="card basic-data-table">
-    <div class="card-header d-flex justify-content-between align-items-center">
-        <h5 class="card-title mb-0">Tabla de usuarios</h5>
-        <button class="btn btn-primary radius-8 px-20 py-11 ms-auto d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#exampleModal">
-            <i class="ri-add-circle-line text-xl me-6"></i> Nuevo usuario
-        </button>
-    </div>
-      <div class="card-body">
-        <table class="table bordered-table mb-0" id="tabla_usuarios" data-page-length='10'>
-          <thead>
-            <tr>
-              <th scope="col">
-                <div class="form-check style-check d-flex align-items-center">
-                  <input class="form-check-input" type="checkbox">
-                  <label class="form-check-label">
-                    N°
-                  </label>
-                </div>
-              </th>
-              <th scope="col">Nombre</th>
-              <th scope="col">Usuario</th>
-              <th scope="col">Correo</th>
-              <th scope="col">Estado</th>
-              <th scope="col">fecha</th>
-              <th scope="col">Action</th>
-            </tr>
-          </thead>
-          <tbody id="data_usuarios">
-            
-          </tbody>
-        </table>
-      </div>
-    </div>
-    
-  </div>
-
-  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog modal-dialog-centered">
-        <div class="modal-content radius-16 bg-base">
-            <div class="modal-header py-16 px-24 border border-top-0 border-start-0 border-end-0">
-                <h1 class="modal-title fs-5" id="exampleModalLabel">Add New Event</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body p-24">
-                <form action="#">
-                    <div class="row">   
-                        <div class="col-12 mb-20">
-                            <label class="form-label fw-semibold text-primary-light text-sm mb-8">Event Title : </label>
-                            <input type="text" class="form-control radius-8" placeholder="Enter Event Title ">
-                        </div>
-                        <div class="col-md-6 mb-20">
-                            <label for="startDate" class="form-label fw-semibold text-primary-light text-sm mb-8">Start Date</label>
-                            <div class=" position-relative">
-                                <input class="form-control radius-8 bg-base" id="startDate" type="text" placeholder="03/12/2024, 10:30 AM">
-                                <span class="position-absolute end-0 top-50 translate-middle-y me-12 line-height-1"><iconify-icon icon="solar:calendar-linear" class="icon text-lg"></iconify-icon></span>
-                            </div>
-                        </div>
-                        <div class="col-md-6 mb-20">
-                            <label for="endDate" class="form-label fw-semibold text-primary-light text-sm mb-8">End Date </label>
-                            <div class=" position-relative">
-                                <input class="form-control radius-8 bg-base" id="endDate" type="text" placeholder="03/12/2024, 2:30 PM">
-                                <span class="position-absolute end-0 top-50 translate-middle-y me-12 line-height-1"><iconify-icon icon="solar:calendar-linear" class="icon text-lg"></iconify-icon></span>
-                            </div>
-                        </div>
-                        <div class="col-12 mb-20">
-                            <label for="endDate" class="form-label fw-semibold text-primary-light text-sm mb-8">Label </label>
-                            <div class="d-flex align-items-center flex-wrap gap-28">
-                                <div class="form-check checked-success d-flex align-items-center gap-2">
-                                    <input class="form-check-input" type="radio" name="label" id="Personal">
-                                    <label class="form-check-label line-height-1 fw-medium text-secondary-light text-sm d-flex align-items-center gap-1" for="Personal"> 
-                                        <span class="w-8-px h-8-px bg-success-600 rounded-circle"></span>
-                                        Personal
-                                    </label>
-                                </div>
-                                <div class="form-check checked-primary d-flex align-items-center gap-2">
-                                    <input class="form-check-input" type="radio" name="label" id="Business">
-                                    <label class="form-check-label line-height-1 fw-medium text-secondary-light text-sm d-flex align-items-center gap-1" for="Business"> 
-                                        <span class="w-8-px h-8-px bg-primary-600 rounded-circle"></span>
-                                        Business
-                                    </label>
-                                </div>
-                                <div class="form-check checked-warning d-flex align-items-center gap-2">
-                                    <input class="form-check-input" type="radio" name="label" id="Family">
-                                    <label class="form-check-label line-height-1 fw-medium text-secondary-light text-sm d-flex align-items-center gap-1" for="Family"> 
-                                        <span class="w-8-px h-8-px bg-warning-600 rounded-circle"></span>
-                                        Family
-                                    </label>
-                                </div>
-                                <div class="form-check checked-secondary d-flex align-items-center gap-2">
-                                    <input class="form-check-input" type="radio" name="label" id="Important">
-                                    <label class="form-check-label line-height-1 fw-medium text-secondary-light text-sm d-flex align-items-center gap-1" for="Important"> 
-                                        <span class="w-8-px h-8-px bg-lilac-600 rounded-circle"></span>
-                                        Important
-                                    </label>
-                                </div>
-                                <div class="form-check checked-danger d-flex align-items-center gap-2">
-                                    <input class="form-check-input" type="radio" name="label" id="Holiday">
-                                    <label class="form-check-label line-height-1 fw-medium text-secondary-light text-sm d-flex align-items-center gap-1" for="Holiday"> 
-                                        <span class="w-8-px h-8-px bg-danger-600 rounded-circle"></span>
-                                        Holiday
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-12 mb-20">
-                            <label for="desc" class="form-label fw-semibold text-primary-light text-sm mb-8">Description</label>
-                            <textarea class="form-control" id="desc" rows="4" cols="50" placeholder="Write some text"></textarea>
-                        </div>
-
-                        <div class="d-flex align-items-center justify-content-center gap-3 mt-24">
-                            <button type="reset" class="border border-danger-600 bg-hover-danger-200 text-danger-600 text-md px-40 py-11 radius-8"> 
-                                Cancel
-                            </button>
-                            <button type="submit" class="btn btn-primary border border-primary-600 text-md px-24 py-12 radius-8"> 
-                                Save
-                            </button>
-                        </div>
+        <!-- start page title -->
+        <div class="row">
+            <div class="col-12">
+                <div class="page-title-box">
+                    <div class="page-title-right">
+                        <ol class="breadcrumb m-0">
+                            <li class="breadcrumb-item"><a href="{% url 'index' %}">Inicio</a></li>
+                            <li class="breadcrumb-item"><a href="{% url 'index_usuario' %}">Usuarios</a></li>
+                            <li class="breadcrumb-item active">Lista de usuarios</li>
+                        </ol>
                     </div>
-                </form>
+                    <h4 class="page-title">Administrar usuarios</h4>
+                </div>
             </div>
         </div>
-    </div>
-</div>
-{% endblock content_admin %}
+        <!-- end page title -->
+
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h4 class="header-title mb-0">Tabla de usuarios</h4>
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#standard-modal"> <i class="uil-plus"></i> Nuevo usuario</button>
+                        </div>
+                        <div class="tab-content">
+                            <div class="tab-pane show active" id="basic-datatable-preview">
+                                <table id="basic-datatable" class="tabla_usuarios table table-striped dt-responsive nowrap w-100">
+                                    <thead>
+                                        <tr>
+                                            <th>N°</th>
+                                            <th>Nombre</th>
+                                            <th>Usuario</th>
+                                            <th>Correo</th>
+                                            <th>Estado</th>
+                                            <th>Fecha</th>
+                                            <th>Acciones</th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody id="datos_usuarios">
+                                        {% for usuario in usuarios %}
+                                            {% if usuario.es_principal %}
+                                                <tr>
+                                                    <td>{{ forloop.counter }}</td>
+                                                    <td>{{ usuario.nombre }}</td>
+                                                    <td>{{ usuario.usuario }}</td>
+                                                    <td>{{ usuario.correo }}</td>
+                                                    <td>{{ usuario.estado }}</td>
+                                                    <td>{{ usuario.fecha }}</td>
+                                                    <td>
+                                                        <!-- Acciones -->
+                                                    </td>
+                                                </tr>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div> <!-- end preview-->
+                        </div> <!-- end tab-content-->
+                    </div> <!-- end card body-->
+                </div> <!-- end card -->
+            </div><!-- end col-->
+        </div> <!-- end row-->
+
+        <!-- Standard modal content -->
+        <div id="standard-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="standard-modalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="standard-modalLabel">Nuevo usuario</h4>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form method="post">
+                        <div class="modal-body">
+                            <div class="form-group mb-2">
+                                <label for="" class="form-label">Ingrese el nombre</label>
+                                <input type="text" name="first_name" class="form-control" placeholder="Ingrese el nombre completo">
+                            </div>
+                            <div class="form-group mb-2">
+                                <label for="email" class="form-label">Ingrese el correo</label>
+                                <input type="email" name="email" class="form-control" placeholder="Ingrese el correo">
+                            </div>
+                            <div class="form-group mb-2">
+                                <label for="username" class="form-label">Ingrese el usuario</label>
+                                <input type="text" name="username" class="form-control" placeholder="Ingrese el usuario">
+                            </div>
+                            <div class="form-group mb-2">
+                                <label for="password1" class="form-label">Ingrese la contraseña</label>
+                                <div class="input-group input-group-merge">
+                                    <input type="password" id="password1" name="password1" class="form-control" placeholder="Ingrese la contraseña">
+                                    <div class="input-group-text" data-password="false">
+                                        <span class="password-eye"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group mb-2">
+                                <label for="password2" class="form-label">Repita la contraseña</label>
+                                <div class="input-group input-group-merge">
+                                    <input type="password" id="password2" name="password2" class="form-control" placeholder="Ingrese la contraseña">
+                                    <div class="input-group-text" data-password="false">
+                                        <span class="password-eye"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cerrar</button>
+                            <button type="type" id="btn_guardar_usuario" class="btn btn-primary">Guardar</button>
+                        </div>
+                    </form>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+    </div> <!-- container -->
     
+{% endblock content_admin %}
+
+{% block extra_js %}
+ 
+{% endblock extra_js %}
