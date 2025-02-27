@@ -85,3 +85,28 @@ class Categoria(models.Model):
         verbose_name = "Categoría"
         verbose_name_plural = "Categorías"
         db_table = "categorias"  # Nombre de la tabla en la base de datos
+                
+class UnidadMedida(models.Model):
+    unidad = models.CharField(
+        max_length=50,
+        verbose_name="Unidad de Medida"
+    )
+    descripcion = models.CharField(
+        max_length=200,
+        null=True,
+        blank=True,
+        verbose_name="Descripción"
+    )
+    fecha = models.DateTimeField(
+        auto_now_add=True,
+        verbose_name="Fecha de Registro"
+    )
+
+    def __str__(self):
+        return self.unidad
+
+    class Meta:
+        verbose_name = "Unidad de Medida"
+        verbose_name_plural = "Unidades de Medida"
+        db_table = "unidades_medida"  # Nombre de la tabla en la base de datos
+        
