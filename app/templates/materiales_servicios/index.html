@@ -1,0 +1,258 @@
+{% extends 'layouts/base.html' %}
+{% block title %}
+    Materiales o Servicios
+{% endblock %}
+{% block content_admin %}
+    <!-- Start Content -->
+    <div class="container-fluid">
+        <!-- start page title -->
+        <div class="row">
+            <div class="col-12">
+                <div class="page-title-box">
+                    <div class="page-title-right">
+                        <ol class="breadcrumb m-0">
+                            <li class="breadcrumb-item">
+                                <a href="{% url 'index' %}">Inicio</a>
+                            </li>
+                            <li class="breadcrumb-item">
+                                <a href="{% url 'index_materiales_servicios' %}">Materiales o Servicios</a>
+                            </li>
+                            <li class="breadcrumb-item active">Lista de materiales o servicios</li>
+                        </ol>
+                    </div>
+                    <h4 class="page-title">Administrar Materiales o Servicios</h4>
+                </div>
+            </div>
+        </div>
+        <!-- end page title -->
+
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h4 class="header-title mb-0">Tabla de Materiales o Servicios</h4>
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal_nuevo_material_servicio"><i class="uil-plus"></i> Nuevo Material o Servicio</button>
+                        </div>
+                        <div class="tab-content">
+                            <div class="tab-pane show active" id="basic-datatable-preview">
+                                <table id="basic-datatable" class="tabla_materiales_servicios table table-striped dt-responsive nowrap w-100">
+                                    <thead>
+                                        <tr>
+                                            <th>N°</th>
+                                            <th>Nombre</th>
+                                            <th>Tipo</th>
+                                            <th>Proveedor</th>
+                                            <th>Categoria</th>
+                                            <th>Unidad de Medida</th>
+                                            <th>Precio Compra</th>
+                                            <th>Precio Venta</th>
+                                            <th>Stock</th>
+                                            <th>Stock Mínimo</th>
+                                            <th>Acciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="datos_materiales_servicios"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {% comment %}MODAL NUEVO MATERIAL O SERVICIO{% endcomment %}
+        <div id="modal_nuevo_material_servicio" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="standard-modalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="standard-modalLabel">Nuevo Material o Servicio</h4>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form method="post" id="form_crear_material_servicio">
+                        <div class="modal-body">
+                            <div class="form-group mb-2">
+                                <label for="nombre" class="form-label">Nombre <span class="text-danger">(*)</span></label>
+                                <input type="text" name="nombre" id="nombre" class="form-control" placeholder="Ingrese el nombre" />
+                                <span class="text-danger" id="error_nombre"></span>
+                            </div>
+
+                            <div class="form-group mb-2">
+                                <label for="tipo" class="form-label">Tipo <span class="text-danger">(*)</span></label>
+                                <select name="tipo" id="tipo" class="form-select">
+                                    <option selected disabled>Seleccionar</option>
+                                    <option value="Material">Material</option>
+                                    <option value="Servicio">Servicio</option>
+                                </select>
+                                <span class="text-danger" id="error_tipo"></span>
+                            </div>
+
+                            <div class="form-group mb-2">
+                                <label for="id_proveedor" class="form-label">Proveedor <span class="text-danger">(*)</span></label>
+                                <select name="id_proveedor" id="id_proveedor" class="form-select">
+                                    <!-- Options should be populated dynamically -->
+                                </select>
+                                <span class="text-danger" id="error_id_proveedor"></span>
+                            </div>
+
+                            <div class="form-group mb-2">
+                                <label for="id_categoria" class="form-label">Categoría <span class="text-danger">(*)</span></label>
+                                <select name="id_categoria" id="id_categoria" class="form-select">
+                                    <!-- Options should be populated dynamically -->
+                                </select>
+                                <span class="text-danger" id="error_id_categoria"></span>
+                            </div>
+
+                            <div class="form-group mb-2">
+                                <label for="id_unidad_medida" class="form-label">Unidad de Medida <span class="text-danger">(*)</span></label>
+                                <select name="id_unidad_medida" id="id_unidad_medida" class="form-select">
+                                    <!-- Options should be populated dynamically -->
+                                </select>
+                                <span class="text-danger" id="error_id_unidad_medida"></span>
+                            </div>
+
+                            <div class="form-group mb-2">
+                                <label for="precio_compra" class="form-label">Precio Compra</label>
+                                <input type="number" step="0.01" name="precio_compra" id="precio_compra" class="form-control" placeholder="Ingrese el precio de compra" />
+                            </div>
+
+                            <div class="form-group mb-2">
+                                <label for="precio_venta" class="form-label">Precio Venta <span class="text-danger">(*)</span></label>
+                                <input type="number" step="0.01" name="precio_venta" id="precio_venta" class="form-control" placeholder="Ingrese el precio de venta" />
+                                <span class="text-danger" id="error_precio_venta"></span>
+                            </div>
+
+                            <div class="form-group mb-2">
+                                <label for="stock" class="form-label">Stock <span class="text-danger">(*)</span></label>
+                                <input type="number" name="stock" id="stock" class="form-control" placeholder="Ingrese el stock" />
+                                <span class="text-danger" id="error_stock"></span>
+                            </div>
+
+                            <div class="form-group mb-2">
+                                <label for="stock_minimo" class="form-label">Stock Mínimo <span class="text-danger">(*)</span></label>
+                                <input type="number" name="stock_minimo" id="stock_minimo" class="form-control" placeholder="Ingrese el stock mínimo" />
+                                <span class="text-danger" id="error_stock_minimo"></span>
+                            </div>
+
+                            <div class="form-group mb-2">
+                                <label for="imagen" class="form-label">Imagen</label>
+                                <input type="file" name="imagen" id="imagen" class="form-control" />
+                            </div>
+
+                            <div class="form-group mb-2">
+                                <label for="descripcion" class="form-label">Descripción</label>
+                                <textarea name="descripcion" id="descripcion" class="form-control" placeholder="Ingrese la descripción"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cerrar</button>
+                            <button type="button" id="btn_guardar_material_servicio" class="btn btn-primary">Guardar</button>
+                        </div>
+                    </form>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+        </div>
+
+        {% comment %}MODAL EDITAR MATERIAL O SERVICIO{% endcomment %}
+        <div id="modal_editar_material_servicio" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="standard-modalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="standard-modalLabel">Editar Material o Servicio</h4>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form method="post" id="form_editar_material_servicio">
+                        <div class="modal-body">
+                            <input type="text" hidden id="material_servicio_id_edit" />
+
+                            <div class="form-group mb-2">
+                                <label for="nombre_edit" class="form-label">Nombre <span class="text-danger">(*)</span></label>
+                                <input type="text" name="nombre" id="nombre_edit" class="form-control" placeholder="Ingrese el nombre" />
+                                <span class="text-danger" id="error_nombre_edit"></span>
+                            </div>
+
+                            <div class="form-group mb-2">
+                                <label for="tipo_edit" class="form-label">Tipo <span class="text-danger">(*)</span></label>
+                                <select name="tipo" id="tipo_edit" class="form-select">
+                                    <option selected disabled>Seleccionar</option>
+                                    <option value="Material">Material</option>
+                                    <option value="Servicio">Servicio</option>
+                                </select>
+                                <span class="text-danger" id="error_tipo_edit"></span>
+                            </div>
+
+                            <div class="form-group mb-2">
+                                <label for="id_proveedor_edit" class="form-label">Proveedor <span class="text-danger">(*)</span></label>
+                                <select name="id_proveedor" id="id_proveedor_edit" class="form-select">
+                                    <!-- Options should be populated dynamically -->
+                                </select>
+                                <span class="text-danger" id="error_id_proveedor_edit"></span>
+                            </div>
+
+                            <div class="form-group mb-2">
+                                <label for="id_categoria_edit" class="form-label">Categoría <span class="text-danger">(*)</span></label>
+                                <select name="id_categoria" id="id_categoria_edit" class="form-select">
+                                    <!-- Options should be populated dynamically -->
+                                </select>
+                                <span class="text-danger" id="error_id_categoria_edit"></span>
+                            </div>
+
+                            <div class="form-group mb-2">
+                                <label for="id_unidad_medida_edit" class="form-label">Unidad de Medida <span class="text-danger">(*)</span></label>
+                                <select name="id_unidad_medida" id="id_unidad_medida_edit" class="form-select">
+                                    <!-- Options should be populated dynamically -->
+                                </select>
+                                <span class="text-danger" id="error_id_unidad_medida_edit"></span>
+                            </div>
+
+                            <div class="form-group mb-2">
+                                <label for="precio_compra_edit" class="form-label">Precio Compra</label>
+                                <input type="number" step="0.01" name="precio_compra" id="precio_compra_edit" class="form-control" placeholder="Ingrese el precio de compra" />
+                            </div>
+
+                            <div class="form-group mb-2">
+                                <label for="precio_venta_edit" class="form-label">Precio Venta <span class="text-danger">(*)</span></label>
+                                <input type="number" step="0.01" name="precio_venta" id="precio_venta_edit" class="form-control" placeholder="Ingrese el precio de venta" />
+                                <span class="text-danger" id="error_precio_venta_edit"></span>
+                            </div>
+
+                            <div class="form-group mb-2">
+                                <label for="stock_edit" class="form-label">Stock <span class="text-danger">(*)</span></label>
+                                <input type="number" name="stock" id="stock_edit" class="form-control" placeholder="Ingrese el stock" />
+                                <span class="text-danger" id="error_stock_edit"></span>
+                            </div>
+
+                            <div class="form-group mb-2">
+                                <label for="stock_minimo_edit" class="form-label">Stock Mínimo <span class="text-danger">(*)</span></label>
+                                <input type="number" name="stock_minimo" id="stock_minimo_edit" class="form-control" placeholder="Ingrese el stock mínimo" />
+                                <span class="text-danger" id="error_stock_minimo_edit"></span>
+                            </div>
+
+                            <div class="form-group mb-2">
+                                <label for="imagen_edit" class="form-label">Imagen</label>
+                                <input type="file" name="imagen" id="imagen_edit" class="form-control" />
+                            </div>
+
+                            <div class="form-group mb-2">
+                                <label for="descripcion_edit" class="form-label">Descripción</label>
+                                <textarea name="descripcion" id="descripcion_edit" class="form-control" placeholder="Ingrese la descripción"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cerrar</button>
+                            <button type="button" id="btn_editar_material_servicio" class="btn btn-primary">Guardar</button>
+                        </div>
+                    </form>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block extra_js %}
+
+{% endblock %}

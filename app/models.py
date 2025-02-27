@@ -112,3 +112,40 @@ class Proveedor(models.Model):
         verbose_name = "Proveedor"
         verbose_name_plural = "Proveedores"
         db_table = "proveedores"  # Nombre de la tabla en la base de datos
+
+
+class MaterialServicio(models.Model):
+    id_proveedor = models.ForeignKey(
+        Proveedor, on_delete=models.CASCADE, verbose_name="Proveedor"
+    )
+    id_categoria = models.ForeignKey(
+        Categoria, on_delete=models.CASCADE, verbose_name="Categoría"
+    )
+    tipo = models.CharField(max_length=50, verbose_name="Tipo")  # Material o Servicio
+    nombre = models.CharField(max_length=150, verbose_name="Nombre")
+    marca = models.CharField(max_length=50, null=True, blank=True, verbose_name="Marca")
+    id_unidad_medida = models.ForeignKey(
+        UnidadMedida, on_delete=models.CASCADE, verbose_name="Unidad de Medida"
+    )
+    precio_compra = models.DecimalField(
+        max_digits=10, decimal_places=2, null=True, blank=True, verbose_name="Precio de Compra"
+    )
+    precio_venta = models.DecimalField(
+        max_digits=10, decimal_places=2, verbose_name="Precio de Venta"
+    )
+    stock = models.IntegerField(verbose_name="Stock")
+    stock_minimo = models.IntegerField(verbose_name="Stock Mínimo")
+    imagen = models.CharField(
+        max_length=100, null=True, blank=True, verbose_name="Imagen"
+    )
+    descripcion = models.TextField(null=True, blank=True, verbose_name="Descripción")
+    estado = models.IntegerField(default=1, verbose_name="Estado")
+    fecha = models.DateTimeField(auto_now_add=True, verbose_name="Fecha de Registro")
+
+    def __str__(self):
+        return self.nombre
+
+    class Meta:
+        verbose_name = "Material o Servicio"
+        verbose_name_plural = "Materiales o Servicios"
+        db_table = "materiales_servicios"  # Nombre de la tabla en la base de datos
