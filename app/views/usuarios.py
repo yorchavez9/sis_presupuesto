@@ -9,7 +9,7 @@ def index_usuario(request):
 
 def lista_usuarios(request):
     if request.method == 'GET':
-        usuarios = User.objects.all()
+        usuarios = User.objects.all().order_by('-date_joined')
         usuarios_data = [
             {
                 'id': user.id,

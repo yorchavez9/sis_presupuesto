@@ -78,7 +78,7 @@ $(document).ready(function () {
         }
     }
 
-     /* ===========================================
+    /* ===========================================
     OBTNER DATOS DEL RUC
     =========================================== */
     async function obtenerDatosRUC(numeroRUC) {
@@ -241,9 +241,9 @@ $(document).ready(function () {
     ========================================= */
     $(".tabla_clientes").on("click", '.btnEditarCliente', function (e) {
         e.preventDefault();
-        let user_id = $(this).attr("idCliente");
+        let cliente_id = $(this).attr("idCliente");
         const datos = new FormData();
-        datos.append("user_id", user_id);
+        datos.append("cliente_id", cliente_id);
         $.ajax({
             url: "editar/",
             type: 'POST',
@@ -252,11 +252,13 @@ $(document).ready(function () {
             contentType: false,
             success: function (response) {
                 if (response.status) {
-                    $("#user_id_edit").val(response.user.id);
-                    $("#first_name_edit").val(response.user.first_name);
-                    $("#email_edit").val(response.user.email);
-                    $("#username_edit").val(response.user.username);
-                    $("#password1_actual_edit").val(response.user.password);
+                    $("#cliente_id_edit").val(response.cliente.id);
+                    $("#tipo_documento_edit").val(response.cliente.tipo_documento);
+                    $("#num_documento_edit").val(response.cliente.num_documento);
+                    $("#nombre_edit").val(response.cliente.nombre);
+                    $("#direccion_edit").val(response.cliente.direccion);
+                    $("#telefono_edit").val(response.cliente.telefono);
+                    $("#correo_edit").val(response.cliente.correo);
                 } else {
                     Swal.fire({
                         title: "¡Error!",
@@ -274,47 +276,54 @@ $(document).ready(function () {
     /* =========================================
     ACTUALIZAR CLIENTE
     ========================================= */
-    $("#btn_actualizar_usuario").click(function () {
+    $("#btn_editar_cliente").click(function (e) {
+        e.preventDefault();
         let isValid = true;
 
-        let user_id = $("#user_id_edit").val();
-        let first_name = $("#first_name_edit").val();
-        let email = $("#email_edit").val();
-        let username = $("#username_edit").val();
-        let password_actual = $("#password1_actual_edit").val();
-        let password1 = $("#password1_edit").val();
-        let password2 = $("#password2_edit").val();
+        let cliente_id = $("#cliente_id_edit").val();
+        let tipo_documento = $("#tipo_documento_edit").val();
+        let num_documento = $("#num_documento_edit").val();
+        let nombre = $("#nombre_edit").val();
+        let direccion = $("#direccion_edit").val();
+        let telefono = $("#telefono_edit").val();
+        let correo = $("#correo_edit").val();
 
-        if (first_name == "" || first_name == null) {
-            $("#error_first_name_edit").html("El nombre es obligatorio");
+        if (tipo_documento == "" || tipo_documento == null) {
+            $("#error_tipo_documento_edit").html("Selecione el tipo de documento");
             isValid = false;
         } else {
-            $("#error_first_name_edit").html("");
+            $("#error_tipo_documento_edit").html("");
         }
 
-        if (email == "" || email == null) {
-            $("#error_email_edit").html("El correo es obligatorio");
+        if (num_documento == "" || num_documento == null) {
+            $("#error_num_documento_cliente_edit").html("El número de documento es obligatorio");
+            isValid = false;
+        } else if (!/^\d+$/.test(num_documento)) {
+            $("#error_num_documento_cliente_edit").html("El número de documento debe contener solo números");
+            isValid = false;
+        } else if (num_documento.length >= 15) {
+            $("#error_num_documento_cliente_edit").html("El número de documento debe tener menos de 15 caracteres");
             isValid = false;
         } else {
-            $("#error_email_edit").html("");
+            $("#error_num_documento_cliente_edit").html("");
         }
 
-        if (username == "" || username == null) {
-            $("#error_username_edit").html("El usuario es obligatorio");
+        if (nombre == "" || nombre == null) {
+            $("#error_nombre_cliente_edit").html("El nombre es obligatorio");
             isValid = false;
         } else {
-            $("#error_username_edit").html("");
+            $("#error_nombre_cliente_edit").html("");
         }
 
         if (isValid) {
             const datos = new FormData();
-            datos.append("user_id", user_id);
-            datos.append("first_name", first_name);
-            datos.append("email", email);
-            datos.append("username", username);
-            datos.append("password_actual", password_actual);
-            datos.append("password1", password1);
-            datos.append("password2", password2);
+            datos.append("cliente_id", cliente_id);
+            datos.append("tipo_documento", tipo_documento);
+            datos.append("num_documento", num_documento);
+            datos.append("nombre", nombre);
+            datos.append("direccion", direccion);
+            datos.append("telefono", telefono);
+            datos.append("correo", correo);
 
             $.ajax({
                 url: "actualizar/",
@@ -325,8 +334,8 @@ $(document).ready(function () {
                 success: function (response) {
                     if (response.status) {
                         cargarClientes();
-                        $("#modal_editar_usuario").modal("hide");
-                        $("#form_actualizar_usuario")[0].reset();
+                        $("#modal_editar_cliente").modal("hide");
+                        $("#form_editar_cliente")[0].reset();
                         Swal.fire({
                             title: "¡Correcto!",
                             text: response.message,
@@ -342,7 +351,7 @@ $(document).ready(function () {
                 }
             })
         }
-    })
+    });
 
     /* =========================================
     ACTIVAR O DESACTIVAR CLIENTE
