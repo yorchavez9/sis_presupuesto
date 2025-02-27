@@ -1,0 +1,216 @@
+{% extends 'layouts/base.html' %}
+{% block title %} 
+    Proveedores
+{% endblock %}
+{% block content_admin %}
+    <!-- Start Content -->
+    <div class="container-fluid">
+        <!-- start page title -->
+        <div class="row">
+            <div class="col-12">
+                <div class="page-title-box">
+                    <div class="page-title-right">
+                        <ol class="breadcrumb m-0">
+                            <li class="breadcrumb-item">
+                                <a href="{% url 'index' %}">Inicio</a>
+                            </li>
+                            <li class="breadcrumb-item">
+                                <a href="{% url 'index_proveedores' %}">Proveedores</a>
+                            </li>
+                            <li class="breadcrumb-item active">Lista de proveedores</li>
+                        </ol>
+                    </div>
+                    <h4 class="page-title">Administrar proveedores</h4>
+                </div>
+            </div>
+        </div>
+        <!-- end page title -->
+
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h4 class="header-title mb-0">Tabla de proveedores</h4>
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal_nuevo_proveedor"><i class="uil-plus"></i> Nuevo proveedor</button>
+                        </div>
+                        <div class="tab-content">
+                            <div class="tab-pane show active" id="basic-datatable-preview">
+                                <table id="basic-datatable" class="tabla_proveedores table table-striped dt-responsive nowrap w-100">
+                                    <thead>
+                                        <tr>
+                                            <th>N°</th>
+                                            <th>Tipo Documento</th>
+                                            <th>Numero Documento</th>
+                                            <th>Razón Social</th>
+                                            <th>Dirección</th>
+                                            <th>Teléfono</th>
+                                            <th>Correo</th>
+                                            <th>Tipo</th>
+                                            <th>Estado</th>
+                                            <th>Acciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="datos_proveedores"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {% comment %}MODAL NUEVO PROVEEDOR{% endcomment %}
+        <div id="modal_nuevo_proveedor" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="standard-modalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="standard-modalLabel">Nuevo Proveedor</h4>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form method="post" id="form_crear_proveedor">
+                        <div class="modal-body">
+                            <div class="form-group mb-2">
+                                <label for="tipo_documento" class="form-label">Seleccione el tipo de documento <span class="text-danger">(*)</span></label>
+                                <select name="tipo_documento" id="tipo_documento" class="form-select">
+                                    <option selected disabled>Seleccionar</option>
+                                    <option value="DNI">DNI</option>
+                                    <option value="RUC">RUC</option>
+                                    <option value="PASAPORTE">Pasaporte</option>
+                                    <option value="OTRO">Otro</option>
+                                </select>
+                                <span class="text-danger" id="error_tipo_documento"></span>
+                            </div>
+
+                            <div class="form-group mb-2">
+                                <label for="num_documento" class="form-label">Número de documento <span class="text-danger">(*)</span></label>
+                                <div class="input-group">
+                                    <input type="text" name="num_documento" id="num_documento" class="form-control" placeholder="Ingrese el número de documento" />
+                                    <button type="button" class="btn btn-secondary" id="btn_consultar_documento">Consultar</button>
+                                </div>
+                                <span class="text-danger" id="error_num_documento_proveedor"></span>
+                            </div>
+
+                            <div class="form-group mb-2" id="seccion_razon_social">
+                                <label for="razon_social" class="form-label">Razón Social <span class="text-danger">(*)</span></label>
+                                <input type="text" name="razon_social" id="razon_social" class="form-control" placeholder="Ingrese la razón social" />
+                                <span class="text-danger" id="error_razon_social_proveedor"></span>
+                            </div>
+
+                            <div class="form-group mb-2">
+                                <label for="direccion" class="form-label">Dirección</label>
+                                <input type="text" name="direccion" id="direccion" class="form-control" placeholder="Ingrese la dirección" />
+                            </div>
+
+                            <div class="form-group mb-2">
+                                <label for="telefono" class="form-label">Teléfono</label>
+                                <input type="text" name="telefono" id="telefono" class="form-control" placeholder="Ingrese el teléfono" />
+                            </div>
+
+                            <div class="form-group mb-2">
+                                <label for="correo" class="form-label">Correo</label>
+                                <input type="email" name="correo" id="correo" class="form-control" placeholder="Ingrese el correo" />
+                            </div>
+
+                            <div class="form-group mb-2">
+                                <label for="tipo" class="form-label">Tipo <span class="text-danger">(*)</span></label>
+                                <select name="tipo" id="tipo" class="form-select">
+                                    <option selected disabled>Seleccionar</option>
+                                    <option value="Materiales">Materiales</option>
+                                    <option value="Servicios">Servicios</option>
+                                </select>
+                                <span class="text-danger" id="error_tipo"></span>
+                            </div>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cerrar</button>
+                            <button type="button" id="btn_guardar_proveedor" class="btn btn-primary">Guardar</button>
+                        </div>
+                    </form>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+        </div>
+
+        {% comment %}MODAL EDITAR PROVEEDOR{% endcomment %}
+        <div id="modal_editar_proveedor" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="standard-modalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="standard-modalLabel">Editar Proveedor</h4>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form method="post" id="form_editar_proveedor">
+                        <div class="modal-body">
+                            
+                            <input type="text" hidden id="proveedor_id_edit" />
+
+                            <div class="form-group mb-2">
+                                <label for="tipo_documento_edit" class="form-label">Seleccione el tipo de documento <span class="text-danger">(*)</span></label>
+                                <select name="tipo_documento" id="tipo_documento_edit" class="form-select">
+                                    <option selected disabled>Seleccionar</option>
+                                    <option value="DNI">DNI</option>
+                                    <option value="RUC">RUC</option>
+                                    <option value="PASAPORTE">Pasaporte</option>
+                                    <option value="OTRO">Otro</option>
+                                </select>
+                                <span class="text-danger" id="error_tipo_documento_edit"></span>
+                            </div>
+
+                            <div class="form-group mb-2">
+                                <label for="num_documento_edit" class="form-label">Número de documento <span class="text-danger">(*)</span></label>
+                                <div class="input-group">
+                                    <input type="text" name="num_documento" id="num_documento_edit" class="form-control" placeholder="Ingrese el número de documento" />
+                                    <button type="button" class="btn btn-secondary" id="btn_consultar_documento_edit">Consultar</button>
+                                </div>
+                                <span class="text-danger" id="error_num_documento_proveedor_edit"></span>
+                            </div>
+
+                            <div class="form-group mb-2" id="seccion_razon_social_edit">
+                                <label for="razon_social_edit" class="form-label">Razón Social <span class="text-danger">(*)</span></label>
+                                <input type="text" name="razon_social" id="razon_social_edit" class="form-control" placeholder="Ingrese la razón social" />
+                                <span class="text-danger" id="error_razon_social_proveedor_edit"></span>
+                            </div>
+
+                            <div class="form-group mb-2">
+                                <label for="direccion_edit" class="form-label">Dirección</label>
+                                <input type="text" name="direccion" id="direccion_edit" class="form-control" placeholder="Ingrese la dirección" />
+                            </div>
+
+                            <div class="form-group mb-2">
+                                <label for="telefono_edit" class="form-label">Teléfono</label>
+                                <input type="text" name="telefono" id="telefono_edit" class="form-control" placeholder="Ingrese el teléfono" />
+                            </div>
+
+                            <div class="form-group mb-2">
+                                <label for="correo_edit" class="form-label">Correo</label>
+                                <input type="email" name="correo" id="correo_edit" class="form-control" placeholder="Ingrese el correo" />
+                            </div>
+
+                            <div class="form-group mb-2">
+                                <label for="tipo_edit" class="form-label">Tipo <span class="text-danger">(*)</span></label>
+                                <select name="tipo" id="tipo_edit" class="form-select">
+                                    <option selected disabled>Seleccionar</option>
+                                    <option value="Materiales">Materiales</option>
+                                    <option value="Servicios">Servicios</option>
+                                </select>
+                                <span class="text-danger" id="error_tipo_edit"></span>
+                            </div>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cerrar</button>
+                            <button type="button" id="btn_editar_proveedor" class="btn btn-primary">Guardar</button>
+                        </div>
+                    </form>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block extra_js %}
+
+{% endblock %}
