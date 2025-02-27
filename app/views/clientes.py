@@ -48,6 +48,20 @@ def crear_cliente(request):
     return JsonResponse({'status': False, 'message': 'Método no permitido'}, status=405)
 
 @csrf_exempt
+def activar_cliente(request):
+    if request.method == 'POST':
+        cliente_id = request.POST.get('cliente_id')
+        cliente_estado = request.POST.get('cliente_estado')
+        cliente = get_object_or_404(Cliente, pk=cliente_id)
+        cliente.estado = cliente_estado
+        cliente.save()
+        message = 'Cliente activado correctamente' if cliente_estado == '1' else 'Cliente desactivado correctamente'
+        return JsonResponse({'status': True, 'message': message})
+    return JsonResponse({'status': False, 'message': 'Método no permitido'}, status=405)
+
+
+
+@csrf_exempt
 def eliminar_cliente(request):
     if request.method == 'POST':
         cliente_id = request.POST.get('cliente_id')

@@ -60,7 +60,8 @@ def activar_usuario(request):
         user = get_object_or_404(User, pk=user_id)
         user.is_active = user_estado
         user.save()
-        return JsonResponse({'status': True, 'message': 'Usuario actualizado correctamente'})
+        message = 'Usuario activado correctamente' if user_estado == '1' else 'Usuario desactivado correctamente'
+        return JsonResponse({'status': True, 'message': message})
     return JsonResponse({'status': False, 'message': 'Método no permitido'}, status=405)
 
 

@@ -250,14 +250,15 @@ $(document).ready(function() {
     /* =========================================
     ACTIVAR O DESACTIVAR CLIENTE
     ========================================= */
-    $(".tabla_usuarios").on("click", '.btnActivar', function(e){
+    $(".tabla_clientes").on("click", '.btnActivar', function(e){
         e.preventDefault();
-        let user_id = $(this).attr("idUsuario");
-        let user_estado = $(this).attr("estadoUsuario");
+
+        let cliente_id = $(this).attr("idCliente");
+        let cliente_estado = $(this).attr("estadoCliente");
 
         const datos = new FormData();
-        datos.append("user_id", user_id);
-        datos.append("user_estado", user_estado);
+        datos.append("cliente_id", cliente_id);
+        datos.append("cliente_estado", cliente_estado);
 
         $.ajax({
             url: "activar/",
