@@ -1,4 +1,4 @@
-$(document).ready(function() {
+$(document).ready(function () {
 
     let tabla = $('.tabla_clientes').DataTable({
         "destroy": true,
@@ -14,9 +14,9 @@ $(document).ready(function() {
             url: "lista/",
             type: 'GET',
             dataType: 'json',
-            success: function(clientes) {
+            success: function (clientes) {
                 tabla.clear();
-                clientes.forEach(function(dato, index) {
+                clientes.forEach(function (dato, index) {
                     tabla.row.add([
                         index + 1,
                         dato.nombre,
@@ -41,7 +41,7 @@ $(document).ready(function() {
                 });
                 tabla.draw();
             },
-            error: function(error) {
+            error: function (error) {
                 console.error("Error al cargar usuarios:", error);
             }
         });
@@ -49,10 +49,107 @@ $(document).ready(function() {
 
     cargarClientes();
 
+    /* ===========================================
+    OBTNER DATOS DEL DNI
+    =========================================== */
+    async function obtenerDatosDNI(numeroDNI) {
+        try {
+            const url = `consultar-dni/${numeroDNI}/`;
+            const response = await fetch(url, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+            if (!response.ok) {
+                throw new Error(`Error HTTP: ${response.status} - ${response.statusText}`);
+            }
+            const datos = await response.json();
+            return datos;
+        } catch (error) {
+            console.error('Error detallado:', {
+                message: error.message,
+                name: error.name,
+                stack: error.stack
+            });
+            if (error instanceof TypeError) {
+                console.error('Posible problema de conexión. Verifica el servidor.');
+            }
+        }
+    }
+
+     /* ===========================================
+    OBTNER DATOS DEL RUC
+    =========================================== */
+    async function obtenerDatosRUC(numeroRUC) {
+        try {
+            const url = `consultar-ruc/${numeroRUC}/`;
+            const response = await fetch(url, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+            if (!response.ok) {
+                throw new Error(`Error HTTP: ${response.status} - ${response.statusText}`);
+            }
+            const datos = await response.json();
+            return datos;
+        } catch (error) {
+            console.error('Error detallado:', {
+                message: error.message,
+                name: error.name,
+                stack: error.stack
+            });
+            if (error instanceof TypeError) {
+                console.error('Posible problema de conexión. Verifica el servidor.');
+            }
+        }
+    }
+
+    /* ===========================================
+    SELECIONANDO EL TIPO DE DOCUMENTO
+    =========================================== */
+    $('#seccion_nombre').hide();
+    $('#tipo_documento').change(function () {
+        let tipo_documento = $(this).val(); 
+        if (tipo_documento === "DNI" || tipo_documento === "RUC") {
+            $('#seccion_nombre').show(); 
+            if (tipo_documento === "DNI") {
+                $('#nombre_razon_social').html('Nombre Completo <span class="text-danger">(*)</span>'); 
+            } else if (tipo_documento === "RUC") {
+                $('#nombre_razon_social').html('Razón Social <span class="text-danger">(*)</span>');
+            }
+        } else {
+            $('#seccion_nombre').hide();
+        }
+    });
+
+
+    $('#btn_consultar_documento').click(async function (e) {
+        e.preventDefault();
+        let tipo_documento = $('#tipo_documento').val();
+        let num_documento = $('#num_documento').val();
+        if (tipo_documento == "DNI") {
+            let datos = await obtenerDatosDNI(num_documento);
+            if (datos && datos.nombreCompleto) {
+                $('#nombre').val(datos.nombreCompleto);
+                $('#section_nombre').show();
+            }
+        } else if (tipo_documento == "RUC") {
+            let datos = await obtenerDatosRUC(num_documento);
+            if (datos && datos.razonSocial) {
+                $('#nombre').val(datos.razonSocial);
+                $('#direccion').val(datos.direccion);
+                $('#section_nombre').show();
+            }
+        }
+    });
+
     /* =========================================
     CREAR CLIENTE
     ========================================= */
-    $("#btn_guardar_cliente").click(function(e) {
+    $("#btn_guardar_cliente").click(function (e) {
         e.preventDefault();
         let isValid = true;
 
@@ -91,7 +188,7 @@ $(document).ready(function() {
         }
 
         if (isValid) {
-            const datos  = new FormData();
+            const datos = new FormData();
             datos.append("tipo_documento", tipo_documento);
             datos.append("num_documento", num_documento);
             datos.append("nombre", nombre);
@@ -105,7 +202,7 @@ $(document).ready(function() {
                 data: datos,
                 processData: false,
                 contentType: false,
-                success: function(response) {
+                success: function (response) {
                     if (response.status) {
                         cargarClientes();
                         tabla.destroy();
@@ -123,16 +220,16 @@ $(document).ready(function() {
                             title: "¡Correcto!",
                             text: response.message,
                             icon: "success",
-                          });
+                        });
                     } else {
                         Swal.fire({
                             title: "¡Error!",
                             text: response.message,
                             icon: "error",
-                          });
+                        });
                     }
                 },
-                error: function(error) {
+                error: function (error) {
                     console.error("Error al crear usuario:", error);
                 }
             })
@@ -142,7 +239,7 @@ $(document).ready(function() {
     /* =========================================
     EDITAR CLIENTE
     ========================================= */
-    $(".tabla_clientes").on("click", '.btnEditarCliente', function(e){
+    $(".tabla_clientes").on("click", '.btnEditarCliente', function (e) {
         e.preventDefault();
         let user_id = $(this).attr("idCliente");
         const datos = new FormData();
@@ -153,7 +250,7 @@ $(document).ready(function() {
             data: datos,
             processData: false,
             contentType: false,
-            success: function(response) {
+            success: function (response) {
                 if (response.status) {
                     $("#user_id_edit").val(response.user.id);
                     $("#first_name_edit").val(response.user.first_name);
@@ -168,7 +265,7 @@ $(document).ready(function() {
                     });
                 }
             },
-            error: function(error) {
+            error: function (error) {
                 console.error("Error al editar usuario:", error);
             }
         })
@@ -177,7 +274,7 @@ $(document).ready(function() {
     /* =========================================
     ACTUALIZAR CLIENTE
     ========================================= */
-    $("#btn_actualizar_usuario").click(function() {
+    $("#btn_actualizar_usuario").click(function () {
         let isValid = true;
 
         let user_id = $("#user_id_edit").val();
@@ -210,7 +307,7 @@ $(document).ready(function() {
         }
 
         if (isValid) {
-            const datos  = new FormData();
+            const datos = new FormData();
             datos.append("user_id", user_id);
             datos.append("first_name", first_name);
             datos.append("email", email);
@@ -225,8 +322,8 @@ $(document).ready(function() {
                 data: datos,
                 processData: false,
                 contentType: false,
-                success: function(response) {
-                    if(response.status) {
+                success: function (response) {
+                    if (response.status) {
                         cargarClientes();
                         $("#modal_editar_usuario").modal("hide");
                         $("#form_actualizar_usuario")[0].reset();
@@ -235,7 +332,7 @@ $(document).ready(function() {
                             text: response.message,
                             icon: "success",
                         });
-                    }else{
+                    } else {
                         Swal.fire({
                             title: "¡Error!",
                             text: response.message,
@@ -250,7 +347,7 @@ $(document).ready(function() {
     /* =========================================
     ACTIVAR O DESACTIVAR CLIENTE
     ========================================= */
-    $(".tabla_clientes").on("click", '.btnActivar', function(e){
+    $(".tabla_clientes").on("click", '.btnActivar', function (e) {
         e.preventDefault();
 
         let cliente_id = $(this).attr("idCliente");
@@ -294,11 +391,11 @@ $(document).ready(function() {
             }
         });
     });
-    
+
     /* =========================================
     ELIMINAR CLIENTE
     ========================================= */
-    $(".tabla_clientes").on("click", '.btnEliminarCliente', function(e){
+    $(".tabla_clientes").on("click", '.btnEliminarCliente', function (e) {
         e.preventDefault();
         let cliente_id = $(this).attr("idCliente");
         const datos = new FormData();

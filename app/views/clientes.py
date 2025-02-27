@@ -3,6 +3,7 @@ from django.http import JsonResponse
 from ..models import Cliente
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.hashers import make_password
+import requests
 
 def index_clientes(request):
     return render(request, 'clientes/index.html')
@@ -24,6 +25,40 @@ def lista_clientes(request):
         ]
         return JsonResponse(clientes_data, safe=False)
     return JsonResponse({'error': 'Solicitud no válida'}, status=400)
+
+# tu_app/views.py
+import requests
+from django.http import JsonResponse
+
+def consultar_dni(request, numero):
+    try:
+        api_url = f"https://api.apis.net.pe/v2/reniec/dni?numero={numero}"
+        headers = {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer apis-token-13400.hpQDZeZanHSReoOBxyVLlMmKZVk3ttSq'
+        }
+        response = requests.get(api_url, headers=headers)
+        if response.status_code != 200:
+            return JsonResponse({'error': 'Error en la API externa', 'status': response.status_code}, status=response.status_code)
+        return JsonResponse(response.json())
+    
+    except requests.exceptions.RequestException as e:
+        return JsonResponse({'error': str(e)}, status=500)
+
+def consulta_ruc(request, numero):
+    try:
+        api_url = f"https://api.apis.net.pe/v2/sunat/ruc?numero={numero}"
+        headers = {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer apis-token-13400.hpQDZeZanHSReoOBxyVLlMmKZVk3ttSq'
+        }
+        response = requests.get(api_url, headers=headers)
+        if response.status_code != 200:
+            return JsonResponse({'error': 'Error en la API externa', 'status': response.status_code}, status=response.status_code)
+        return JsonResponse(response.json())
+    
+    except requests.exceptions.RequestException as e:
+        return JsonResponse({'error': str(e)}, status=500)
 
 @csrf_exempt
 def crear_cliente(request):
