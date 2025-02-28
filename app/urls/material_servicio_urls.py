@@ -3,4 +3,9 @@ from app.views import material_servicio
 
 urlpatterns = [
     path('', material_servicio.index_materiales_servicios, name='index_materiales_servicios'),
+    path('lista-proveedores/', material_servicio.lista_proveedores, name='lista_proveedores'),
+    path('lista-categorias/', material_servicio.lista_categorias, name='lista_categorias'),
+    path('lista-unidades-medida/', material_servicio.lista_unidades_medida, name='lista_unidades_medida'),
+    path('crear-meterial-servicio/', material_servicio.crear_material_servicio, name='crear_meterial_servicio'),
+    path('lista-materiales-servicios/', material_servicio.lista_materiales_servicios, name='lista_materiales_servicios'),
 ]

@@ -149,3 +149,4 @@ class MaterialServicio(models.Model):
         verbose_name = "Material o Servicio"
         verbose_name_plural = "Materiales o Servicios"
         db_table = "materiales_servicios"  # Nombre de la tabla en la base de datos
+        

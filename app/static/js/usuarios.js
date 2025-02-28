@@ -2,7 +2,8 @@ $(document).ready(function() {
 
     let tabla = $('.tabla_usuarios').DataTable({
         "destroy": true,
-        "responsive": true,
+        "responsive": true, // Habilita el modo responsive
+        "scrollX": true, // Permite el desplazamiento horizontal
         "pageLength": 10,
         "language": {
             "url": "//cdn.datatables.net/plug-ins/1.10.25/i18n/Spanish.json"
