@@ -40,9 +40,6 @@ $(document).ready(function() {
                     ]);
                 });
                 tabla.draw();
-            },
-            error: function(error) {
-               /*  console.error("Error al cargar usuarios:", error); */
             }
         });
     }

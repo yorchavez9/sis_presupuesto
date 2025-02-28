@@ -44,10 +44,6 @@ def lista_unidades_medida(request):
         ]
         return JsonResponse(unidades_medida_data, safe=False)
 
-from django.http import JsonResponse
-from django.core.exceptions import ObjectDoesNotExist
-from app.models import MaterialServicio
-
 def lista_materiales_servicios(request):
     if request.method == 'GET':
         try:
@@ -180,8 +176,10 @@ def crear_material_servicio(request):
 @csrf_exempt
 def activar_material_servicio(request):
     if request.method == 'POST':
-        material_servicio_id = request.POST.get('material_servicio_id')
-        material_servicio_estado = request.POST.get('material_servicio_estado')
+        
+        material_servicio_id = request.POST.get('material_id')
+        material_servicio_estado = request.POST.get('material_estado')
+        
         material_servicio = get_object_or_404(MaterialServicio, pk=material_servicio_id)
         material_servicio.estado = material_servicio_estado
         material_servicio.save()

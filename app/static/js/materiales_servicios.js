@@ -12,7 +12,6 @@ $(document).ready(function () {
     }
 
     let tabla = inicializarTabla();
-
     function cargarMaterialesServicios() {
         $.ajax({
             url: "lista-materiales-servicios/",
@@ -22,6 +21,14 @@ $(document).ready(function () {
                 console.log(response);
                 tabla.clear();
                 response.forEach(function (dato, index) {
+                    let stockClass = '';
+                    if (dato.stock <= dato.stock_minimo) {
+                        stockClass = 'bg-danger text-white';
+                    } else if (dato.stock <= dato.stock_minimo * 2) {
+                        stockClass = 'bg-warning text-dark';
+                    } else {
+                        stockClass = 'bg-success text-white';
+                    }
                     tabla.row.add([
                         index + 1,
                         dato.id_categoria.nombre,
@@ -29,45 +36,34 @@ $(document).ready(function () {
                         dato.tipo,
                         dato.id_proveedor.nombre,
                         dato.id_unidad_medida.nombre,
-                        dato.precio_compra,
-                        dato.precio_venta,
-                        dato.stock,
+                        `S/ ${dato.precio_compra}`,
+                        `S/ ${dato.precio_venta}`,
+                        `<div class="${stockClass} text-center" style="border-radius: 5px;">${dato.stock}</div>`,
                         dato.stock_minimo,
                         dato.estado ?
-                            '<button class="btn bg-success text-white badges btn-sm rounded btnActivar" idCliente="' + dato.id + '" estadoCliente="0">Activado</button>' :
-                            '<button class="btn bg-danger text-white badges btn-sm rounded btnActivar" idCliente="' + dato.id + '" estadoCliente="1">Desactivado</button>',
+                            '<button class="btn bg-success text-white badges btn-sm rounded btnActivar" idMaterial="' + dato.id + '" estadoMaterial="0">Activado</button>' :
+                            '<button class="btn bg-danger text-white badges btn-sm rounded btnActivar" idMaterial="' + dato.id + '" estadoMaterial="1">Desactivado</button>',
                         `
                         <div class="text-center">
                             <a href="#" class="me-3 btnEditarMaterialServicio" idMaterialServicio="${dato.id}" data-bs-toggle="modal" data-bs-target="#modal_editar_material_servicio">
-                                <i class="ri-edit-box-line text-warning fs-3"></i>
+                            <i class="ri-edit-box-line text-warning fs-3"></i>
                             </a>
                             <a href="#" class="me-3 btnEditarMaterialServicio" idMaterialServicio="${dato.id}" data-bs-toggle="modal" data-bs-target="#modal_ver_material_servicio">
-                                <i class="ri-eye-line text-primary fs-3"></i>
+                            <i class="ri-eye-line text-primary fs-3"></i>
                             </a>
                             <a href="#" class="me-3 confirm-text btnEliminarMaterialServicio" idMaterialServicio="${dato.id}">
-                                <i class="ri-delete-bin-line text-danger fs-3"></i>
+                            <i class="ri-delete-bin-line text-danger fs-3"></i>
                             </a>
                         </div>
                         `
                     ]);
                 });
                 tabla.draw();
-            },
-            error: function (error) {
-                console.error("Error al cargar materiales o servicios:", error);
             }
         });
     }
 
     cargarMaterialesServicios();
-
-    // Detectar cambios de sección o navegación en el sidebar
-    $(document).on('click', '.sidebar-link', function () {
-        // Aquí puedes agregar lógica para detectar la sección actual y recargar la tabla correspondiente
-        tabla.destroy();
-        tabla = inicializarTabla();
-        cargarMaterialesServicios();
-    });
 
     /* =========================================
     LISTA DE PROVEEDORES
@@ -271,6 +267,54 @@ $(document).ready(function () {
             })
         }
     });
+
+    /* =========================================
+    ACTIVAR O DESACTIVAR MATERIAL O SERVICIO
+    ========================================= */
+    $(".tabla_materiales_servicios").on("click", '.btnActivar', function (e) {
+        e.preventDefault();
+
+        let material_id = $(this).attr("idMaterial");
+        let material_estado = $(this).attr("estadoMaterial");
+
+        const datos = new FormData();
+        datos.append("material_id", material_id);
+        datos.append("material_estado", material_estado);
+        $.ajax({
+            url: "activar-meterial-servicio/",
+            type: 'POST',
+            data: datos,
+            processData: false,
+            contentType: false,
+            success: function (response) {
+                if (response.status) {
+                    cargarMaterialesServicios();
+                    Swal.fire({
+                        title: "¡Correcto!",
+                        text: response.message,
+                        icon: "success",
+                    });
+                } else {
+                    Swal.fire({
+                        title: "¡Error!",
+                        text: response.message,
+                        icon: "error",
+                    });
+                }
+            },
+            error: function (xhr, status, error) {
+                Swal.fire({
+                    title: "¡Error!",
+                    text: "Ocurrió un error al activar o desactivar el usuario.",
+                    icon: "error",
+                });
+                console.log(xhr);
+                console.log(status);
+                console.log(error);
+            }
+        });
+    });
+
 
     /* =========================================
     EDITAR MATERIAL O SERVICIO
