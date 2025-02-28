@@ -9,4 +9,5 @@ urlpatterns = [
     path('crear-meterial-servicio/', material_servicio.crear_material_servicio, name='crear_meterial_servicio'),
     path('lista-materiales-servicios/', material_servicio.lista_materiales_servicios, name='lista_materiales_servicios'),
     path('activar-meterial-servicio/', material_servicio.activar_material_servicio, name='activar_meterial_servicio'),
+    path('editar-meterial-servicio/', material_servicio.editar_material_servicio, name='editar_meterial_servicio'),
 ]

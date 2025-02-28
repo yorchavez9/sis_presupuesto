@@ -18,7 +18,6 @@ $(document).ready(function () {
             type: 'GET',
             dataType: 'json',
             success: function (response) {
-                console.log(response);
                 tabla.clear();
                 response.forEach(function (dato, index) {
                     let stockClass = '';
@@ -34,7 +33,6 @@ $(document).ready(function () {
                         dato.id_categoria.nombre,
                         dato.nombre,
                         dato.tipo,
-                        dato.id_proveedor.nombre,
                         dato.id_unidad_medida.nombre,
                         `S/ ${dato.precio_compra}`,
                         `S/ ${dato.precio_venta}`,
@@ -325,7 +323,7 @@ $(document).ready(function () {
         const datos = new FormData();
         datos.append("material_servicio_id", material_servicio_id);
         $.ajax({
-            url: "editar/",
+            url: "editar-meterial-servicio/",
             type: 'POST',
             data: datos,
             processData: false,
@@ -351,8 +349,10 @@ $(document).ready(function () {
                     });
                 }
             },
-            error: function (error) {
+            error: function (error, xhr, status) {
                 console.error("Error al editar material o servicio:", error);
+                console.log(xhr);
+                console.log(status);
             }
         })
     });
