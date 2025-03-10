@@ -10,4 +10,7 @@ urlpatterns = [
     path('lista-materiales-servicios/', material_servicio.lista_materiales_servicios, name='lista_materiales_servicios'),
     path('activar-meterial-servicio/', material_servicio.activar_material_servicio, name='activar_meterial_servicio'),
     path('editar-meterial-servicio/', material_servicio.editar_material_servicio, name='editar_meterial_servicio'),
+    path('ver-meterial-servicio/', material_servicio.ver_material_servicio, name='ver_meterial_servicio'),
+    path('actualizar-meterial-servicio/', material_servicio.actualizar_material_servicio, name='actualizar_meterial_servicio'),
+    path('eliminar-meterial-servicio/', material_servicio.eliminar_material_servicio, name='eliminar_meterial_servicio')
 ]

@@ -2,6 +2,7 @@
 {% block title %}
   Materiales o Servicios
 {% endblock %}
+{% load static %}
 {% block content_admin %}
   <!-- Start Content -->
   <div class="container-fluid">
@@ -199,7 +200,7 @@
           <form method="post" id="form_editar_material_servicio">
             <div class="modal-body">
               <input type="text" hidden id="material_servicio_id_edit" />
-
+              <input type="text" hidden id="estado_edit">
               <div class="row">
                 <div class="col-md-5">
                   <div class="form-group mb-2">
@@ -315,6 +316,105 @@
           </form>
         </div>
         <!-- /.modal-content -->
+      </div>
+    </div>
+
+    {% comment %}MODAL VER MATERIAL O SERVICIO{% endcomment %}
+    <div id="modal_ver_material_servicio" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="standard-modalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title" id="standard-modalLabel">Ver Material o Servicio</h4>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-md-5">
+                <div class="form-group mb-2">
+                  <label for="nombre_ver" class="form-label">Nombre</label>
+                  <input type="text" id="nombre_ver" class="form-control" readonly />
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group mb-2">
+                  <label for="marca_ver" class="form-label">Marca</label>
+                  <input type="text" id="marca_ver" class="form-control" readonly />
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group mb-2">
+                  <label for="tipo_ver" class="form-label">Tipo</label>
+                  <input type="text" id="tipo_ver" class="form-control" readonly />
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group mb-2">
+                  <label for="proveedor_ver" class="form-label">Proveedor</label>
+                  <input type="text" id="proveedor_ver" class="form-control" readonly />
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group mb-2">
+                  <label for="categoria_ver" class="form-label">Categoría</label>
+                  <input type="text" id="categoria_ver" class="form-control" readonly />
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group mb-2">
+                  <label for="unidad_medida_ver" class="form-label">Unidad de Medida</label>
+                  <input type="text" id="unidad_medida_ver" class="form-control" readonly />
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group mb-2">
+                  <label for="precio_compra_ver" class="form-label">Precio Compra</label>
+                  <input type="text" id="precio_compra_ver" class="form-control" readonly />
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group mb-2">
+                  <label for="precio_venta_ver" class="form-label">Precio Venta</label>
+                  <input type="text" id="precio_venta_ver" class="form-control" readonly />
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group mb-2">
+                  <label for="stock_ver" class="form-label">Stock</label>
+                  <input type="text" id="stock_ver" class="form-control" readonly />
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group mb-2">
+                  <label for="stock_minimo_ver" class="form-label">Stock Mínimo</label>
+                  <input type="text" id="stock_minimo_ver" class="form-control" readonly />
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group mb-2">
+                  <label for="imagen_ver" class="form-label">Imagen</label>
+                  <div class="text-center">
+                    <img src="{% static 'assets/images/logo.png' %}" alt="" id="imagen_ver" class="img-fluid" style="max-width: 100%; height: auto;" />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="form-group mb-2">
+              <label for="descripcion_ver" class="form-label">Descripción</label>
+              <textarea id="descripcion_ver" class="form-control" readonly></textarea>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cerrar</button>
+          </div>
+        </div>
       </div>
     </div>
 

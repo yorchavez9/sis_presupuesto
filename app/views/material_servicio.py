@@ -107,7 +107,7 @@ def crear_material_servicio(request):
             if imagen:
                 timestamp = timezone.now().strftime('%Y%m%d%H%M%S')
                 imagen_name = f"{timestamp}_{imagen.name}"
-                imagen_dir = os.path.join('uploads', 'materiales_servicios')
+                imagen_dir = os.path.join('app', 'static', 'img', 'materiales_servicios')
                 if not os.path.exists(imagen_dir):
                     os.makedirs(imagen_dir)
                 imagen_path = os.path.join(imagen_dir, imagen_name)
@@ -189,6 +189,38 @@ def editar_material_servicio(request):
     return JsonResponse({'status': False, 'message': 'Método no permitido'}, status=405)
 
 @csrf_exempt
+def ver_material_servicio(request):
+    if request.method == 'POST':
+        material_servicio_id = request.POST.get('material_servicio_id')
+        material_servicio = get_object_or_404(MaterialServicio, pk=material_servicio_id)
+        material_servicio_data = {
+            'id': material_servicio.id,
+            'id_proveedor': material_servicio.id_proveedor.id,
+            'nombre_proveedor': material_servicio.id_proveedor.razon_social,
+            'id_categoria': material_servicio.id_categoria.id,
+            'nombre_categoria': material_servicio.id_categoria.categoria,
+            'tipo': material_servicio.tipo,
+            'nombre': material_servicio.nombre,
+            'marca': material_servicio.marca,
+            'id_unidad_medida': material_servicio.id_unidad_medida.id,
+            'nombre_unidad_medida': material_servicio.id_unidad_medida.unidad,
+            'precio_compra': material_servicio.precio_compra,
+            'precio_venta': material_servicio.precio_venta,
+            'stock': material_servicio.stock,
+            'stock_minimo': material_servicio.stock_minimo,
+            'imagen': material_servicio.imagen if material_servicio.imagen else None,
+            'descripcion': material_servicio.descripcion,
+            'estado': material_servicio.estado,
+            'fecha': material_servicio.fecha.strftime('%Y-%m-%d %H:%M:%S')
+        }
+        return JsonResponse({
+            'status': True,
+            'message': 'Datos del Material/Servicio obtenidos correctamente',
+            'material_servicio': material_servicio_data
+        })
+    return JsonResponse({'status': False, 'message': 'Método no permitido'}, status=405)
+
+@csrf_exempt
 def actualizar_material_servicio(request):
     if request.method == 'POST':
         try:
@@ -210,9 +242,18 @@ def actualizar_material_servicio(request):
             material_servicio.precio_venta = request.POST.get('precio_venta')
             material_servicio.stock = request.POST.get('stock')
             material_servicio.stock_minimo = request.POST.get('stock_minimo')
-            material_servicio.imagen = request.POST.get('imagen')
             material_servicio.descripcion = request.POST.get('descripcion')
             material_servicio.estado = request.POST.get('estado')
+            imagen = request.FILES.get('imagen')
+            if imagen:
+                timestamp = timezone.now().strftime('%Y%m%d%H%M%S')
+                imagen_name = f"{timestamp}_{imagen.name}"
+                imagen_dir = os.path.join('app', 'static', 'img', 'materiales_servicios')
+                if not os.path.exists(imagen_dir):
+                    os.makedirs(imagen_dir)
+                imagen_path = os.path.join(imagen_dir, imagen_name)
+                default_storage.save(imagen_path, ContentFile(imagen.read()))
+                material_servicio.imagen = imagen_name
             material_servicio.save()
             return JsonResponse({'status': True, 'message': 'Material/Servicio actualizado correctamente'})
         except Exception as e:

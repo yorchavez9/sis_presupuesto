@@ -44,13 +44,13 @@ $(document).ready(function () {
                         `
                         <div class="text-center">
                             <a href="#" class="me-3 btnEditarMaterialServicio" idMaterialServicio="${dato.id}" data-bs-toggle="modal" data-bs-target="#modal_editar_material_servicio">
-                            <i class="ri-edit-box-line text-warning fs-3"></i>
+                                <i class="ri-edit-box-line text-warning fs-3"></i>
                             </a>
-                            <a href="#" class="me-3 btnEditarMaterialServicio" idMaterialServicio="${dato.id}" data-bs-toggle="modal" data-bs-target="#modal_ver_material_servicio">
-                            <i class="ri-eye-line text-primary fs-3"></i>
+                            <a href="#" class="me-3 btnVerMaterialServicio" idMaterialServicio="${dato.id}" data-bs-toggle="modal" data-bs-target="#modal_ver_material_servicio">
+                                <i class="ri-eye-line text-primary fs-3"></i>
                             </a>
                             <a href="#" class="me-3 confirm-text btnEliminarMaterialServicio" idMaterialServicio="${dato.id}">
-                            <i class="ri-delete-bin-line text-danger fs-3"></i>
+                                <i class="ri-delete-bin-line text-danger fs-3"></i>
                             </a>
                         </div>
                         `
@@ -76,6 +76,10 @@ $(document).ready(function () {
                 proveedores.forEach(function (proveedor) {
                     $("#id_proveedor").append(`<option value="${proveedor.id}">${proveedor.razon_social}</option>`);
                 });
+                $("#id_proveedor_edit").append('<option value="" disabled selected>Seleccionar</option>');
+                proveedores.forEach(function (proveedor) {
+                    $("#id_proveedor_edit").append(`<option value="${proveedor.id}">${proveedor.razon_social}</option>`);
+                });
             },
             error: function (error) {
                 console.error("Error al cargar proveedores:", error);
@@ -97,6 +101,10 @@ $(document).ready(function () {
                 categorias.forEach(function (categoria) {
                     $("#id_categoria").append(`<option value="${categoria.id}">${categoria.categoria}</option>`);
                 });
+                $("#id_categoria_edit").append('<option value="" disabled selected>Seleccionar</option>');
+                categorias.forEach(function (categoria) {
+                    $("#id_categoria_edit").append(`<option value="${categoria.id}">${categoria.categoria}</option>`);
+                });
             },
             error: function (error) {
                 console.error("Error al cargar categorias:", error);
@@ -117,6 +125,10 @@ $(document).ready(function () {
                 $("#id_unidad_medida").append('<option value="" disabled selected>Seleccionar</option>');
                 response.forEach(function (data) {
                     $("#id_unidad_medida").append(`<option value="${data.id}">${data.unidad}</option>`);
+                });
+                $("#id_unidad_medida_edit").append('<option value="" disabled selected>Seleccionar</option>');
+                response.forEach(function (data) {
+                    $("#id_unidad_medida_edit").append(`<option value="${data.id}">${data.unidad}</option>`);
                 });
             },
             error: function (error) {
@@ -329,8 +341,10 @@ $(document).ready(function () {
             processData: false,
             contentType: false,
             success: function (response) {
+
                 if (response.status) {
                     $("#material_servicio_id_edit").val(response.material_servicio.id);
+                    $("#estado_edit").val(response.material_servicio.estado);
                     $("#nombre_edit").val(response.material_servicio.nombre);
                     $("#tipo_edit").val(response.material_servicio.tipo);
                     $("#id_proveedor_edit").val(response.material_servicio.id_proveedor);
@@ -358,10 +372,56 @@ $(document).ready(function () {
     });
 
     /* =========================================
+    VER MATERIAL O SERVICIO
+    ========================================= */
+    $(".tabla_materiales_servicios").on("click", '.btnVerMaterialServicio', function (e) {
+        e.preventDefault();
+        let material_servicio_id = $(this).attr("idMaterialServicio");
+        const datos = new FormData();
+        datos.append("material_servicio_id", material_servicio_id);
+        $.ajax({
+            url: "ver-meterial-servicio/",
+            type: 'POST',
+            data: datos,
+            processData: false,
+            contentType: false,
+            success: function (response) {
+                if (response.status) {
+                    $("#nombre_ver").val(response.material_servicio.nombre);
+                    $("#marca_ver").val(response.material_servicio.marca);
+                    $("#tipo_ver").val(response.material_servicio.tipo);
+                    $("#proveedor_ver").val(response.material_servicio.id_proveedor);
+                    $("#categoria_ver").val(response.material_servicio.id_categoria);
+                    $("#unidad_medida_ver").val(response.material_servicio.id_unidad_medida);
+                    $("#precio_compra_ver").val(response.material_servicio.precio_compra);
+                    $("#precio_venta_ver").val(response.material_servicio.precio_venta);
+                    $("#stock_ver").val(response.material_servicio.stock);
+                    $("#stock_minimo_ver").val(response.material_servicio.stock_minimo);
+                    $("#descripcion_ver").val(response.material_servicio.descripcion);
+                    $("#imagen_ver").attr("src", "/uploads/materiales_servicios/" + response.material_servicio.imagen);
+                    $("#modal_ver_material_servicio").modal("show");
+                } else {
+                    Swal.fire({
+                        title: "¡Error!",
+                        text: response.message,
+                        icon: "error",
+                    });
+                }
+            },
+            error: function (error, xhr, status) {
+                console.error("Error al ver material o servicio:", error);
+                console.log(xhr);
+                console.log(status);
+            }
+        })
+    });
+
+    /* =========================================
     ACTUALIZAR MATERIAL O SERVICIO
     ========================================= */
     $("#btn_editar_material_servicio").click(function (e) {
         e.preventDefault();
+
         let isValid = true;
 
         let material_servicio_id = $("#material_servicio_id_edit").val();
@@ -375,6 +435,7 @@ $(document).ready(function () {
         let stock = $("#stock_edit").val();
         let stock_minimo = $("#stock_minimo_edit").val();
         let descripcion = $("#descripcion_edit").val();
+        let estado = $("#estado_edit").val();
         let imagen = $("#imagen_edit")[0].files[0];
 
         if (nombre == "" || nombre == null) {
@@ -446,12 +507,13 @@ $(document).ready(function () {
             datos.append("stock", stock);
             datos.append("stock_minimo", stock_minimo);
             datos.append("descripcion", descripcion);
+            datos.append("estado", estado);
             if (imagen) {
                 datos.append("imagen", imagen);
             }
 
             $.ajax({
-                url: "actualizar/",
+                url: "actualizar-meterial-servicio/",
                 type: 'POST',
                 data: datos,
                 processData: false,
@@ -489,7 +551,6 @@ $(document).ready(function () {
         let material_servicio_id = $(this).attr("idMaterialServicio");
         const datos = new FormData();
         datos.append("material_servicio_id", material_servicio_id);
-
         Swal.fire({
             title: "¿Está seguro de borrar el material o servicio?",
             text: "¡Si no lo está puede cancelar la acción!",
@@ -502,7 +563,7 @@ $(document).ready(function () {
         }).then(function (result) {
             if (result.value) {
                 $.ajax({
-                    url: "eliminar/",
+                    url: "eliminar-meterial-servicio/",
                     type: 'POST',
                     data: datos,
                     processData: false,
