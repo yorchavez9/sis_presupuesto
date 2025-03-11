@@ -217,3 +217,25 @@ class Trabajador(models.Model):
                 verbose_name = "Trabajador"
                 verbose_name_plural = "Trabajadores"
                 db_table = "trabajadores"  # Nombre de la tabla en la base de datos
+                
+class EquipoMaquinaria(models.Model):
+    tipo = models.CharField(max_length=50, verbose_name="Tipo")  # Maquinaria o Equipo
+    nombre = models.CharField(max_length=150, verbose_name="Nombre")
+    marca = models.CharField(max_length=150, null=True, blank=True, verbose_name="Marca")
+    descripcion = models.TextField(null=True, blank=True, verbose_name="Descripción")
+    costo_hora = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True, verbose_name="Costo por Hora")
+    costo_diario = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True, verbose_name="Costo Diario")
+    costo_semanal = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True, verbose_name="Costo Semanal")
+    costo_quincenal = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True, verbose_name="Costo Quincenal")
+    costo_mensual = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True, verbose_name="Costo Mensual")
+    costo_proyecto = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True, verbose_name="Costo Proyecto")
+    estado = models.IntegerField(default=1, verbose_name="Estado")
+    fecha = models.DateTimeField(auto_now_add=True, verbose_name="Fecha de Registro")
+
+    def __str__(self):
+        return self.nombre
+
+    class Meta:
+        verbose_name = "Equipo o Maquinaria"
+        verbose_name_plural = "Equipos o Maquinarias"
+        db_table = "equipos_maquinarias"  # Nombre de la tabla en la base de datos
