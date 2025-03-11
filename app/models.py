@@ -1,6 +1,5 @@
 from django.db import models
 
-
 class Cliente(models.Model):
     # Opciones para el campo 'tipo_documento'
     TIPO_DOCUMENTO_CHOICES = [
@@ -37,7 +36,6 @@ class Cliente(models.Model):
         verbose_name_plural = "Clientes"
         db_table = "clientes"  # Nombre de la tabla en la base de datos
 
-
 class Categoria(models.Model):
     categoria = models.CharField(max_length=100, verbose_name="Categoría")
     descripcion = models.CharField(
@@ -54,7 +52,6 @@ class Categoria(models.Model):
         verbose_name_plural = "Categorías"
         db_table = "categorias"  # Nombre de la tabla en la base de datos
 
-
 class UnidadMedida(models.Model):
     unidad = models.CharField(max_length=50, verbose_name="Unidad de Medida")
     descripcion = models.CharField(
@@ -69,7 +66,6 @@ class UnidadMedida(models.Model):
         verbose_name = "Unidad de Medida"
         verbose_name_plural = "Unidades de Medida"
         db_table = "unidades_medida"  # Nombre de la tabla en la base de datos
-
 
 class Proveedor(models.Model):
     TIPO_DOCUMENTO_CHOICES = [
@@ -113,7 +109,6 @@ class Proveedor(models.Model):
         verbose_name_plural = "Proveedores"
         db_table = "proveedores"  # Nombre de la tabla en la base de datos
 
-
 class MaterialServicio(models.Model):
     id_proveedor = models.ForeignKey(
         Proveedor, on_delete=models.CASCADE, verbose_name="Proveedor"
@@ -150,11 +145,8 @@ class MaterialServicio(models.Model):
         verbose_name_plural = "Materiales o Servicios"
         db_table = "materiales_servicios"  # Nombre de la tabla en la base de datos
         
-
 class Tareas(models.Model):
-    nombre = models.CharField(max_length=50)
-    
-    
+    nombre = models.CharField(max_length=50)  
 
 class Regalo(models.Model):
     nombre = models.CharField(max_length=100, verbose_name="Nombre del Regalo")
@@ -179,6 +171,49 @@ class Especialidad(models.Model):
         return self.especialidad
 
     class Meta:
-        verbose_name = "Especialidad"
-        verbose_name_plural = "Especialidades"
-        db_table = "especialidades"  # Nombre de la tabla en la base de datos
+            verbose_name = "Especialidad"
+            verbose_name_plural = "Especialidades"
+            db_table = "especialidades"  # Nombre de la tabla en la base de datos
+        
+class Trabajador(models.Model):
+            TIPO_DOCUMENTO_CHOICES = [
+                ("DNI", "Documento Nacional de Identidad"),
+                ("RUC", "Registro Único de Contribuyente"),
+                ("PASAPORTE", "Pasaporte"),
+                ("OTRO", "Otro"),
+            ]
+
+            tipo_documento = models.CharField(
+                max_length=20, choices=TIPO_DOCUMENTO_CHOICES, verbose_name="Tipo de Documento"
+            )
+            num_documento = models.CharField(max_length=15, verbose_name="Número de Documento")
+            nombre = models.CharField(max_length=150, verbose_name="Nombre Completo")
+            id_especialidad = models.ForeignKey(
+                Especialidad, on_delete=models.CASCADE, verbose_name="Especialidad"
+            )
+            tiempo_contrato = models.CharField(max_length=150, verbose_name="Tiempo de Contrato")
+            sueldo_diario = models.DecimalField(
+                max_digits=10, decimal_places=2, null=True, blank=True, verbose_name="Sueldo Diario"
+            )
+            sueldo_semanal = models.DecimalField(
+                max_digits=10, decimal_places=2, null=True, blank=True, verbose_name="Sueldo Semanal"
+            )
+            sueldo_quincenal = models.DecimalField(
+                max_digits=10, decimal_places=2, null=True, blank=True, verbose_name="Sueldo Quincenal"
+            )
+            sueldo_mensual = models.DecimalField(
+                max_digits=10, decimal_places=2, null=True, blank=True, verbose_name="Sueldo Mensual"
+            )
+            sueldo_proyecto = models.DecimalField(
+                max_digits=10, decimal_places=2, null=True, blank=True, verbose_name="Sueldo Proyecto"
+            )
+            estado = models.IntegerField(default=1, verbose_name="Estado")
+            fecha = models.DateTimeField(auto_now_add=True, verbose_name="Fecha de Registro")
+
+            def __str__(self):
+                return self.nombre
+
+            class Meta:
+                verbose_name = "Trabajador"
+                verbose_name_plural = "Trabajadores"
+                db_table = "trabajadores"  # Nombre de la tabla en la base de datos
