@@ -9,5 +9,6 @@ urlpatterns = [
     path('categorias/', include('app.urls.categorias_urls')), 
     path('unidades-medida/', include('app.urls.unidad_medida_urls')),
     path('proveedores/', include('app.urls.proveedores_urls')),
-    path('material-servicio/', include('app.urls.material_servicio_urls')) 
+    path('material-servicio/', include('app.urls.material_servicio_urls')), 
+    path('especialidades/', include('app.urls.especialidades_urls')) 
 ]

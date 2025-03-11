@@ -169,3 +169,16 @@ class Regalo(models.Model):
         verbose_name = "Regalo"
         verbose_name_plural = "Regalos"
         db_table = "regalos"  # Nombre de la tabla en la base de datos
+        
+class Especialidad(models.Model):
+    especialidad = models.CharField(max_length=150, verbose_name="Especialidad")
+    funcion = models.TextField(verbose_name="Función")
+    fecha = models.DateTimeField(auto_now_add=True, verbose_name="Fecha de Registro")
+
+    def __str__(self):
+        return self.especialidad
+
+    class Meta:
+        verbose_name = "Especialidad"
+        verbose_name_plural = "Especialidades"
+        db_table = "especialidades"  # Nombre de la tabla en la base de datos
