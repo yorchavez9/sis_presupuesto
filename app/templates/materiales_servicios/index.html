@@ -3,6 +3,13 @@
   Materiales o Servicios
 {% endblock %}
 {% load static %}
+
+{% block extra_css %}
+  <script>
+    const RUTA_BASE_IMAGENES = "{% static 'img/materiales_servicios/' %}";
+  </script>
+{% endblock %}
+
 {% block content_admin %}
   <!-- Start Content -->
   <div class="container-fluid">
@@ -401,7 +408,7 @@
                 <div class="form-group mb-2">
                   <label for="imagen_ver" class="form-label">Imagen</label>
                   <div class="text-center">
-                    <img src="{% static 'assets/images/logo.png' %}" alt="" id="imagen_ver" class="img-fluid" style="max-width: 100%; height: auto;" />
+                    <img src="{% static 'img/materiales_servicios/20250310164906_pollo b1.jpg' %}" alt="" id="imagen_ver" class="img-fluid" style="max-width: 100%; height: auto;" />
                   </div>
                 </div>
               </div>

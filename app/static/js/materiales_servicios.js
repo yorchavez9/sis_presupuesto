@@ -354,6 +354,8 @@ $(document).ready(function () {
                     $("#precio_venta_edit").val(response.material_servicio.precio_venta);
                     $("#stock_edit").val(response.material_servicio.stock);
                     $("#stock_minimo_edit").val(response.material_servicio.stock_minimo);
+                    const rutaCompleta = RUTA_BASE_IMAGENES + response.material_servicio.imagen;
+                    $("#vista_previa_imagen_edit").attr("src", rutaCompleta);
                     $("#descripcion_edit").val(response.material_servicio.descripcion);
                 } else {
                     Swal.fire({
@@ -398,7 +400,8 @@ $(document).ready(function () {
                     $("#stock_ver").val(response.material_servicio.stock);
                     $("#stock_minimo_ver").val(response.material_servicio.stock_minimo);
                     $("#descripcion_ver").val(response.material_servicio.descripcion);
-                    $("#imagen_ver").attr("src", "/uploads/materiales_servicios/" + response.material_servicio.imagen);
+                    const rutaCompleta = RUTA_BASE_IMAGENES + response.material_servicio.imagen;
+                    $("#imagen_ver").attr("src", rutaCompleta);
                     $("#modal_ver_material_servicio").modal("show");
                 } else {
                     Swal.fire({
