@@ -14,5 +14,6 @@ urlpatterns = [
     path('trabajadores/', include('app.urls.trabajadores_urls')), 
     path('equipos-maquinarias/', include('app.urls.equipos_maquinarias_urls')), 
     path('encargar-equipos-maquinarias/', include('app.urls.encargar_maquina_equipo_urls')), 
+    path('comprobantes/', include('app.urls.comprobantes_urls')), 
     path('presupuestos/', include('app.urls.presupuestos_urls')), 
 ]

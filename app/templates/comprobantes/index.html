@@ -1,0 +1,154 @@
+{% extends 'layouts/base.html' %}
+{% block title %}
+    Comprobantes
+{% endblock %}
+{% block content_admin %}
+    <!-- Start Content -->
+    <div class="container-fluid">
+        <!-- start page title -->
+        <div class="row">
+            <div class="col-12">
+                <div class="page-title-box">
+                    <div class="page-title-right">
+                        <ol class="breadcrumb m-0">
+                            <li class="breadcrumb-item">
+                                <a href="{% url 'index' %}">Inicio</a>
+                            </li>
+                            <li class="breadcrumb-item">
+                                <a href="{% url 'index_comprobante' %}">Comprobantes</a>
+                            </li>
+                            <li class="breadcrumb-item active">Lista de comprobantes</li>
+                        </ol>
+                    </div>
+                    <h4 class="page-title">Administrar comprobantes</h4>
+                </div>
+            </div>
+        </div>
+        <!-- end page title -->
+
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h4 class="header-title mb-0">Tabla de comprobantes</h4>
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal_nuevo_comprobantes"><i class="uil-plus"></i> Nueva comprobantes</button>
+                        </div>
+                        <div class="tab-content">
+                            <div class="tab-pane show active" id="basic-datatable-preview">
+                                <table id="basic-datatable" class="tabla_comprobantes table table-striped dt-responsive nowrap w-100">
+                                    <thead>
+                                        <tr>
+                                            <th>N°</th>
+                                            <th>Comprobante</th>
+                                            <th>Serie</th>
+                                            <th>Folio Inicial</th>
+                                            <th>Folio Final</th>
+                                            <th>Fecha</th>
+                                            <th>Acciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {% comment %}MODAL NUEVA CATEGORÍA{% endcomment %}
+        <div id="modal_nuevo_comprobantes" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="standard-modalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="standard-modalLabel">Nueva Comprobante</h4>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form method="post" id="form_crear_comprobante">
+                        <div class="modal-body">
+                            <div class="form-group mb-2">
+                                <label for="comprobante" class="form-label">Comprobante <span class="text-danger">(*)</span></label>
+                                <input type="text" name="comprobante" id="comprobante" class="form-control" placeholder="Ingrese el comprobante" />
+                                <span class="text-danger" id="error_comprobante"></span>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4 form-group mb-2">
+                                    <label for="serie" class="form-label">Serie <span class="text-danger">(*)</span></label>
+                                    <input type="text" id="serie" name="serie" class="form-control" placeholder="Serie">
+                                    <span class="text-danger" id="error_serie"></span>
+                                </div>
+                                <div class="col-md-4 form-group mb-2">
+                                    <label for="folio_inicial" class="form-label">Folio inicial <span class="text-danger">(*)</span></label>
+                                    <input type="number" id="folio_inicial" name="folio_inicial" class="form-control" placeholder="Folio inicial">
+                                    <span class="text-danger" id="error_folio_inicial"></span>
+                                </div>
+                                <div class="col-md-4 form-group mb-2">
+                                    <label for="folio_final" class="form-label">Folio final <span class="text-danger">(*)</span></label>
+                                    <input type="number" id="folio_final" name="folio_final" class="form-control" placeholder="Folio final">
+                                    <span class="text-danger" id="error_folio_final"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cerrar</button>
+                            <button type="button" id="btn_guardar_comprobante" class="btn btn-primary">Guardar</button>
+                        </div>
+                    </form>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+        </div>
+
+        {% comment %}MODAL EDITAR CATEGORÍA{% endcomment %}
+        <div id="modal_editar_comprobante" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="standard-modalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="standard-modalLabel">Nueva Comprobante</h4>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form method="post" id="form_editar_comprobante">
+                        <div class="modal-body">
+                            <input type="text" id="id_comprobante_edit">
+                            <div class="form-group mb-2">
+                                <label for="comprobante_edit" class="form-label">Comprobante <span class="text-danger">(*)</span></label>
+                                <input type="text" name="comprobante_edit" id="comprobante_edit" class="form-control" placeholder="Ingrese el comprobante" />
+                                <span class="text-danger" id="error_comprobante_edit"></span>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4 form-group mb-2">
+                                    <label for="serie_edit" class="form-label">Serie <span class="text-danger">(*)</span></label>
+                                    <input type="text" id="serie_edit" name="serie_edit" class="form-control" placeholder="Serie">
+                                    <span class="text-danger" id="error_serie_edit"></span>
+                                </div>
+                                <div class="col-md-4 form-group mb-2">
+                                    <label for="folio_inicial_edit" class="form-label">Folio inicial <span class="text-danger">(*)</span></label>
+                                    <input type="number" id="folio_inicial_edit" name="folio_inicial_edit" class="form-control" placeholder="Folio inicial">
+                                    <span class="text-danger" id="error_folio_inicial_edit"></span>
+                                </div>
+                                <div class="col-md-4 form-group mb-2">
+                                    <label for="folio_final_edit" class="form-label">Folio final <span class="text-danger">(*)</span></label>
+                                    <input type="number" id="folio_final_edit" name="folio_final_edit" class="form-control" placeholder="Folio final">
+                                    <span class="text-danger" id="error_folio_final_edit"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cerrar</button>
+                            <button type="button" id="btn_actualizar_comprobante" class="btn btn-primary">Guardar</button>
+                        </div>
+                    </form>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+        </div>
+
+    </div>
+{% endblock %}
+
+{% block extra_js %}
+
+{% endblock %}
