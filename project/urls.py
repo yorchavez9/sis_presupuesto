@@ -12,5 +12,6 @@ urlpatterns = [
     path('material-servicio/', include('app.urls.material_servicio_urls')), 
     path('especialidades/', include('app.urls.especialidades_urls')), 
     path('trabajadores/', include('app.urls.trabajadores_urls')), 
-    path('equipos_maquinarias/', include('app.urls.equipos_maquinarias_urls')), 
+    path('equipos-maquinarias/', include('app.urls.equipos_maquinarias_urls')), 
+    path('encargar-equipos-maquinarias/', include('app.urls.encargar_maquina_equipo_urls')), 
 ]

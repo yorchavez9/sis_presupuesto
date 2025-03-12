@@ -239,3 +239,17 @@ class EquipoMaquinaria(models.Model):
         verbose_name = "Equipo o Maquinaria"
         verbose_name_plural = "Equipos o Maquinarias"
         db_table = "equipos_maquinarias"  # Nombre de la tabla en la base de datos
+        
+class EncargarMaquinaEquipo(models.Model):
+    id_trabajador = models.ForeignKey(Trabajador, on_delete=models.CASCADE, verbose_name='Trabajador')
+    id_equipo_maquina = models.ForeignKey(EquipoMaquinaria, on_delete=models.CASCADE, verbose_name='Equipos Maquinarias')
+    descripcion = models.TextField(null=True, blank=True, verbose_name='Descripción')
+    fecha = models.DateTimeField(auto_now_add=True, verbose_name='Fecha de registro')
+    
+    def __str__(self):
+        return self.descripcion
+    
+    class Meta:
+        verbose_name = "Encargo maquina equipo"
+        verbose_name_plural = "Encargar máquinas y equipos"
+        db_table = "encargar_maquina_equipo"

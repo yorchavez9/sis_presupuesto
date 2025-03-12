@@ -1,0 +1,166 @@
+{% extends 'layouts/base.html' %}
+{% block title %}
+  Encargar equipos y maquinarias
+{% endblock %}
+{% load static %}
+
+{% block extra_css %}
+  <script>
+    const RUTA_BASE_IMAGENES = "{% static 'img/materiales_servicios/' %}";
+  </script>
+{% endblock %}
+
+{% block content_admin %}
+  <!-- Start Content -->
+  <div class="container-fluid">
+    <!-- start page title -->
+    <div class="row">
+      <div class="col-12">
+        <div class="page-title-box">
+          <div class="page-title-right">
+            <ol class="breadcrumb m-0">
+              <li class="breadcrumb-item">
+                <a href="{% url 'index' %}">Inicio</a>
+              </li>
+              <li class="breadcrumb-item">
+                <a href="{% url 'index_encargar_maquina_equipos' %}">Encargar</a>
+              </li>
+              <li class="breadcrumb-item active">Lista</li>
+            </ol>
+          </div>
+          <h4 class="page-title">Administrar encargaturas de máquinas y equipos</h4>
+        </div>
+      </div>
+    </div>
+    <!-- end page title -->
+
+    <div class="row">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <h4 class="header-title mb-0">Tabla de encargaturas de equipos y máquinas</h4>
+              <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal_nuevo_encargatura"><i class="uil-plus"></i> Nuevo</button>
+            </div>
+            <div class="tab-content">
+              <div class="tab-pane show active" id="basic-datatable-preview">
+                <table id="basic-datatable" class="tabla_encargatura_equipo_maquina table table-striped dt-responsive nowrap w-100">
+                  <thead>
+                    <tr>
+                      <th>N°</th>
+                      <th>Trabajador</th>
+                      <th>Equipo o máquina</th>
+                      <th>Descripción</th>
+                      <th>Acciones</th>
+                    </tr>
+                  </thead>
+                  <tbody ></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% comment %}MODAL NUEVO MATERIAL O SERVICIO{% endcomment %}
+    <div id="modal_nuevo_encargatura" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="standard-modalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title" id="standard-modalLabel">Nuevo encargatura de equipos y maquinarias</h4>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <form method="post" id="form_crear_encargatura">
+            <div class="modal-body">
+
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group mb-2">
+                    <label for="id_trabajador_en" class="form-label">Selecione el trabajador <span class="text-danger">(*)</span></label>
+                    <select name="id_trabajador_en" id="id_trabajador_en" class="form-select">
+   
+                    </select>
+                    <span class="text-danger" id="error_id_trabajador_en"></span>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group mb-2">
+                    <label for="id_equipo_maquina_en" class="form-label">Selecione el equipo o máquina <span class="text-danger">(*)</span></label>
+                    <select name="id_equipo_maquina_en" id="id_equipo_maquina_en" class="form-select">
+
+                    </select>
+                    <span class="text-danger" id="error_id_equipo_maquina_en"></span>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group mb-2">
+                <label for="descripcion" class="form-label">Descripción</label>
+                <textarea name="descripcion" id="descripcion" class="form-control" placeholder="Ingrese la descripción"></textarea>
+              </div>
+            </div>
+
+            <div class="modal-footer">
+              <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cerrar</button>
+              <button type="button" id="btn_guardar_encargatura" class="btn btn-primary">Guardar</button>
+            </div>
+          </form>
+        </div>
+        <!-- /.modal-content -->
+      </div>
+    </div>
+
+    {% comment %}MODAL NUEVO MATERIAL O SERVICIO{% endcomment %}
+    <div id="modal_editar_encargatura" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="standard-modalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title" id="standard-modalLabel">Editar encargatura de equipos y maquinarias</h4>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <form method="post" id="form_editar_encargatura">
+            <div class="modal-body">
+                <input type="hidden" id="id_encagatura_edit">
+
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group mb-2">
+                    <label for="id_trabajador_en_edit" class="form-label">Selecione el trabajador <span class="text-danger">(*)</span></label>
+                    <select name="id_trabajador_en_edit" id="id_trabajador_en_edit" class="form-select">
+   
+                    </select>
+                    <span class="text-danger" id="error_id_trabajador_en_edit"></span>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group mb-2">
+                    <label for="id_equipo_maquina_en_edit" class="form-label">Selecione el equipo o máquina <span class="text-danger">(*)</span></label>
+                    <select name="id_equipo_maquina_en_edit" id="id_equipo_maquina_en_edit" class="form-select">
+
+                    </select>
+                    <span class="text-danger" id="error_id_equipo_maquina_en_edit"></span>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group mb-2">
+                <label for="descripcion" class="form-label">Descripción</label>
+                <textarea name="descripcion" id="descripcion_edit" class="form-control" placeholder="Ingrese la descripción"></textarea>
+              </div>
+            </div>
+
+            <div class="modal-footer">
+              <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cerrar</button>
+              <button type="button" id="btn_actualizar_encargatura" class="btn btn-primary">Guardar</button>
+            </div>
+          </form>
+        </div>
+        <!-- /.modal-content -->
+      </div>
+    </div>
+
+    
+  </div>
+{% endblock %}
+
+{% block extra_js %}
+
+{% endblock %}
