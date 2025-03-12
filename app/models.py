@@ -1,4 +1,5 @@
 from django.db import models
+from django.conf import settings  # Para referenciar el modelo de usuario de Django
 
 class Cliente(models.Model):
     # Opciones para el campo 'tipo_documento'
@@ -253,3 +254,54 @@ class EncargarMaquinaEquipo(models.Model):
         verbose_name = "Encargo maquina equipo"
         verbose_name_plural = "Encargar máquinas y equipos"
         db_table = "encargar_maquina_equipo"
+        
+class Comprobante(models.Model):
+    comprobante = models.CharField(max_length=50, verbose_name="Comprobante", blank=True, null=True)
+    serie = models.CharField(max_length=20, verbose_name="Serie", null=False)
+    folio_inicial = models.IntegerField(verbose_name="Folio Inicial", null=False)
+    folio_final = models.IntegerField(verbose_name="Folio Final", null=False)
+    fecha = models.DateTimeField(verbose_name="Fecha", auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.comprobante} - {self.serie} ({self.folio_inicial} al {self.folio_final})"
+
+    class Meta:
+        verbose_name = "Comprobante"
+        verbose_name_plural = "Comprobantes"
+        db_table = "comprobantes"
+
+class Presupuesto(models.Model):
+    id_usuario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name="Usuario")
+    id_cliente = models.ForeignKey('Cliente', on_delete=models.CASCADE, verbose_name="Cliente")
+    fecha = models.DateField(verbose_name="Fecha de registro")
+    hora = models.CharField(max_length=50, verbose_name="Hora de registro")
+    serie = models.CharField(max_length=20, verbose_name="Serie")
+    numero = models.IntegerField(verbose_name="Número")
+    impuesto = models.DecimalField(max_digits=10, decimal_places=2, null=True, verbose_name="Impuesto")
+    sub_total = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Subtotal")
+    total_impuesto = models.DecimalField(max_digits=10, decimal_places=2, null=True, verbose_name="Total impuesto")
+    total = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Total")
+    
+    ESTADO_CHOICES = [
+        ('1', 'Pendiente'),
+        ('2', 'Aprobado'),
+        ('3', 'Rechazado'),
+    ]
+    
+    descripcion = models.TextField(verbose_name="Descripción", blank=True, null=True)
+    condicion_pago = models.CharField(max_length=100, verbose_name="Condición de pago", blank=True, null=True)
+    plazo_ejecucion = models.CharField(max_length=100, verbose_name="Plazo de ejecución", blank=True, null=True)
+    garantia = models.CharField(max_length=100, verbose_name="Garantía", blank=True, null=True)
+    notas = models.TextField(verbose_name="Notas", blank=True, null=True)
+    observacion = models.CharField(max_length=50, verbose_name="Observación", blank=True, null=True)
+    
+    estado = models.CharField(max_length=30, choices=ESTADO_CHOICES, default='1', verbose_name="Estado")
+    
+    def __str__(self):
+        return f"Presupuesto {self.serie}-{self.numero} ({self.fecha})"
+    
+    class Meta:
+        verbose_name = "Presupuesto"
+        verbose_name_plural = "Presupuestos"
+        db_table = "presupuestos"
+        
