@@ -272,9 +272,10 @@ class Comprobante(models.Model):
 
 class Presupuesto(models.Model):
     id_usuario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name="Usuario")
-    id_cliente = models.ForeignKey('Cliente', on_delete=models.CASCADE, verbose_name="Cliente")
+    id_cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE, verbose_name="Cliente")
     fecha = models.DateField(verbose_name="Fecha de registro")
     hora = models.CharField(max_length=50, verbose_name="Hora de registro")
+    id_comprobante = models.ForeignKey(Comprobante, on_delete=models.CASCADE, verbose_name="Comprobante", null=True, blank=True)
     serie = models.CharField(max_length=20, verbose_name="Serie")
     numero = models.IntegerField(verbose_name="Número")
     impuesto = models.DecimalField(max_digits=10, decimal_places=2, null=True, verbose_name="Impuesto")
