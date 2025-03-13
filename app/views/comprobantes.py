@@ -79,6 +79,24 @@ def editar_comprobante(request):
     return JsonResponse({'status': False, 'message': 'Método no permitido'}, status=405)
 
 @csrf_exempt
+def mostrar_comprobante(request):
+    if request.method == 'POST':
+        id_comprobante = request.POST.get('id_comprobante')
+        comprobante = get_object_or_404(Comprobante, pk=id_comprobante)
+        
+        comprobante_data = {
+            'id': comprobante.id,
+            'comprobante': comprobante.comprobante,
+            'serie': comprobante.serie,
+            'folio_inicial': comprobante.folio_inicial,
+            'folio_final': comprobante.folio_final
+        }
+        
+        return JsonResponse({'status': True, 'message': 'Datos del comprobante obtenidos correctamente', 'comprobante': comprobante_data})
+    
+    return JsonResponse({'status': False, 'message': 'Método no permitido'}, status=405)
+
+@csrf_exempt
 def actualizar_comprobante(request):
     if request.method == 'POST':
         id_comprobante = request.POST.get('id_comprobante')

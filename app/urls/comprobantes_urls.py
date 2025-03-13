@@ -7,5 +7,6 @@ urlpatterns = [
     path('crear/', comprobantes.crear_comprobante, name='crear_comprobante'),
     path('editar/', comprobantes.editar_comprobante, name='editar_comprobante'),
     path('actualizar/', comprobantes.actualizar_comprobante, name='actualizar_comprobante'),
+    path('mostrar/', comprobantes.mostrar_comprobante, name='mostrar_comprobante'),
     path('eliminar/', comprobantes.eliminar_comprobante, name='eliminar_comprobante')
 ]

@@ -1,158 +1,4 @@
 $(document).ready(function () {
-    function inicializarTabla() {
-        return $('.tabla_materiales_servicios').DataTable({
-            "destroy": true,
-            "responsive": true, // Habilita el modo responsive
-            "scrollX": true, // Permite el desplazamiento horizontal
-            "pageLength": 10,
-            "language": {
-                "url": "//cdn.datatables.net/plug-ins/1.10.25/i18n/Spanish.json"
-            }
-        });
-    }
-
-    let tabla = inicializarTabla();
-    function cargarMaterialesServicios() {
-        $.ajax({
-            url: "lista-materiales-servicios/",
-            type: 'GET',
-            dataType: 'json',
-            success: function (response) {
-                tabla.clear();
-                response.forEach(function (dato, index) {
-                    let stockClass = '';
-                    if (dato.stock <= dato.stock_minimo) {
-                        stockClass = 'bg-danger text-white';
-                    } else if (dato.stock <= dato.stock_minimo * 2) {
-                        stockClass = 'bg-warning text-dark';
-                    } else {
-                        stockClass = 'bg-success text-white';
-                    }
-                    tabla.row.add([
-                        index + 1,
-                        dato.id_categoria.nombre,
-                        dato.nombre,
-                        dato.tipo,
-                        dato.id_unidad_medida.nombre,
-                        `S/ ${dato.precio_compra}`,
-                        `S/ ${dato.precio_venta}`,
-                        `<div class="${stockClass} text-center" style="border-radius: 5px;">${dato.stock}</div>`,
-                        dato.stock_minimo,
-                        dato.estado ?
-                            '<button class="btn bg-success text-white badges btn-sm rounded btnActivar" idMaterial="' + dato.id + '" estadoMaterial="0">Activado</button>' :
-                            '<button class="btn bg-danger text-white badges btn-sm rounded btnActivar" idMaterial="' + dato.id + '" estadoMaterial="1">Desactivado</button>',
-                        `
-                        <div class="text-center">
-                            <a href="#" class="me-3 btnEditarMaterialServicio" idMaterialServicio="${dato.id}" data-bs-toggle="modal" data-bs-target="#modal_editar_material_servicio">
-                                <i class="ri-edit-box-line text-warning fs-3"></i>
-                            </a>
-                            <a href="#" class="me-3 btnVerMaterialServicio" idMaterialServicio="${dato.id}" data-bs-toggle="modal" data-bs-target="#modal_ver_material_servicio">
-                                <i class="ri-eye-line text-primary fs-3"></i>
-                            </a>
-                            <a href="#" class="me-3 confirm-text btnEliminarMaterialServicio" idMaterialServicio="${dato.id}">
-                                <i class="ri-delete-bin-line text-danger fs-3"></i>
-                            </a>
-                        </div>
-                        `
-                    ]);
-                });
-                tabla.draw();
-            }
-        });
-    }
-
-    cargarMaterialesServicios();
-
-    /* =========================================
-    LISTA DE PROVEEDORES
-    ========================================= */
-    function cargarProveedores() {
-        $.ajax({
-            url: "lista-proveedores/",
-            type: 'GET',
-            dataType: 'json',
-            success: function (proveedores) {
-                $("#id_proveedor").append('<option value="" disabled selected>Seleccionar</option>');
-                proveedores.forEach(function (proveedor) {
-                    $("#id_proveedor").append(`<option value="${proveedor.id}">${proveedor.razon_social}</option>`);
-                });
-                $("#id_proveedor_edit").append('<option value="" disabled selected>Seleccionar</option>');
-                proveedores.forEach(function (proveedor) {
-                    $("#id_proveedor_edit").append(`<option value="${proveedor.id}">${proveedor.razon_social}</option>`);
-                });
-            },
-            error: function (error) {
-                console.error("Error al cargar proveedores:", error);
-            }
-        });
-    }
-    cargarProveedores();
-
-    /* =========================================
-    LISTA DE CATEGORIAS
-    ========================================= */
-    function cargarCategorias() {
-        $.ajax({
-            url: "lista-categorias/",
-            type: 'GET',
-            dataType: 'json',
-            success: function (categorias) {
-                $("#id_categoria").append('<option value="" disabled selected>Seleccionar</option>');
-                categorias.forEach(function (categoria) {
-                    $("#id_categoria").append(`<option value="${categoria.id}">${categoria.categoria}</option>`);
-                });
-                $("#id_categoria_edit").append('<option value="" disabled selected>Seleccionar</option>');
-                categorias.forEach(function (categoria) {
-                    $("#id_categoria_edit").append(`<option value="${categoria.id}">${categoria.categoria}</option>`);
-                });
-            },
-            error: function (error) {
-                console.error("Error al cargar categorias:", error);
-            }
-        });
-    }
-    cargarCategorias();
-
-    /* =========================================
-    LISTA UNIDAD MEDIDA
-    ========================================= */
-    function listaUnidadesMedidas() {
-        $.ajax({
-            url: "lista-unidades-medida/",
-            type: 'GET',
-            dataType: 'json',
-            success: function (response) {
-                $("#id_unidad_medida").append('<option value="" disabled selected>Seleccionar</option>');
-                response.forEach(function (data) {
-                    $("#id_unidad_medida").append(`<option value="${data.id}">${data.unidad}</option>`);
-                });
-                $("#id_unidad_medida_edit").append('<option value="" disabled selected>Seleccionar</option>');
-                response.forEach(function (data) {
-                    $("#id_unidad_medida_edit").append(`<option value="${data.id}">${data.unidad}</option>`);
-                });
-            },
-            error: function (error) {
-                console.error("Error al cargar categorias:", error);
-            }
-        });
-    }
-    listaUnidadesMedidas();
-
-    /* =========================================
-    VISTA PREVIA DE LA IMAGEN
-    ========================================= */
-    $('#imagen').on('change', function (e) {
-        const file = e.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = function (e) {
-                $('#vista_previa_imagen').attr('src', e.target.result);
-            };
-            reader.readAsDataURL(file);
-        } else {
-            $('#vista_previa_imagen').attr('src', '');
-        }
-    });
 
     /* =========================================
     CREAR MATERIAL O SERVICIO
@@ -255,7 +101,7 @@ $(document).ready(function () {
                 contentType: false,
                 success: function (response) {
                     if (response.status) {
-                        cargarMaterialesServicios();
+                        cargarPresupuestos();
                         $("#modal_nuevo_material_servicio").modal("hide");
                         $("#form_crear_material_servicio")[0].reset();
                         Swal.fire({
@@ -298,7 +144,7 @@ $(document).ready(function () {
             contentType: false,
             success: function (response) {
                 if (response.status) {
-                    cargarMaterialesServicios();
+                    cargarPresupuestos();
                     Swal.fire({
                         title: "¡Correcto!",
                         text: response.message,
@@ -523,7 +369,7 @@ $(document).ready(function () {
                 contentType: false,
                 success: function (response) {
                     if (response.status) {
-                        cargarMaterialesServicios();
+                        cargarPresupuestos();
                         $("#modal_editar_material_servicio").modal("hide");
                         $("#form_editar_material_servicio")[0].reset();
                         Swal.fire({
@@ -573,7 +419,7 @@ $(document).ready(function () {
                     contentType: false,
                     success: function (response) {
                         if (response.status) {
-                            cargarMaterialesServicios();
+                            cargarPresupuestos();
                             Swal.fire({
                                 title: "¡Eliminado!",
                                 text: response.message,

@@ -57,6 +57,7 @@ def consulta_ruc(request, numero):
         return JsonResponse({'error': str(e)}, status=500)
 
 @csrf_exempt
+
 def crear_cliente(request):
     if request.method == 'POST':
         tipo_documento = request.POST.get('tipo_documento')
@@ -66,17 +67,24 @@ def crear_cliente(request):
         telefono = request.POST.get('telefono')
         correo = request.POST.get('correo')
 
-        cliente = Cliente(
-            tipo_documento=tipo_documento,
-            num_documento=num_documento,
-            nombre=nombre,
-            direccion=direccion,
-            telefono=telefono,
-            correo=correo
-        )
-        cliente.save()
-        return JsonResponse({'status': True, 'message': 'Cliente creado exitosamente', 'cliente_id': cliente.id})
+        # Verificar si el cliente ya existe por su número de documento
+        if Cliente.objects.filter(num_documento=num_documento).exists():
+            return JsonResponse({'status': False, 'message': 'El número de documento o el usuario ya está registrado'}, status=400)
+        else:
+            # Crear el cliente si no existe
+            cliente = Cliente.objects.create(
+                tipo_documento=tipo_documento,
+                num_documento=num_documento,
+                nombre=nombre,
+                direccion=direccion,
+                telefono=telefono,
+                correo=correo
+            )
+
+            return JsonResponse({'status': True, 'message': 'Cliente creado exitosamente', 'cliente_id': cliente.id})
+
     return JsonResponse({'status': False, 'message': 'Método no permitido'}, status=405)
+
 
 @csrf_exempt
 def activar_cliente(request):

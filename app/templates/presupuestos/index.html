@@ -5,9 +5,17 @@
 {% load static %}
 
 {% block extra_css %}
-  <script>
-    const RUTA_BASE_IMAGENES = "{% static 'img/materiales_servicios/' %}"
-  </script>
+  <style>
+    .tabla_materiales_servicios_presupuesto tbody tr {
+      cursor: pointer;
+    }
+
+    .tabla_materiales_servicios_presupuesto tbody tr.selected {
+      background-color: #e0f7fa;
+      font-weight: bold;
+    }
+  </style>
+
 {% endblock %}
 
 {% block content_admin %}
@@ -21,12 +29,12 @@
                 <a href="{% url 'index' %}">Inicio</a>
               </li>
               <li class="breadcrumb-item">
-                <a href="{% url 'index_materiales_servicios' %}">Materiales o Servicios</a>
+                <a href="{% url 'index_presupuestos' %}">Presupuestos</a>
               </li>
-              <li class="breadcrumb-item active">Lista de materiales o servicios</li>
+              <li class="breadcrumb-item active">Crear presupuesto</li>
             </ol>
           </div>
-          <h4 class="page-title">Administrar Materiales o Servicios</h4>
+          <h4 class="page-title">Crear un nuevo presupuesto</h4>
         </div>
       </div>
     </div>
@@ -36,37 +44,44 @@
         <div class="card">
           <div class="card-body">
             <form action="" id="form_crear_presupuesto">
-              <input type="text" id="id_usuario_presupuesto" value="{{ user.id }}" name="" />
+              <input type="hidden" id="id_usuario_presupuesto" value="{{ user.id }}" name="" />
 
-              <div class="row">
+              <div class="row align-items-end">
                 <div class="form-group mb-2 col-md-4">
                   <label for="" class="form-label">Selecione el cliente (<span class="text-danger">*</span>)</label>
-                  <select name="id_cliente_presupuesto" id="id_cliente_presupuesto" class="form-select"></select>
+                  <select name="id_cliente_presupuesto" id="id_cliente_presupuesto" class="form-select">
+
+                  </select>
+                </div>
+                <div class="form-group mb-2 col-md-2 justify-content-center align-items-center">
+                  <button type="button" class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#modal_nuevo_cliente" ><i class="uil-plus"></i> Agregar</button>
                 </div>
 
-                <div class="form-group mb-2 col-md-4">
+                <div class="form-group mb-2 col-md-3">
                   <label for="fecha" class="form-label">Fecha (<span class="text-danger">*</span>)</label>
                   <input type="date" id="fecha" name="fecha" class="form-control" />
                 </div>
 
-                <div class="form-group mb-2 col-md-4">
+                <div class="form-group mb-2 col-md-3">
                   <label for="hora" class="form-label">Hora (<span class="text-danger">*</span>)</label>
-                  <input type="text" id="hora" name="hora" class="form-control" />
+                  <input type="text" id="hora" name="hora" class="form-control" readonly disabled />
                 </div>
               </div>
 
               <div class="row">
                 <div class="form-group mb-2 col-md-3">
                   <label for="id_comprobante" class="form-label">Selecione el comprobante (<span class="text-danger">*</span>)</label>
-                  <select name="id_comprobante" id="id_comprobante" class="form-select"></select>
+                  <select name="id_comprobante" id="id_comprobante" class="form-select">
+
+                  </select>
                 </div>
                 <div class="form-group mb-2 col-md-3">
                   <label for="serie" class="form-label">Serie (<span class="text-danger">*</span>)</label>
-                  <input type="text" id="serie" name="serie" class="form-control" placeholder="Serie" />
+                  <input type="text" id="serie" name="serie" class="form-control" placeholder="Serie" readonly disabled />
                 </div>
                 <div class="form-group mb-2 col-md-3">
                   <label for="numero" class="form-label">Número (<span class="text-danger">*</span>)</label>
-                  <input type="text" id="numero" name="numero" class="form-control" placeholder="Número" />
+                  <input type="text" id="numero" name="numero" class="form-control" placeholder="Número" readonly disabled />
                 </div>
                 <div class="form-group mb-2 col-md-3">
                   <label for="impuesto" class="form-label">Impuesto</label>
@@ -116,6 +131,10 @@
                           <input type="number" id="sub_total_terreno" name="sub_total_terreno" value="0.00" class="form-control" readonly disabled />
                         </div>
                       </div>
+                       <!-- Contenedor del subtotal alineado a la derecha -->
+                       <div class="d-flex justify-content-end align-items-end mt-3">
+                        <h4 class="mb-0">Sub Total: <span id="sub_total_metros_terreno" class="fw-bold">S/ 2,234.00</span></h4>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -127,21 +146,23 @@
                       <button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#agregar_materiales" style="width: auto;"><i class="uil-plus"></i> Agregar materiales</button>
                       <div class="tab-content">
                         <div class="tab-pane show active" id="basic-datatable-preview">
-                          <table id="basic-datatable" class="tabla_categorias table table-striped dt-responsive nowrap w-100">
+                          <table id="basic-datatable" class="tabla_materiales_seleccionado_presupuesto table table-striped dt-responsive nowrap w-100">
                             <thead>
                               <tr>
                                 <th>N°</th>
-                                <th>Categoría</th>
-                                <th>Descripción</th>
-                                <th>Tipo</th>
-                                <th>Acciones</th>
+                                <th>Accion</th>
+                                <th>Material</th>
+                                <th>Catidad</th>
+                                <th>Precio</th>
+                                <th>Sub total</th>
                               </tr>
                             </thead>
-                            <tbody id="datos_categorias"></tbody>
+                            <tbody>
+
+                            </tbody>
                           </table>
                         </div>
                       </div>
-                      <!-- Contenedor del subtotal alineado a la derecha -->
                       <div class="d-flex justify-content-end align-items-end mt-3">
                         <h4 class="mb-0">Sub Total: <span id="sub_total_meteriales" class="fw-bold">S/ 2,234.00</span></h4>
                       </div>
@@ -156,23 +177,25 @@
                       <button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#agregar_materiales" style="width: auto;"><i class="uil-plus"></i> Agregar trabajadores</button>
                       <div class="tab-content">
                         <div class="tab-pane show active" id="basic-datatable-preview">
-                          <table id="basic-datatable" class="tabla_categorias table table-striped dt-responsive nowrap w-100">
+                          <table id="basic-datatable" class="tabla_trabajadores_presupuesto table table-striped dt-responsive nowrap w-100">
                             <thead>
                               <tr>
                                 <th>N°</th>
-                                <th>Categoría</th>
-                                <th>Descripción</th>
-                                <th>Tipo</th>
-                                <th>Acciones</th>
+                                <th>Acción</th>
+                                <th>Nombre</th>
+                                <th>Especialidad</th>
+                                <th>Sueldo</th>
+                                <th>Sub total</th>
                               </tr>
                             </thead>
-                            <tbody id="datos_categorias"></tbody>
+                            <tbody>
+
+                            </tbody>
                           </table>
                         </div>
                       </div>
-                      <!-- Contenedor del subtotal alineado a la derecha -->
                       <div class="d-flex justify-content-end align-items-end mt-3">
-                        <h4 class="mb-0">Sub Total: <span id="sub_total_meteriales" class="fw-bold">S/ 2,234.00</span></h4>
+                        <h4 class="mb-0">Sub Total: <span id="sub_total_trabajadores_presupuesto" class="fw-bold">S/ 2,234.00</span></h4>
                       </div>
                     </div>
                   </div>
@@ -185,21 +208,22 @@
                       <button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#agregar_materiales" style="width: auto;"><i class="uil-plus"></i> Agregar máquinas y equipos</button>
                       <div class="tab-content">
                         <div class="tab-pane show active" id="basic-datatable-preview">
-                          <table id="basic-datatable" class="tabla_categorias table table-striped dt-responsive nowrap w-100">
+                          <table id="basic-datatable" class="tabla_maquinas_equipos_presupuesto table table-striped dt-responsive nowrap w-100">
                             <thead>
                               <tr>
                                 <th>N°</th>
-                                <th>Categoría</th>
-                                <th>Descripción</th>
-                                <th>Tipo</th>
-                                <th>Acciones</th>
+                                <th>Acción</th>
+                                <th>Equipo / Máquina</th>
+                                <th>Sueldo</th>
+                                <th>Sub Total</th>
                               </tr>
                             </thead>
-                            <tbody id="datos_categorias"></tbody>
+                            <tbody>
+
+                            </tbody>
                           </table>
                         </div>
                       </div>
-                      <!-- Contenedor del subtotal alineado a la derecha -->
                       <div class="d-flex justify-content-end align-items-end mt-3">
                         <h4 class="mb-0">Sub Total: <span id="sub_total_meteriales" class="fw-bold">S/ 2,234.00</span></h4>
                       </div>
@@ -244,15 +268,15 @@
                 <div class="col-md-6 bottom-0 end-0 mb-4">
                   <div class="d-flex justify-content-between mb-2">
                     <h4 class="fw-bold">Sub Total</h4>
-                    <h4>S/ 2,345,234.00</h4>
+                    <h4 id="sub_total_presupuesto">S/ 2,345,234.00</h4>
                   </div>
                   <div class="d-flex justify-content-between mb-2">
                     <h4 class="fw-bold">Impuesto</h4>
-                    <h4>S/ 2,345,234.00</h4>
+                    <h4 id="sub_total_impuesto_presupuesto">S/ 2,345,234.00</h4>
                   </div>
                   <div class="d-flex justify-content-between">
                     <h4 class="fw-bold">Total</h4>
-                    <h4>S/ 34,5454.00</h4>
+                    <h4 id="total_presupuesto">S/ 34,5454.00</h4>
                   </div>
                 </div>
               </div>
@@ -271,6 +295,69 @@
     </div>
     <!-- end row -->
 
+    {% comment %}MODAL NUEVO CLIENTE{% endcomment %}
+    <div id="modal_nuevo_cliente" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="standard-modalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title" id="standard-modalLabel">Nuevo Cliente</h4>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <form method="post" id="form_crear_cliente">
+            <div class="modal-body">
+              <div class="form-group mb-2">
+                <label for="tipo_documento" class="form-label">Selecion el tipo de documento <span class="text-danger">(*)</span></label>
+                <select name="tipo_documento" id="tipo_documento" class="form-select">
+                  <option selected disabled>Selecionar</option>
+                  <option value="DNI">DNI</option>
+                  <option value="RUC">RUC</option>
+                  <option value="PASAPORTE">Pasaporte</option>
+                  <option value="OTRO">Otro</option>
+                </select>
+                <span class="text-danger" id="error_tipo_documento"></span>
+              </div>
+
+              <div class="form-group mb-2">
+                <label for="num_documento" class="form-label">Número de documento <span class="text-danger">(*)</span></label>
+                <div class="input-group">
+                  <input type="text" name="num_documento" id="num_documento" class="form-control" placeholder="Ingrese el número de documento" />
+                  <button type="button" class="btn btn-secondary" id="btn_consultar_documento">Consultar</button>
+                </div>
+                <span class="text-danger" id="error_num_documento_cliente"></span>
+              </div>
+
+              <div class="form-group mb-2" id="seccion_nombre">
+                <label for="nombre" class="form-label" id="nombre_razon_social"></label>
+                <input type="text" name="nombre" id="nombre" class="form-control" placeholder="Ingrese el nombre" />
+                <span class="text-danger" id="error_nombre_cliente"></span>
+              </div>
+
+              <div class="form-group mb-2">
+                <label for="" class="form-label">Dirección</label>
+                <input type="text" name="direccion" id="direccion" class="form-control" placeholder="Ingrese la dirección" />
+              </div>
+
+              <div class="form-group mb-2">
+                <label for="" class="form-label">Teléfono</label>
+                <input type="text" name="telefono" id="telefono" class="form-control" placeholder="Ingrese el teléfono" />
+              </div>
+
+              <div class="form-group mb-2">
+                <label for="" class="form-label">Correo</label>
+                <input type="email" name="correo" id="correo" class="form-control" placeholder="Ingrese el correo" />
+              </div>
+            </div>
+
+            <div class="modal-footer">
+              <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cerrar</button>
+              <button type="button" id="btn_guardar_cliente" class="btn btn-primary">Guardar</button>
+            </div>
+          </form>
+        </div>
+        <!-- /.modal-content -->
+      </div>
+    </div>
+
     {% comment %}MODAL NUEVO MATERIAL O SERVICIO{% endcomment %}
     <div id="agregar_materiales" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="standard-modalLabel" aria-hidden="true">
       <div class="modal-dialog modal-lg">
@@ -282,17 +369,17 @@
           <div class="modal-body">
             <div class="tab-content">
               <div class="tab-pane show active" id="basic-datatable-preview">
-                <table id="basic-datatable" class="tabla_categorias table table-striped dt-responsive nowrap w-100">
+                <table id="basic-datatable" class="tabla_materiales_servicios_presupuesto table table-striped dt-responsive nowrap w-100">
                   <thead>
                     <tr>
                       <th>N°</th>
                       <th>Categoría</th>
                       <th>Nombre</th>
                       <th>Precio</th>
-                      <th>Acciones</th>
+                      <th>Stock</th>
                     </tr>
                   </thead>
-                  <tbody id="datos_categorias"></tbody>
+                  <tbody id="datos_materiales_servicios_presupuesto"></tbody>
                 </table>
               </div>
             </div>
@@ -301,6 +388,7 @@
         <!-- /.modal-content -->
       </div>
     </div>
+
   </div>
 {% endblock %}
 
