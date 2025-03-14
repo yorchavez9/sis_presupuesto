@@ -9,9 +9,30 @@
     .tabla_materiales_servicios_presupuesto tbody tr {
       cursor: pointer;
     }
+    .tabla_lista_trabajadores tbody tr {
+      cursor: pointer;
+    }
+    .tabla_lista_equipos_maquinas tbody tr {
+      cursor: pointer;
+    }
 
     .tabla_materiales_servicios_presupuesto tbody tr.selected {
       background-color: #e0f7fa;
+      font-weight: bold;
+    }
+    #sub_total_terreno{
+      text-align: right;
+    }
+    .sub_total_maquina{
+      text-align: right;
+      font-weight: bold;
+    }
+    .subtotal-material{
+      text-align: right;
+      font-weight: bold;
+    }
+    .sub_total_trabajador{
+      text-align: right;
       font-weight: bold;
     }
   </style>
@@ -133,7 +154,7 @@
                       </div>
                        <!-- Contenedor del subtotal alineado a la derecha -->
                        <div class="d-flex justify-content-end align-items-end mt-3">
-                        <h4 class="mb-0">Sub Total: <span id="sub_total_metros_terreno" class="fw-bold">S/ 2,234.00</span></h4>
+                        <h4 class="mb-0">Sub Total: <span id="sub_total_metros_terreno" class="fw-bold">S/ 0.00</span></h4>
                       </div>
                     </div>
                   </div>
@@ -174,17 +195,53 @@
                 <div class="tab-pane fade" id="seccion_trabajadores_presupuesto">
                   <div class="row">
                     <div class="col-md-12">
-                      <button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#agregar_materiales" style="width: auto;"><i class="uil-plus"></i> Agregar trabajadores</button>
+                      <button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#modal_lista_trabajadores" style="width: auto;"><i class="uil-plus"></i> Agregar trabajadores</button>
                       <div class="tab-content">
                         <div class="tab-pane show active" id="basic-datatable-preview">
-                          <table id="basic-datatable" class="tabla_trabajadores_presupuesto table table-striped dt-responsive nowrap w-100">
+                          <table id="basic-datatable" class="tabla_detalle_trabajadores table table-striped dt-responsive nowrap" width="100%">
                             <thead>
                               <tr>
                                 <th>N°</th>
                                 <th>Acción</th>
                                 <th>Nombre</th>
                                 <th>Especialidad</th>
+                                <th>Tipo de sueldo</th>
                                 <th>Sueldo</th>
+                                <th>Cantidad tiempo</th>
+                                <th>Sub total</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              
+
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                      <div class="d-flex justify-content-end align-items-end mt-3">
+                        <h4 class="mb-0">Sub Total: <span id="sub_total_trabajadores_presupuesto" class="fw-bold">S/ 0.00</span></h4>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {% comment %}======================================================= SECCION DE EQUIPOS Y MAQUINARIAS ======================================================={% endcomment %}
+                <div class="tab-pane fade" id="seccion_equipos_maquinas_presupuesto">
+                  <div class="row">
+                    <div class="col-md-12">
+                      <button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#modal_lista_maquina_equipos" style="width: auto;"><i class="uil-plus"></i> Agregar máquinas y equipos</button>
+                      <div class="tab-content">
+                        <div class="tab-pane show active" id="basic-datatable-preview">
+                          <table id="basic-datatable" class="tabla_detalle_maquinas_equipos_presupuesto table table-striped dt-responsive nowrap w-100">
+                            <thead>
+                              <tr>
+                                <th>N°</th>
+                                <th>Acción</th>
+                                <th>Tipo</th>
+                                <th>Maquina o Equipo</th>
+                                <th>Tipo de sueldo</th>
+                                <th>Sueldo</th>
+                                <th>Cantidad tiempo</th>
                                 <th>Sub total</th>
                               </tr>
                             </thead>
@@ -195,37 +252,7 @@
                         </div>
                       </div>
                       <div class="d-flex justify-content-end align-items-end mt-3">
-                        <h4 class="mb-0">Sub Total: <span id="sub_total_trabajadores_presupuesto" class="fw-bold">S/ 2,234.00</span></h4>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                {% comment %}======================================================= SECCION DE EQUIPOS Y MAQUINARIAS ======================================================={% endcomment %}
-                <div class="tab-pane fade" id="seccion_equipos_maquinas_presupuesto">
-                  <div class="row">
-                    <div class="col-md-12">
-                      <button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#agregar_materiales" style="width: auto;"><i class="uil-plus"></i> Agregar máquinas y equipos</button>
-                      <div class="tab-content">
-                        <div class="tab-pane show active" id="basic-datatable-preview">
-                          <table id="basic-datatable" class="tabla_maquinas_equipos_presupuesto table table-striped dt-responsive nowrap w-100">
-                            <thead>
-                              <tr>
-                                <th>N°</th>
-                                <th>Acción</th>
-                                <th>Equipo / Máquina</th>
-                                <th>Sueldo</th>
-                                <th>Sub Total</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-
-                            </tbody>
-                          </table>
-                        </div>
-                      </div>
-                      <div class="d-flex justify-content-end align-items-end mt-3">
-                        <h4 class="mb-0">Sub Total: <span id="sub_total_meteriales" class="fw-bold">S/ 2,234.00</span></h4>
+                        <h4 class="mb-0">Sub Total: <span id="sub_total_maquinas_equipos" class="fw-bold">S/ 0.00</span></h4>
                       </div>
                     </div>
                   </div>
@@ -358,7 +385,7 @@
       </div>
     </div>
 
-    {% comment %}MODAL NUEVO MATERIAL O SERVICIO{% endcomment %}
+    {% comment %}MODAL LISTA DE MATERIAL O SERVICIO{% endcomment %}
     <div id="agregar_materiales" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="standard-modalLabel" aria-hidden="true">
       <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -380,6 +407,66 @@
                     </tr>
                   </thead>
                   <tbody id="datos_materiales_servicios_presupuesto"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- /.modal-content -->
+      </div>
+    </div>
+
+    {% comment %}MODAL LISTA DE TRABAJADORES{% endcomment %}
+    <div id="modal_lista_trabajadores" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="standard-modalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title" id="standard-modalLabel">Selecione el trabajador</h4>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="tab-content">
+              <div class="tab-pane show active" id="basic-datatable-preview">
+                <table id="basic-datatable" class="tabla_lista_trabajadores table table-striped dt-responsive nowrap w-100">
+                  <thead>
+                    <tr>
+                      <th>N°</th>
+                      <th hidden>Id</th>
+                      <th>Trabajador</th>
+                      <th>Especialidad</th>
+                    </tr>
+                  </thead>
+                  <tbody></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- /.modal-content -->
+      </div>
+    </div>
+
+    {% comment %}MODAL LISTA DE EQUIPOS Y MAQUINAS{% endcomment %}
+    <div id="modal_lista_maquina_equipos" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="standard-modalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title" id="standard-modalLabel">Selecione el equipo o máquina</h4>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="tab-content">
+              <div class="tab-pane show active" id="basic-datatable-preview">
+                <table id="basic-datatable" class="tabla_lista_equipos_maquinas table table-striped dt-responsive nowrap w-100">
+                  <thead>
+                    <tr>
+                      <th>N°</th>
+                      <th hidden>Id</th>
+                      <th>Tipo</th>
+                      <th>Máquina o Equipo</th>
+                    </tr>
+                  </thead>
+                  <tbody></tbody>
                 </table>
               </div>
             </div>

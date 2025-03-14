@@ -1,8 +1,8 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import JsonResponse
-from ..models import Presupuesto
+from ..models import Presupuesto, Trabajador, EquipoMaquinaria
 from django.views.decorators.csrf import csrf_exempt
-import os
+import os, json
 from django.utils import timezone
 from django.core.files.storage import default_storage
 from django.core.files.base import ContentFile
@@ -10,6 +10,74 @@ from django.core.files.base import ContentFile
 def index_presupuestos(request):
     return render(request, 'presupuestos/index.html')
 
+
+@csrf_exempt
+def mostrar_sueldo_trabajador(request):
+    if request.method == 'POST':
+        try:
+            # Leer los datos JSON del cuerpo de la solicitud
+            data = json.loads(request.body)
+            trabajador_id = data.get('id_trabajador')
+            tipo_sueldo = data.get('tipo_sueldo')
+        except json.JSONDecodeError:
+            return JsonResponse({'status': False, 'message': 'Datos JSON no válidos'}, status=400)
+
+        # Validar que el tipo de sueldo sea uno de los permitidos
+        tipos_sueldo_permitidos = ['diario', 'semanal', 'quincenal', 'mensual', 'proyecto']
+        if tipo_sueldo not in tipos_sueldo_permitidos:
+            return JsonResponse({'status': False, 'message': 'Tipo de sueldo no válido'}, status=400)
+
+        # Obtener el trabajador
+        trabajador = get_object_or_404(Trabajador, pk=trabajador_id)
+
+        # Obtener el sueldo correspondiente según el tipo de sueldo
+        sueldo = getattr(trabajador, f'sueldo_{tipo_sueldo}', None)
+        if sueldo is None:
+            return JsonResponse({'status': False, 'message': 'Tipo de sueldo no válido'}, status=400)
+
+        # Construir la respuesta
+        trabajador_data = {
+            'id': trabajador.id,
+            'sueldo': sueldo  # Solo devolvemos el sueldo correspondiente
+        }
+
+        return JsonResponse({'status': True, 'message': 'Datos del trabajador obtenidos correctamente', 'trabajador': trabajador_data})
+
+    return JsonResponse({'status': False, 'message': 'Método no permitido'}, status=405)
+
+@csrf_exempt
+def mostrar_sueldo_maquina(request):
+    if request.method == 'POST':
+        try:
+            # Leer los datos JSON del cuerpo de la solicitud
+            data = json.loads(request.body)
+            maquina_id = data.get('id_maquina')
+            tipo_sueldo = data.get('tipo_sueldo')
+        except json.JSONDecodeError:
+            return JsonResponse({'status': False, 'message': 'Datos JSON no válidos'}, status=400)
+
+        # Validar que el tipo de sueldo sea uno de los permitidos
+        tipos_sueldo_permitidos = ['hora', 'diario', 'semanal', 'quincenal', 'mensual', 'proyecto']
+        if tipo_sueldo not in tipos_sueldo_permitidos:
+            return JsonResponse({'status': False, 'message': 'Tipo de costo no válido'}, status=400)
+
+        # Obtener el maquina
+        maquina = get_object_or_404(EquipoMaquinaria, pk=maquina_id)
+
+        # Obtener el sueldo correspondiente según el tipo de sueldo
+        costo = getattr(maquina, f'costo_{tipo_sueldo}', None)
+        if costo is None:
+            return JsonResponse({'status': False, 'message': 'Tipo de costo no válido'}, status=400)
+
+        # Construir la respuesta
+        maquina_data = {
+            'id': maquina.id,
+            'costo': costo  # Solo devolvemos el sueldo correspondiente
+        }
+
+        return JsonResponse({'status': True, 'message': 'Datos obtenidos correctamente', 'maquina': maquina_data})
+
+    return JsonResponse({'status': False, 'message': 'Método no permitido'}, status=405)
 
 def lista_presupuesto(request):
     if request.method == 'GET':

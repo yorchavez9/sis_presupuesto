@@ -1,5 +1,5 @@
 from django.urls import path
-from app.views import presupuestos, clientes, comprobantes, material_servicio
+from app.views import presupuestos, clientes, comprobantes, material_servicio, trabajadores, equipos_maquinarias
 
 urlpatterns = [
     path('', presupuestos.index_presupuestos, name='index_presupuestos'),
@@ -10,5 +10,10 @@ urlpatterns = [
     path('lista-comprobantes/', comprobantes.lista_comprobantes, name='lista_comprobantes'),
     path('lista-presupuestos/', presupuestos.lista_presupuesto, name='lista_presupuestos'),
     path('mostrar-serie-numero-comprobante/', comprobantes.mostrar_comprobante, name='mostrar_comprobante'),
-    path('lista-materiales-servicios/', material_servicio.lista_materiales_servicios, name='mostrar_materiales')
+    path('lista-materiales-servicios/', material_servicio.lista_materiales_servicios, name='mostrar_materiales'),
+    path('lista-trabajadores/', trabajadores.lista_trabajadores, name='lista_trabajadores'),
+    path('trabajador-sueldo/', presupuestos.mostrar_sueldo_trabajador, name='mostrar_sueldo_trabajador'),
+    path('maquina-sueldo/', presupuestos.mostrar_sueldo_maquina, name='mostrar_sueldo_maquina'),
+    path('lista-equipos-maquinas/', equipos_maquinarias.lista_equipos_maquinarias, name='lista_equipos_maquinarias'),
+
 ]

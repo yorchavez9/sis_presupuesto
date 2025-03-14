@@ -3,6 +3,7 @@ from django.http import JsonResponse
 from ..models import Trabajador, Especialidad
 from django.views.decorators.csrf import csrf_exempt
 import requests
+import json
 
 def index_trabajadores(request):
     return render(request, 'trabajadores/index.html')
@@ -136,7 +137,7 @@ def editar_trabajador(request):
     
     return JsonResponse({'status': False, 'message': 'Método no permitido'}, status=405)
 
-@csrf_exempt
+
 def actualizar_trabajador(request):
     if request.method == 'POST':
         trabajador_id = request.POST.get('trabajador_id')

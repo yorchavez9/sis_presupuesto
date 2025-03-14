@@ -1,13 +1,14 @@
+
 $(document).ready(function () {
 
 
-/* ============================================================ DATOS PRINCIPALES ============================================================================= */
+    /* ============================================================ DATOS PRINCIPALES ============================================================================= */
 
     /* =========================================
     FORMATEO DE PRECIO O DINERO
     ========================================= */
     function formatCurrency(value) {
-        if (!value) return "Sin sueldo";
+        if (!value) return "S/ 0.00";
         return new Intl.NumberFormat('es-PE', { style: 'currency', currency: 'PEN' }).format(value);
     }
 
@@ -154,7 +155,7 @@ $(document).ready(function () {
             }
         });
     }
-    
+
     /* =========================================
     LISTA DE COMPROBANTES
     ========================================= */
@@ -178,7 +179,7 @@ $(document).ready(function () {
             }
         });
     }
-    
+
     /* =========================================
     LISTA DE SERIE Y NUMERO
     ========================================= */
@@ -253,47 +254,85 @@ $(document).ready(function () {
     cargarComprobantes();
     mostrarSerieNumero()
 
-/* ============================================================ END ================================================================================================ */
+    /* ============================================================ END ================================================================================================ */
 
-/* ============================================================ INICIO DE SECCION DE MATERIALES Y SERVICIOS ============================================================================= */
 
-    $('.tabla_materiales_seleccionado_presupuesto').DataTable({
-        "destroy": true,
-        "responsive": true, // Habilita el modo responsive
-        "scrollX": true, // Permite el desplazamiento horizontal
-        "pageLength": 10,
-        "language": {
-            "url": "//cdn.datatables.net/plug-ins/1.10.25/i18n/Spanish.json"
-        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+
+    /* ============================================================ INICIO DE SECCION DE METROS DE TERREONO============================================================================= */
+
+    function calcularSubtotal() {
+        let medidaTerreno = parseFloat($('#medida_terreno').val()) || 0;
+        let precioTerreno = parseFloat($('#precio_terreno').val()) || 0;
+        let subtotal = medidaTerreno * precioTerreno;
+
+        $('#sub_total_terreno').val(subtotal.toFixed(2));
+        $('#sub_total_metros_terreno').text('S/ ' + subtotal.toLocaleString('es-PE', { minimumFractionDigits: 2 }));
+    }
+
+    $('#medida_terreno, #precio_terreno').on('input', function () {
+        calcularSubtotal();
     });
 
+    /* ============================================================ END ================================================================================================ */
 
-    /* =========================================
-    INICIALIZAR TABLA DE LISTA MATERIALES
-    ========================================= */
-    function inicializarTablaMateriales() {
-        return $('.tabla_materiales_seleccionado_presupuesto').DataTable({
-            "destroy": true,
-            "responsive": true, // Habilita el modo responsive
-            "scrollX": true, // Permite el desplazamiento horizontal
-            "pageLength": 10,
-            "language": {
-                "url": "//cdn.datatables.net/plug-ins/1.10.25/i18n/Spanish.json"
-            }
-        });
-    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /* ============================================================ INICIO DE SECCION DE MATERIALES Y SERVICIOS ============================================================================= */
 
     /* =========================================
     INICIALIZAR TABLA DE LISTA MATERIALES
     ========================================= */
     function inicializarTablaMateriales() {
         return $('.tabla_materiales_servicios_presupuesto').DataTable({
-            "destroy": true,
-            "responsive": true, // Habilita el modo responsive
-            "scrollX": true, // Permite el desplazamiento horizontal
-            "pageLength": 10,
-            "language": {
-                "url": "//cdn.datatables.net/plug-ins/1.10.25/i18n/Spanish.json"
+            destroy: true,
+            responsive: true,
+            scrollX: true,
+            pageLength: 10,
+            language: {
+                url: "//cdn.datatables.net/plug-ins/1.10.25/i18n/Spanish.json"
             }
         });
     }
@@ -347,7 +386,7 @@ $(document).ready(function () {
             }
         });
     }
-    
+
     /* =========================================
     AGREGAR MATERIAL SELECIONADO
     ========================================= */
@@ -379,7 +418,7 @@ $(document).ready(function () {
     function actualizarTablaMaterialesSeleccionados() {
         const tbody = $(".tabla_materiales_seleccionado_presupuesto tbody");
         tbody.empty(); // Limpiar la tabla antes de agregar los nuevos datos
-    
+
         lista_materiales_seleccionados.forEach((material, index) => {
             const subtotal = material.precio * material.cantidad;
             tbody.append(`
@@ -401,12 +440,12 @@ $(document).ready(function () {
                 </tr>
             `);
         });
-    
+
         // Evento para actualizar la cantidad en tiempo real
         $(".input-cantidad").on("input", function () {
             const idMaterial = $(this).data("id");
             const nuevaCantidad = parseFloat($(this).val());
-    
+
             const material = lista_materiales_seleccionados.find(item => item.id === idMaterial);
             if (material && nuevaCantidad > 0) {
                 material.cantidad = nuevaCantidad;
@@ -414,12 +453,12 @@ $(document).ready(function () {
                 actualizarSubtotal(); // Recalcular el subtotal general
             }
         });
-    
+
         // Evento para actualizar el precio en tiempo real
         $(".input-precio").on("input", function () {
             const idMaterial = $(this).data("id");
             const nuevoPrecio = parseFloat($(this).val());
-    
+
             const material = lista_materiales_seleccionados.find(item => item.id === idMaterial);
             if (material && nuevoPrecio > 0) {
                 material.precio = nuevoPrecio;
@@ -427,7 +466,7 @@ $(document).ready(function () {
                 actualizarSubtotal(); // Recalcular el subtotal general
             }
         });
-    
+
         // Evento para eliminar materiales
         $(".btnEliminarMaterial").click(function () {
             const idMaterial = $(this).data("id");
@@ -436,7 +475,7 @@ $(document).ready(function () {
             actualizarSubtotal(); // Recalcular el subtotal
         });
     }
-    
+
     /* =========================================
     ACTUALIZAR SUB TOTAL MATERIAL
     ========================================= */
@@ -447,7 +486,7 @@ $(document).ready(function () {
             $(`input[data-id="${idMaterial}"]`).closest("tr").find(".subtotal-material").text(formatCurrency(subtotal));
         }
     }
-    
+
     /* =========================================
     ACTUALIZAR SUB TOTAL GENERAL
     ========================================= */
@@ -455,7 +494,7 @@ $(document).ready(function () {
         const subtotal = lista_materiales_seleccionados.reduce((total, material) => {
             return total + (material.precio * material.cantidad);
         }, 0);
-    
+
         $("#sub_total_meteriales").text(formatCurrency(subtotal));
     }
 
@@ -477,6 +516,607 @@ $(document).ready(function () {
 
     mostrarMateriales();
 
-/* ============================================================ END ============================================================================= */
+    /* ============================================================ END ============================================================================= */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /* ============================================================ INICIO DE SECCION DE TRABAJADORES ============================================================================= */
+
+    /* =========================================
+    INICIALIZAR TABLA DE TRABAJADORES
+    ========================================= */
+    function inicializarTablaTrabajadores() {
+        return $('.tabla_lista_trabajadores').DataTable({
+            columnDefs: [
+                {
+                    targets: 1, // Oculta la segunda columna (dato.id)
+                    visible: false,
+                }
+            ],
+            destroy: true,
+            responsive: true,
+            scrollX: true,
+            pageLength: 10,
+            language: {
+                url: "//cdn.datatables.net/plug-ins/1.10.25/i18n/Spanish.json"
+            }
+        });
+    }
+
+    function tabla_detalle_trabajadores() {
+        return $('.tabla_detalle_trabajadores').DataTable({
+            destroy: true,
+            responsive: true,
+            scrollX: true,
+            pageLength: 10,
+            language: {
+                url: "//cdn.datatables.net/plug-ins/1.10.25/i18n/Spanish.json"
+            }
+        });
+    }
+    tabla_detalle_trabajadores()
+
+
+    let tabla_trabajadores = inicializarTablaTrabajadores();
+    let lista_trabajadores_seleccionados = [];
+
+    /* =========================================
+    MOSTRANDO TRABAJADORES EN LA TABLA
+    ========================================= */
+    function mostrarTrabajadores() {
+        $.ajax({
+            url: "lista-trabajadores/",
+            type: 'GET',
+            dataType: 'json',
+            success: function (response) {
+
+                tabla_trabajadores.clear();
+                response.forEach(function (dato, index) {
+
+                    tabla_trabajadores.row.add([
+                        index + 1,
+                        dato.id,
+                        dato.especialidad.especialidad,
+                        dato.nombre,
+                    ]);
+                });
+                tabla_trabajadores.draw();
+
+                $('.tabla_lista_trabajadores tbody').on('click', 'tr', function () {
+                    $('.tabla_lista_trabajadores tr').removeClass('selected');
+                    $(this).addClass('selected');
+                    tabla_trabajadores.row(this).data();
+
+                });
+            },
+            error: function (error) {
+                console.error("Error al cargar materiales:", error);
+            }
+        });
+    }
+
+    /* =========================================
+    AGREGAR TRABAJADOR SELECIONADO
+    ========================================= */
+    function agregarTrabajadorSeleccionado(trabajador) {
+        lista_trabajadores_seleccionados.push({
+            id: trabajador.id,
+            nombre: trabajador.nombre,
+            especialidad: trabajador.especialidad,
+            cantidad: 1,
+            precio: 0.00
+        });
+        actualizarTablaTrabajadoresSeleccionados();
+        actualizarSubtotalTrabajadores();
+    }
+
+    /* =========================================
+    ACTUALIZAR TABLA DE TRABAJADOR SELECCIONADO
+    ========================================= */
+    function actualizarTablaTrabajadoresSeleccionados() {
+        const tbody = $(".tabla_detalle_trabajadores tbody");
+        tbody.empty(); // Limpiar la tabla antes de agregar los nuevos datos
+
+        lista_trabajadores_seleccionados.forEach((trabajador, index) => {
+            tbody.append(`
+                <tr data-id="${trabajador.id}">
+                    <td>${index + 1}</td>
+                    <td>
+                        <button class="btn btn-danger btn-sm btnEliminarTrabajador" data-id="${trabajador.id}">
+                            <i class="uil-trash"></i>
+                        </button>
+                    </td>
+                    <td>${trabajador.nombre}</td>
+                    <td>${trabajador.especialidad}</td>
+                    <td>
+                        <select name="tipo_sueldo_trabajador" class="form-select tipo_sueldo_trabajador" id_trabajador="${trabajador.id}">
+                            <option value="" selected disabled>Seleccione</option>
+                            <option value="diario">Diario</option>
+                            <option value="semanal">Semanal</option>
+                            <option value="quincenal">Quincenal</option>
+                            <option value="mensual">Mensual</option>
+                            <option value="proyecto">Proyecto</option>
+                        </select>
+                    </td>
+                    <td>
+                        <input type="number" class="form-control input-precio-trabajador" data-id="${trabajador.id}" value="${trabajador.precio}" min="0.01" step="0.01">
+                    </td>
+                    <td>
+                        <input type="number" class="form-control input-cantidad-tiempo-trabajador" data-id="${trabajador.id}" value="${trabajador.cantidad}" min="1">
+                    </td>
+                    <td class="sub_total_trabajador">${formatCurrency(trabajador.precio * trabajador.cantidad)}</td>
+                </tr>
+            `);
+        });
+
+        // Evento para actualizar la cantidad en tiempo real
+        $(".input-cantidad-tiempo-trabajador").on("input", function () {
+            const idTrabajador = $(this).data("id");
+            const nuevaCantidad = parseFloat($(this).val());
+
+            const trabajador = lista_trabajadores_seleccionados.find(item => item.id === idTrabajador);
+            if (trabajador && nuevaCantidad > 0) {
+                trabajador.cantidad = nuevaCantidad;
+                actualizarSubtotalTrabajadoresId(idTrabajador); // Actualizar subtotal del trabajador
+                actualizarSubtotalTrabajadores(); // Recalcular el subtotal general
+            }
+        });
+
+        // Evento para actualizar el precio en tiempo real
+        $(".input-precio-trabajador").on("input", function () {
+            const idTrabajador = $(this).data("id");
+            const nuevoPrecio = parseFloat($(this).val());
+
+            const trabajador = lista_trabajadores_seleccionados.find(item => item.id === idTrabajador);
+            if (trabajador && nuevoPrecio > 0) {
+                trabajador.precio = nuevoPrecio;
+                actualizarSubtotalTrabajadoresId(idTrabajador); // Actualizar subtotal del trabajador
+                actualizarSubtotalTrabajadores(); // Recalcular el subtotal general
+            }
+        });
+
+        // Evento para eliminar trabajadores
+        $(".btnEliminarTrabajador").click(function () {
+            const idTrabajador = $(this).data("id");
+            lista_trabajadores_seleccionados = lista_trabajadores_seleccionados.filter(item => item.id !== idTrabajador);
+            actualizarTablaTrabajadoresSeleccionados(); // Redibujar la tabla
+            actualizarSubtotalTrabajadores(); // Recalcular el subtotal
+        });
+    }
+
+    /* =========================================
+    MOSTRAR SUELDO DEPENDIENDO TRABAJADOR
+    ========================================= */
+    $(document).on("change", ".tipo_sueldo_trabajador", function () {
+        const idTrabajador = $(this).attr("id_trabajador");
+        const tipoSueldo = $(this).val();
+
+        const datos = {
+            id_trabajador: idTrabajador,
+            tipo_sueldo: tipoSueldo
+        };
+
+        $.ajax({
+            url: "trabajador-sueldo/",
+            type: 'POST',
+            dataType: 'json',
+            contentType: 'application/json',
+            data: JSON.stringify(datos),
+            success: function (response) {
+                if (response.status) {
+                    const trabajador = response.trabajador;
+
+                    // Buscar el trabajador en la lista y actualizar su precio
+                    const trabajadorSeleccionado = lista_trabajadores_seleccionados.find(item => item.id === trabajador.id);
+                    if (trabajadorSeleccionado) {
+                        trabajadorSeleccionado.precio = trabajador.sueldo; // Actualizar el precio
+                    }
+
+                    // Actualizar el campo de precio en la tabla
+                    $(`input[data-id="${trabajador.id}"].input-precio-trabajador`).val(trabajador.sueldo);
+
+                    // Recalcular el subtotal del trabajador
+                    actualizarSubtotalTrabajadoresId(trabajador.id);
+
+                    // Recalcular el subtotal general
+                    actualizarSubtotalTrabajadores();
+                } else {
+                    console.error("Error en la respuesta del servidor:", response.message);
+                }
+            },
+            error: function (error) {
+                console.error("Error al enviar datos:", error);
+            }
+        });
+    });
+
+    /* =========================================
+    ACTUALIZAR SUB TOTAL TRABAJADOR
+    ========================================= */
+    function actualizarSubtotalTrabajadoresId(id_trabajador) {
+        const trabajador = lista_trabajadores_seleccionados.find(item => item.id === id_trabajador);
+        if (trabajador) {
+            const subtotal = trabajador.cantidad * trabajador.precio;
+            $(`input[data-id="${id_trabajador}"]`).closest("tr").find(".sub_total_trabajador").text(formatCurrency(subtotal));
+        }
+    }
+
+    /* =========================================
+    ACTUALIZAR SUB TOTAL GENERAL
+    ========================================= */
+    function actualizarSubtotalTrabajadores() {
+        const subtotal = lista_trabajadores_seleccionados.reduce((total, trabajador) => {
+            return total + (trabajador.precio * trabajador.cantidad);
+        }, 0);
+
+        $("#sub_total_trabajadores_presupuesto").text(formatCurrency(subtotal));
+    }
+
+    /* =========================================
+    SELECION DEL TRABAJADOR
+    ========================================= */
+    $(".tabla_lista_trabajadores tbody").on("click", "tr", function () {
+        const data = tabla_trabajadores.row(this).data();
+        if (!data) return;
+
+        const trabajador = {
+            id: data[1], // ID del trabajador
+            especialidad: data[2], // Especialidad del trabajador
+            nombre: data[3], // Nombre del trabajador
+            precio: 0 // Puedes ajustar el precio según sea necesario
+        };
+        console.log(trabajador);
+
+        agregarTrabajadorSeleccionado(trabajador);
+    });
+
+    mostrarTrabajadores();
+
+    // Evento al mostrar modal de nueva asistencia
+    $("#modal_lista_trabajadores").on("shown.bs.modal", function () {
+        mostrarTrabajadores();
+    });
+
+    /* ============================================================ END ============================================================================= */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /* ============================================================ SECCION DE EQUIPOS MAQUINARIAS ===================================================*/
+/* =========================================
+    INICIALIZAR TABLA MAQUINAS Y EQUIPOS
+    ========================================= */
+    function inicializarTablaMaquinasEquipos() {
+        return $('.tabla_lista_equipos_maquinas').DataTable({
+            columnDefs: [
+                {
+                    targets: 1, // Oculta la segunda columna (dato.id)
+                    visible: false,
+                }
+            ],
+            destroy: true,
+            responsive: true,
+            scrollX: true,
+            pageLength: 10,
+            language: {
+                url: "//cdn.datatables.net/plug-ins/1.10.25/i18n/Spanish.json"
+            }
+        });
+    }
+    
+    let tabla_equipos_maquinas = inicializarTablaMaquinasEquipos();
+    let lista_maquina_equipo_seleccionados = [];
+    
+    /* =========================================
+        MOSTRANDO EQUIPOS Y MAQUINAS EN LA TABLA
+        ========================================= */
+    function mostrarEquiposMaquinas() {
+        $.ajax({
+            url: "lista-equipos-maquinas/",
+            type: 'GET',
+            dataType: 'json',
+            success: function (response) {
+                tabla_equipos_maquinas.clear();
+                response.forEach(function (dato, index) {
+                    tabla_equipos_maquinas.row.add([
+                        index + 1,
+                        dato.id,
+                        dato.tipo,
+                        dato.nombre,
+                    ]);
+                });
+                tabla_equipos_maquinas.draw();
+    
+                // Evento para seleccionar una fila
+                $('.tabla_lista_equipos_maquinas tbody').on('click', 'tr', function () {
+                    $('.tabla_lista_equipos_maquinas tr').removeClass('selected');
+                    $(this).addClass('selected');
+                });
+            },
+            error: function (error) {
+                console.error("Error al cargar máquinas y equipos:", error);
+            }
+        });
+    }
+    
+    /* =========================================
+        AGREGAR MAQUINA O EQUIPO SELECCIONADO
+        ========================================= */
+    function agregarMaquinaSeleccionado(maquina) {
+        // Verificar si la máquina ya está en la lista
+        const existe = lista_maquina_equipo_seleccionados.some(item => item.id === maquina.id);
+        if (existe) {
+            alert("Esta máquina o equipo ya ha sido seleccionado.");
+            return;
+        }
+    
+        // Agregar la máquina a la lista
+        lista_maquina_equipo_seleccionados.push({
+            id: maquina.id,
+            tipo: maquina.tipo,
+            nombre: maquina.nombre,
+            cantidad: 1,
+            costo: 0.00
+        });
+    
+        // Actualizar la tabla y el subtotal
+        actualizarTablaMaquinasEquiposSeleccionados();
+        actualizarSubtotalMaquinas();
+    }
+    
+    /* =========================================
+        ACTUALIZAR TABLA DE EQUIPOS Y MAQUINAS SELECCIONADOS
+        ========================================= */
+    function actualizarTablaMaquinasEquiposSeleccionados() {
+        const tbody = $(".tabla_detalle_maquinas_equipos_presupuesto tbody");
+        tbody.empty(); // Limpiar la tabla antes de agregar los nuevos datos
+    
+        lista_maquina_equipo_seleccionados.forEach((data, index) => {
+            tbody.append(`
+                <tr data-id="${data.id}">
+                    <td>${index + 1}</td>
+                    <td>
+                        <button class="btn btn-danger btn-sm btnEliminarMaquina" data-id="${data.id}">
+                            <i class="uil-trash"></i>
+                        </button>
+                    </td>
+                    <td>${data.tipo}</td>
+                    <td>${data.nombre}</td>
+                    <td>
+                        <select name="tipo_sueldo_maquina" class="form-select tipo_sueldo_maquina" id_maquina="${data.id}">
+                            <option selected disabled>Seleccione</option>
+                            <option value="hora">Hora</option>
+                            <option value="diario">Diario</option>
+                            <option value="semanal">Semanal</option>
+                            <option value="quincenal">Quincenal</option>
+                            <option value="mensual">Mensual</option>
+                            <option value="proyecto">Proyecto</option>
+                        </select>
+                    </td>
+                    <td>
+                        <input type="number" class="form-control input-precio-maquina" data-id="${data.id}" value="${data.costo}" min="0.01" step="0.01">
+                    </td>
+                    <td>
+                        <input type="number" class="form-control input-cantidad-tiempo-maquina" data-id="${data.id}" value="${data.cantidad}" min="1">
+                    </td>
+                    <td class="sub_total_maquina">${formatCurrency(data.costo * data.cantidad)}</td>
+                </tr>
+            `);
+        });
+    
+        // Evento para actualizar la cantidad en tiempo real
+        $(".input-cantidad-tiempo-maquina").on("input", function () {
+            const idMaquina = $(this).data("id");
+            const nuevaCantidad = parseFloat($(this).val());
+    
+            const maquina = lista_maquina_equipo_seleccionados.find(item => item.id === idMaquina);
+            if (maquina && nuevaCantidad > 0) {
+                maquina.cantidad = nuevaCantidad;
+                actualizarSubtotalMaquinaId(idMaquina); // Actualizar subtotal de la máquina
+                actualizarSubtotalMaquinas(); // Recalcular el subtotal general
+            }
+        });
+    
+        // Evento para actualizar el costo en tiempo real
+        $(".input-precio-maquina").on("input", function () {
+            const idMaquina = $(this).data("id");
+            const nuevoCosto = parseFloat($(this).val());
+    
+            const maquina = lista_maquina_equipo_seleccionados.find(item => item.id === idMaquina);
+            if (maquina && nuevoCosto > 0) {
+                maquina.costo = nuevoCosto;
+                actualizarSubtotalMaquinaId(idMaquina); // Actualizar subtotal de la máquina
+                actualizarSubtotalMaquinas(); // Recalcular el subtotal general
+            }
+        });
+    
+        // Evento para eliminar máquinas o equipos
+        $(".btnEliminarMaquina").click(function () {
+            const idMaquina = $(this).data("id");
+            lista_maquina_equipo_seleccionados = lista_maquina_equipo_seleccionados.filter(item => item.id !== idMaquina);
+            actualizarTablaMaquinasEquiposSeleccionados(); // Redibujar la tabla
+            actualizarSubtotalMaquinas(); // Recalcular el subtotal
+        });
+    }
+    
+    /* =========================================
+        MOSTRAR SUELDO DEPENDIENDO MAQUINA O EQUIPO
+        ========================================= */
+    $(document).on("change", ".tipo_sueldo_maquina", function () {
+        const id_maquina = $(this).attr("id_maquina");
+        const tipo_sueldo = $(this).val();
+    
+        const datos = {
+            id_maquina: id_maquina,
+            tipo_sueldo: tipo_sueldo
+        };
+    
+        $.ajax({
+            url: "maquina-sueldo/",
+            type: 'POST',
+            dataType: 'json',
+            contentType: 'application/json',
+            data: JSON.stringify(datos),
+            success: function (response) {
+                if (response.status) {
+                    const maquina = response.maquina;
+            
+                    // Buscar la máquina en la lista y actualizar su costo
+                    const maquinaSeleccionado = lista_maquina_equipo_seleccionados.find(item => item.id === maquina.id);
+                    if (maquinaSeleccionado) {
+                        maquinaSeleccionado.costo = maquina.costo;
+                    }
+            
+                    // Actualizar el campo de costo en la tabla
+                    $(`input[data-id="${maquina.id}"].input-precio-maquina`).val(maquina.costo);
+            
+                    // Recalcular el subtotal de la máquina
+                    actualizarSubtotalMaquinaId(maquina.id);
+            
+                    // Recalcular el subtotal general
+                    actualizarSubtotalMaquinas();
+                } else {
+                    // Mostrar mensaje de error con SweetAlert
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: response.message || "Ocurrió un error inesperado.",
+                    });
+                }
+            },
+            error: function (error) {
+                console.log(error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: error.responseJSON.message,
+                });
+            }
+        });
+    });
+    
+    /* =========================================
+        ACTUALIZAR SUB TOTAL DE MAQUINAS O EQUIPOS
+        ========================================= */
+    function actualizarSubtotalMaquinaId(id_maquina) {
+        const maquina = lista_maquina_equipo_seleccionados.find(item => item.id === id_maquina);
+        if (maquina) {
+            const subtotal = maquina.cantidad * maquina.costo;
+            $(`input[data-id="${id_maquina}"]`).closest("tr").find(".sub_total_maquina").text(formatCurrency(subtotal));
+        }
+    }
+    
+    /* =========================================
+        ACTUALIZAR SUB TOTAL GENERAL
+        ========================================= */
+    function actualizarSubtotalMaquinas() {
+        const subtotal = lista_maquina_equipo_seleccionados.reduce((total, maquina) => {
+            return total + (maquina.costo * maquina.cantidad);
+        }, 0);
+    
+        $("#sub_total_maquinas_equipos").text(formatCurrency(subtotal));
+    }
+    
+    /* =========================================
+        SELECCIÓN DE EQUIPO O MAQUINA
+        ========================================= */
+    $(".tabla_lista_equipos_maquinas tbody").on("click", "tr", function () {
+        const data = tabla_equipos_maquinas.row(this).data();
+        if (!data) return;
+    
+        const maquina = {
+            id: data[1], // ID de la máquina
+            tipo: data[2], // Tipo de máquina
+            nombre: data[3], // Nombre de la máquina
+            costo: 0 // Costo inicial
+        };
+    
+        agregarMaquinaSeleccionado(maquina);
+    });
+    
+    // Evento al mostrar modal de nueva asistencia
+    $("#modal_lista_maquina_equipos").on("shown.bs.modal", function () {
+        mostrarEquiposMaquinas();
+    });
+    
+    // Mostrar equipos y máquinas al cargar la página
+    mostrarEquiposMaquinas();
+    
+
+
+    /* ============================================================ END ============================================================================= */
+
+
 
 })
