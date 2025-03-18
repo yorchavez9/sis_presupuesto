@@ -326,11 +326,16 @@ $(document).ready(function () {
     INICIALIZAR TABLA DE LISTA MATERIALES
     ========================================= */
     function inicializarTablaMateriales() {
-        return $('.tabla_materiales_servicios_presupuesto').DataTable({
+        return $('#tabla_materiales_servicios_presupuesto').DataTable({
+            columnDefs: [
+                {
+                    targets: 1,
+                    visible: false,
+                }
+            ],
+            autoWidth: true,
             destroy: true,
             responsive: true,
-            scrollX: true,
-            pageLength: 10,
             language: {
                 url: "//cdn.datatables.net/plug-ins/1.10.25/i18n/Spanish.json"
             }
@@ -362,6 +367,7 @@ $(document).ready(function () {
 
                     tabla_materiales.row.add([
                         index + 1,
+                        dato.id,
                         dato.id_categoria.nombre,
                         dato.nombre,
                         formatCurrency(dato.precio_venta),
@@ -376,9 +382,7 @@ $(document).ready(function () {
                 $('.tabla_materiales_servicios_presupuesto tbody').on('click', 'tr', function () {
                     $('.tabla_materiales_servicios_presupuesto tr').removeClass('selected');
                     $(this).addClass('selected');
-
-                    const data = tabla_materiales.row(this).data();
-                    console.log("Fila seleccionada:", data);
+                    tabla_materiales.row(this).data();
                 });
             },
             error: function (error) {
@@ -423,6 +427,9 @@ $(document).ready(function () {
             const subtotal = material.precio * material.cantidad;
             tbody.append(`
                 <tr>
+                    <td hidden>
+                        <input type="hidden" class="id_material_presupuesto" value="${material.id}">
+                    </td>
                     <td>${index + 1}</td>
                     <td>
                         <button class="btn btn-danger btn-sm btnEliminarMaterial" data-id="${material.id}">
@@ -506,16 +513,15 @@ $(document).ready(function () {
         if (!data) return;
 
         const material = {
-            id: data[0], // ID del material
-            nombre: data[2], // Nombre del material
-            precio: parseFloat(data[3].replace(/[^\d.]/g, '')) // Precio del material
+            id: data[1], // ID del material
+            nombre: data[3], // Nombre del material
+            precio: parseFloat(data[4].replace(/[^\d.]/g, '')) // Precio del material
         };
 
         agregarMaterialSeleccionado(material);
     });
 
     mostrarMateriales();
-
     /* ============================================================ END ============================================================================= */
 
 
@@ -557,35 +563,31 @@ $(document).ready(function () {
     INICIALIZAR TABLA DE TRABAJADORES
     ========================================= */
     function inicializarTablaTrabajadores() {
-        return $('.tabla_lista_trabajadores').DataTable({
+        return $('#tabla_lista_trabajadores').DataTable({
             columnDefs: [
                 {
                     targets: 1, // Oculta la segunda columna (dato.id)
                     visible: false,
                 }
             ],
+            autoWidth: true,
             destroy: true,
             responsive: true,
-            scrollX: true,
-            pageLength: 10,
             language: {
                 url: "//cdn.datatables.net/plug-ins/1.10.25/i18n/Spanish.json"
             }
+            
         });
     }
 
-    function tabla_detalle_trabajadores() {
-        return $('.tabla_detalle_trabajadores').DataTable({
-            destroy: true,
-            responsive: true,
-            scrollX: true,
-            pageLength: 10,
-            language: {
-                url: "//cdn.datatables.net/plug-ins/1.10.25/i18n/Spanish.json"
-            }
-        });
-    }
-    tabla_detalle_trabajadores()
+    $("#tabla_detalle_trabajadores").DataTable({
+        autoWidth: true,
+        destroy: true,
+        responsive: true,
+        language: {
+            url: "//cdn.datatables.net/plug-ins/1.10.25/i18n/Spanish.json"
+        }
+    });
 
 
     let tabla_trabajadores = inicializarTablaTrabajadores();
@@ -652,6 +654,9 @@ $(document).ready(function () {
             tbody.append(`
                 <tr data-id="${trabajador.id}">
                     <td>${index + 1}</td>
+                    <td hidden>
+                        <input type="hidden" class="id_trabajador_presupuesto" value="${trabajador.id}">
+                    </td>
                     <td>
                         <button class="btn btn-danger btn-sm btnEliminarTrabajador" data-id="${trabajador.id}">
                             <i class="uil-trash"></i>
@@ -796,17 +801,11 @@ $(document).ready(function () {
             nombre: data[3], // Nombre del trabajador
             precio: 0 // Puedes ajustar el precio según sea necesario
         };
-        console.log(trabajador);
 
         agregarTrabajadorSeleccionado(trabajador);
     });
 
     mostrarTrabajadores();
-
-    // Evento al mostrar modal de nueva asistencia
-    $("#modal_lista_trabajadores").on("shown.bs.modal", function () {
-        mostrarTrabajadores();
-    });
 
     /* ============================================================ END ============================================================================= */
 
@@ -854,7 +853,17 @@ $(document).ready(function () {
 
 
     /* ============================================================ SECCION DE EQUIPOS MAQUINARIAS ===================================================*/
-/* =========================================
+
+    $("#tabla_detalle_maquinas_equipos_presupuesto").DataTable({
+        autoWidth: true,
+        destroy: true,
+        responsive: true,
+        language: {
+            url: "//cdn.datatables.net/plug-ins/1.10.25/i18n/Spanish.json"
+        }
+    });
+
+    /* =========================================
     INICIALIZAR TABLA MAQUINAS Y EQUIPOS
     ========================================= */
     function inicializarTablaMaquinasEquipos() {
@@ -865,10 +874,9 @@ $(document).ready(function () {
                     visible: false,
                 }
             ],
+            autoWidth: true,
             destroy: true,
             responsive: true,
-            scrollX: true,
-            pageLength: 10,
             language: {
                 url: "//cdn.datatables.net/plug-ins/1.10.25/i18n/Spanish.json"
             }
@@ -946,6 +954,9 @@ $(document).ready(function () {
             tbody.append(`
                 <tr data-id="${data.id}">
                     <td>${index + 1}</td>
+                    <td hidden>
+                        <input type="text" class="form-control id_equipo_maquina" value="${data.id}">
+                    </td>
                     <td>
                         <button class="btn btn-danger btn-sm btnEliminarMaquina" data-id="${data.id}">
                             <i class="uil-trash"></i>
@@ -1105,12 +1116,6 @@ $(document).ready(function () {
         agregarMaquinaSeleccionado(maquina);
     });
     
-    // Evento al mostrar modal de nueva asistencia
-    $("#modal_lista_maquina_equipos").on("shown.bs.modal", function () {
-        mostrarEquiposMaquinas();
-    });
-    
-    // Mostrar equipos y máquinas al cargar la página
     mostrarEquiposMaquinas();
     
 

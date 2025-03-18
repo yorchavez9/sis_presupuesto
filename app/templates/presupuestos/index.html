@@ -73,6 +73,7 @@
                   <select name="id_cliente_presupuesto" id="id_cliente_presupuesto" class="form-select">
 
                   </select>
+                  <span class="text-danger" id="id_cliente_presupuesto_error"></span>
                 </div>
                 <div class="form-group mb-2 col-md-2 justify-content-center align-items-center">
                   <button type="button" class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#modal_nuevo_cliente" ><i class="uil-plus"></i> Agregar</button>
@@ -81,11 +82,13 @@
                 <div class="form-group mb-2 col-md-3">
                   <label for="fecha" class="form-label">Fecha (<span class="text-danger">*</span>)</label>
                   <input type="date" id="fecha" name="fecha" class="form-control" />
+                  <span class="text-danger" id="fecha_presupuesto_error"></span>
                 </div>
 
                 <div class="form-group mb-2 col-md-3">
                   <label for="hora" class="form-label">Hora (<span class="text-danger">*</span>)</label>
                   <input type="text" id="hora" name="hora" class="form-control" readonly disabled />
+                  <span class="text-danger" id="hora_presupuesto_error"></span>
                 </div>
               </div>
 
@@ -95,14 +98,17 @@
                   <select name="id_comprobante" id="id_comprobante" class="form-select">
 
                   </select>
+                  <span class="text-danger" id="id_comprobante_presupuesto_error"></span>
                 </div>
                 <div class="form-group mb-2 col-md-3">
                   <label for="serie" class="form-label">Serie (<span class="text-danger">*</span>)</label>
                   <input type="text" id="serie" name="serie" class="form-control" placeholder="Serie" readonly disabled />
+                  <span class="text-danger" id="serie_presupuesto_error"></span>
                 </div>
                 <div class="form-group mb-2 col-md-3">
                   <label for="numero" class="form-label">Número (<span class="text-danger">*</span>)</label>
                   <input type="text" id="numero" name="numero" class="form-control" placeholder="Número" readonly disabled />
+                  <span class="text-danger" id="numero_presupuesto_error"></span>
                 </div>
                 <div class="form-group mb-2 col-md-3">
                   <label for="impuesto" class="form-label">Impuesto</label>
@@ -119,16 +125,16 @@
 
               <ul class="nav nav-tabs nav-bordered mb-3">
                 <li class="nav-item">
-                  <a href="#seccion_metros_terreno_presupuesto" data-bs-toggle="tab" aria-expanded="false" class="nav-link active">Metros de terreno</a>
+                  <a href="#seccion_metros_terreno_presupuesto" data-bs-toggle="tab" aria-expanded="false" class="nav-link active">Metros de terreno (<span class="text-danger">*</span>)</a>
                 </li>
                 <li class="nav-item">
-                  <a href="#seccion_materiales_presupuesto" data-bs-toggle="tab" aria-expanded="true" class="nav-link">Materiales</a>
+                  <a href="#seccion_materiales_presupuesto" data-bs-toggle="tab" aria-expanded="true" class="nav-link">Materiales (<span class="text-danger">*</span>)</a>
                 </li>
                 <li class="nav-item">
-                  <a href="#seccion_trabajadores_presupuesto" data-bs-toggle="tab" aria-expanded="true" class="nav-link">Trabajadores</a>
+                  <a href="#seccion_trabajadores_presupuesto" data-bs-toggle="tab" aria-expanded="true" class="nav-link">Trabajadores (<span class="text-danger">*</span>)</a>
                 </li>
                 <li class="nav-item">
-                  <a href="#seccion_equipos_maquinas_presupuesto" data-bs-toggle="tab" aria-expanded="true" class="nav-link">Equipos & maquinarias</a>
+                  <a href="#seccion_equipos_maquinas_presupuesto" data-bs-toggle="tab" aria-expanded="true" class="nav-link">Equipos & maquinarias (<span class="text-danger">*</span>)</a>
                 </li>
               </ul>
 
@@ -164,10 +170,10 @@
                 <div class="tab-pane fade" id="seccion_materiales_presupuesto">
                   <div class="row">
                     <div class="col-md-12">
-                      <button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#agregar_materiales" style="width: auto;"><i class="uil-plus"></i> Agregar materiales</button>
+                      <button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#modal_agregar_materiales" style="width: auto;"><i class="uil-plus"></i> Agregar materiales</button>
                       <div class="tab-content">
                         <div class="tab-pane show active" id="basic-datatable-preview">
-                          <table id="basic-datatable" class="tabla_materiales_seleccionado_presupuesto table table-striped dt-responsive nowrap w-100">
+                          <table id="basic-datatable" class="tabla_materiales_seleccionado_presupuesto table table-striped dt-responsive nowrap" width="100%">
                             <thead>
                               <tr>
                                 <th>N°</th>
@@ -178,7 +184,7 @@
                                 <th>Sub total</th>
                               </tr>
                             </thead>
-                            <tbody>
+                            <tbody id="data_detalles_materiales_presupuesto">
 
                             </tbody>
                           </table>
@@ -198,7 +204,7 @@
                       <button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#modal_lista_trabajadores" style="width: auto;"><i class="uil-plus"></i> Agregar trabajadores</button>
                       <div class="tab-content">
                         <div class="tab-pane show active" id="basic-datatable-preview">
-                          <table id="basic-datatable" class="tabla_detalle_trabajadores table table-striped dt-responsive nowrap" width="100%">
+                          <table id="tabla_detalle_trabajadores" class="tabla_detalle_trabajadores table table-striped dt-responsive nowrap" width="100%">
                             <thead>
                               <tr>
                                 <th>N°</th>
@@ -211,7 +217,7 @@
                                 <th>Sub total</th>
                               </tr>
                             </thead>
-                            <tbody>
+                            <tbody id="data_detalles_trabajadores_presupuesto">
                               
 
                             </tbody>
@@ -232,7 +238,7 @@
                       <button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#modal_lista_maquina_equipos" style="width: auto;"><i class="uil-plus"></i> Agregar máquinas y equipos</button>
                       <div class="tab-content">
                         <div class="tab-pane show active" id="basic-datatable-preview">
-                          <table id="basic-datatable" class="tabla_detalle_maquinas_equipos_presupuesto table table-striped dt-responsive nowrap w-100">
+                          <table id="tabla_detalle_maquinas_equipos_presupuesto" class="tabla_detalle_maquinas_equipos_presupuesto table table-striped dt-responsive nowrap" width="100%">
                             <thead>
                               <tr>
                                 <th>N°</th>
@@ -245,7 +251,7 @@
                                 <th>Sub total</th>
                               </tr>
                             </thead>
-                            <tbody>
+                            <tbody id="data_detalles_maquinas_equipos_presupuesto">
 
                             </tbody>
                           </table>
@@ -386,7 +392,7 @@
     </div>
 
     {% comment %}MODAL LISTA DE MATERIAL O SERVICIO{% endcomment %}
-    <div id="agregar_materiales" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="standard-modalLabel" aria-hidden="true">
+    <div id="modal_agregar_materiales" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="standard-modalLabel" aria-hidden="true">
       <div class="modal-dialog modal-lg">
         <div class="modal-content">
           <div class="modal-header">
@@ -396,10 +402,11 @@
           <div class="modal-body">
             <div class="tab-content">
               <div class="tab-pane show active" id="basic-datatable-preview">
-                <table id="basic-datatable" class="tabla_materiales_servicios_presupuesto table table-striped dt-responsive nowrap w-100">
+                <table id="tabla_materiales_servicios_presupuesto" class="tabla_materiales_servicios_presupuesto table table-striped dt-responsive nowrap" width="100%">
                   <thead>
                     <tr>
                       <th>N°</th>
+                      <th hidden>Id</th>
                       <th>Categoría</th>
                       <th>Nombre</th>
                       <th>Precio</th>
@@ -426,8 +433,8 @@
           </div>
           <div class="modal-body">
             <div class="tab-content">
-              <div class="tab-pane show active" id="basic-datatable-preview">
-                <table id="basic-datatable" class="tabla_lista_trabajadores table table-striped dt-responsive nowrap w-100">
+              <div class="tab-pane show active">
+                <table id="tabla_lista_trabajadores" class="tabla_lista_trabajadores table table-striped dt-responsive nowrap" width="100%">
                   <thead>
                     <tr>
                       <th>N°</th>
