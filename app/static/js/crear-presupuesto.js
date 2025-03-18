@@ -1,3 +1,10 @@
+function cargarFecha() {
+    let ahora = new Date();
+    let fechaFormateada = ahora.toISOString().split("T")[0];
+    $("#fecha").val(fechaFormateada);
+}
+
+
 $("#btn_crear_presupuesto").click(function (e) {
     e.preventDefault();
     let isValid = true;
@@ -115,6 +122,10 @@ $("#btn_crear_presupuesto").click(function (e) {
         });
     }
 
+    let sub_total = parseFloat($("#sub_total_presupuesto").text().replace(/[S/,]/g, ""));
+    let total_impuesto = parseFloat($("#sub_total_impuesto_presupuesto").text().replace(/[S/,]/g, ""));
+    let total = parseFloat($("#total_presupuesto").text().replace(/[S/,]/g, ""));
+
     if(isValid){
         const datos = new FormData();
         datos.append("id_usuario", id_usuario);
@@ -135,9 +146,58 @@ $("#btn_crear_presupuesto").click(function (e) {
         datos.append("garantia", garantia);
         datos.append("nota", nota);
         datos.append("observacion", observacion);
+        datos.append("sub_total", sub_total);
+        datos.append("total_impuesto", total_impuesto);
+        datos.append("total", total);
 
-        datos.forEach(element => {
-            console.log(element);
+        $.ajax({
+            url: "crear-presupuesto/",
+            type: 'POST',
+            data: datos,
+            processData: false,
+            contentType: false,
+            success: function (response) {
+                console.log(response);
+                if (response.status == "success") {
+                    // Limpiar el formulario
+                    $("#form_crear_presupuesto")[0].reset();
+            
+                    // Limpiar los totales
+                    $("#sub_total_metros_terreno").text("S/ 0.00");
+                    $("#sub_total_meteriales").text("S/ 0.00");
+                    $("#sub_total_trabajadores_presupuesto").text("S/ 0.00");
+                    $("#sub_total_maquinas_equipos").text("S/ 0.00");
+                    $("#sub_total_presupuesto").text("S/ 0.00");
+                    $("#sub_total_impuesto_presupuesto").text("S/ 0.00");
+                    $("#total_presupuesto").text("S/ 0.00");
+            
+                    // Limpiar las filas de las tablas de detalles
+                    $("#data_detalles_materiales_presupuesto").empty();
+                    $("#data_detalles_trabajadores_presupuesto").empty();
+                    $("#data_detalles_maquinas_equipos_presupuesto").empty();
+
+                    // Mostrar mensaje de éxito
+                    Swal.fire({
+                        title: "¡Correcto!",
+                        text: response.message,
+                        icon: "success",
+                    }).then(() => {
+                        // Recargar la página después de cerrar el mensaje
+                        location.reload();
+                    });
+                    cargarFecha();
+                } else {
+                    // Mostrar mensaje de error
+                    Swal.fire({
+                        title: "¡Error!",
+                        text: response.message,
+                        icon: "error",
+                    });
+                }
+            },
+            error: function (error) {
+                console.error("Error al crear material o servicio:", error);
+            }
         });
     }
 })

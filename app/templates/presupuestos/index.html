@@ -64,7 +64,7 @@
       <div class="col-12">
         <div class="card">
           <div class="card-body">
-            <form action="" id="form_crear_presupuesto">
+            <form id="form_crear_presupuesto" method="POST">
               <input type="hidden" id="id_usuario_presupuesto" value="{{ user.id }}" name="" />
 
               <div class="row align-items-end">
@@ -111,7 +111,7 @@
                   <span class="text-danger" id="numero_presupuesto_error"></span>
                 </div>
                 <div class="form-group mb-2 col-md-3">
-                  <label for="impuesto" class="form-label">Impuesto</label>
+                  <label for="impuesto" class="form-label">Impuesto (%)</label>
                   <input type="text" id="impuesto" name="impuesto" value="0.00" min="0.00" class="form-control" placeholder="Impuesto" />
                 </div>
               </div>
@@ -301,15 +301,15 @@
                 <div class="col-md-6 bottom-0 end-0 mb-4">
                   <div class="d-flex justify-content-between mb-2">
                     <h4 class="fw-bold">Sub Total</h4>
-                    <h4 id="sub_total_presupuesto">S/ 2,345,234.00</h4>
+                    <h4 id="sub_total_presupuesto">S/ 0.00</h4>
                   </div>
                   <div class="d-flex justify-content-between mb-2">
                     <h4 class="fw-bold">Impuesto</h4>
-                    <h4 id="sub_total_impuesto_presupuesto">S/ 2,345,234.00</h4>
+                    <h4 id="sub_total_impuesto_presupuesto">S/ 0.00</h4>
                   </div>
                   <div class="d-flex justify-content-between">
                     <h4 class="fw-bold">Total</h4>
-                    <h4 id="total_presupuesto">S/ 34,5454.00</h4>
+                    <h4 id="total_presupuesto">S/ 0.00</h4>
                   </div>
                 </div>
               </div>

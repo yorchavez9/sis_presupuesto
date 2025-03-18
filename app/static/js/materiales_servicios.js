@@ -258,6 +258,7 @@ $(document).ready(function () {
                         cargarMaterialesServicios();
                         $("#modal_nuevo_material_servicio").modal("hide");
                         $("#form_crear_material_servicio")[0].reset();
+                       
                         Swal.fire({
                             title: "¡Correcto!",
                             text: response.message,

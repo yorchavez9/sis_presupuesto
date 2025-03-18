@@ -277,7 +277,7 @@ class Presupuesto(models.Model):
     hora = models.CharField(max_length=50, verbose_name="Hora de registro")
     id_comprobante = models.ForeignKey(Comprobante, on_delete=models.CASCADE, verbose_name="Comprobante", null=True, blank=True)
     serie = models.CharField(max_length=20, verbose_name="Serie")
-    numero = models.IntegerField(verbose_name="Número")
+    numero = models.IntegerField(verbose_name="Número", null=True, blank=True)  # Permitir nulo para autoincrementar
     impuesto = models.DecimalField(max_digits=10, decimal_places=2, null=True, verbose_name="Impuesto")
     sub_total = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Subtotal")
     total_impuesto = models.DecimalField(max_digits=10, decimal_places=2, null=True, verbose_name="Total impuesto")
@@ -301,8 +301,18 @@ class Presupuesto(models.Model):
     def __str__(self):
         return f"Presupuesto {self.serie}-{self.numero} ({self.fecha})"
     
+    def save(self, *args, **kwargs):
+        # Si el objeto es nuevo (no tiene PK) y no se ha asignado un número manualmente
+        if self.pk is None and self.numero is None:
+            # Obtener el último número de comprobante para el tipo de comprobante actual
+            ultimo_presupuesto = Presupuesto.objects.filter(id_comprobante=self.id_comprobante).order_by('-numero').first()
+            if ultimo_presupuesto:
+                self.numero = ultimo_presupuesto.numero + 1  # Incrementar el número
+            else:
+                self.numero = 1  # Si no hay registros, empezar desde 1
+        super().save(*args, **kwargs)
+    
     class Meta:
         verbose_name = "Presupuesto"
         verbose_name_plural = "Presupuestos"
         db_table = "presupuestos"
-        

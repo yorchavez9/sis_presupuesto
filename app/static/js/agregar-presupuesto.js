@@ -191,9 +191,6 @@ $(document).ready(function () {
             success: function (response) {
                 console.log(response);
                 if (response.length == 0 || response.length == null) {
-
-                    // al selecione el select #id_comprobante obtener el valo rpara luego enviar 
-
                     $.ajax({
                         url: "mostrar-serie-numero-comprobante/",
                         type: "POST",
@@ -215,11 +212,15 @@ $(document).ready(function () {
         e.preventDefault()
         let id_comprobante = $(this).val();
         $.ajax({
-            url: "lista-presupuestos/",
-            type: "GET",
-            dataType: "json",
+            url: "obtener-ultimo-comprobante/",
+            type: "POST",
+            dataType: 'json',
+            data: {
+                id_comprobante: id_comprobante
+            },
             success: function (response) {
-                if (response.length == 0 || response.length == null) {
+                console.log(response);
+                if (response.status == "not_found") {
                     $.ajax({
                         url: "mostrar-serie-numero-comprobante/",
                         type: "POST",
@@ -240,7 +241,11 @@ $(document).ready(function () {
                         }
                     });
                 } else {
-
+                    if(response.ultimo_comprobante.id_comprobante == id_comprobante){
+                        let increment_numero = response.ultimo_comprobante.numero + 1;
+                        $("#serie").val(response.ultimo_comprobante.serie);
+                        $("#numero").val(increment_numero);
+                    }
                 }
             }
         })
@@ -293,6 +298,7 @@ $(document).ready(function () {
 
     $('#medida_terreno, #precio_terreno').on('input', function () {
         calcularSubtotal();
+        sub_total_general_presupuesto();
     });
 
     /* ============================================================ END ================================================================================================ */
@@ -456,8 +462,9 @@ $(document).ready(function () {
             const material = lista_materiales_seleccionados.find(item => item.id === idMaterial);
             if (material && nuevaCantidad > 0) {
                 material.cantidad = nuevaCantidad;
-                actualizarSubtotalMaterial(idMaterial); // Actualizar subtotal del material
-                actualizarSubtotal(); // Recalcular el subtotal general
+                actualizarSubtotalMaterial(idMaterial); 
+                actualizarSubtotal();
+                sub_total_general_presupuesto();
             }
         });
 
@@ -469,8 +476,9 @@ $(document).ready(function () {
             const material = lista_materiales_seleccionados.find(item => item.id === idMaterial);
             if (material && nuevoPrecio > 0) {
                 material.precio = nuevoPrecio;
-                actualizarSubtotalMaterial(idMaterial); // Actualizar subtotal del material
-                actualizarSubtotal(); // Recalcular el subtotal general
+                actualizarSubtotalMaterial(idMaterial);
+                actualizarSubtotal();
+                sub_total_general_presupuesto();
             }
         });
 
@@ -478,8 +486,9 @@ $(document).ready(function () {
         $(".btnEliminarMaterial").click(function () {
             const idMaterial = $(this).data("id");
             lista_materiales_seleccionados = lista_materiales_seleccionados.filter(item => item.id !== idMaterial);
-            actualizarTablaMaterialesSeleccionados(); // Redibujar la tabla
-            actualizarSubtotal(); // Recalcular el subtotal
+            actualizarTablaMaterialesSeleccionados();
+            actualizarSubtotal();
+            sub_total_general_presupuesto();
         });
     }
 
@@ -695,6 +704,7 @@ $(document).ready(function () {
                 trabajador.cantidad = nuevaCantidad;
                 actualizarSubtotalTrabajadoresId(idTrabajador); // Actualizar subtotal del trabajador
                 actualizarSubtotalTrabajadores(); // Recalcular el subtotal general
+                sub_total_general_presupuesto();
             }
         });
 
@@ -708,6 +718,7 @@ $(document).ready(function () {
                 trabajador.precio = nuevoPrecio;
                 actualizarSubtotalTrabajadoresId(idTrabajador); // Actualizar subtotal del trabajador
                 actualizarSubtotalTrabajadores(); // Recalcular el subtotal general
+                sub_total_general_presupuesto();
             }
         });
 
@@ -717,6 +728,7 @@ $(document).ready(function () {
             lista_trabajadores_seleccionados = lista_trabajadores_seleccionados.filter(item => item.id !== idTrabajador);
             actualizarTablaTrabajadoresSeleccionados(); // Redibujar la tabla
             actualizarSubtotalTrabajadores(); // Recalcular el subtotal
+            sub_total_general_presupuesto();
         });
     }
 
@@ -996,6 +1008,7 @@ $(document).ready(function () {
                 maquina.cantidad = nuevaCantidad;
                 actualizarSubtotalMaquinaId(idMaquina); // Actualizar subtotal de la máquina
                 actualizarSubtotalMaquinas(); // Recalcular el subtotal general
+                sub_total_general_presupuesto();
             }
         });
     
@@ -1009,6 +1022,7 @@ $(document).ready(function () {
                 maquina.costo = nuevoCosto;
                 actualizarSubtotalMaquinaId(idMaquina); // Actualizar subtotal de la máquina
                 actualizarSubtotalMaquinas(); // Recalcular el subtotal general
+                sub_total_general_presupuesto();
             }
         });
     
@@ -1018,6 +1032,7 @@ $(document).ready(function () {
             lista_maquina_equipo_seleccionados = lista_maquina_equipo_seleccionados.filter(item => item.id !== idMaquina);
             actualizarTablaMaquinasEquiposSeleccionados(); // Redibujar la tabla
             actualizarSubtotalMaquinas(); // Recalcular el subtotal
+            sub_total_general_presupuesto();
         });
     }
     
@@ -1123,5 +1138,34 @@ $(document).ready(function () {
     /* ============================================================ END ============================================================================= */
 
 
+    function sub_total_general_presupuesto() {
+        let suma_total = 0.00;
+        let sub_total_metros_terreno = parseFloat($("#sub_total_metros_terreno").text().replace(/[S/,]/g, ""));
+        let sub_total_meteriales = parseFloat($("#sub_total_meteriales").text().replace(/[S/,]/g, ""));
+        let sub_total_trabajadores_presupuesto = parseFloat($("#sub_total_trabajadores_presupuesto").text().replace(/[S/,]/g, ""));
+        let sub_total_maquinas_equipos = parseFloat($("#sub_total_maquinas_equipos").text().replace(/[S/,]/g, ""));
+        let impuesto = parseFloat($("#impuesto").val());
+        suma_total = (sub_total_metros_terreno + sub_total_meteriales + sub_total_trabajadores_presupuesto + sub_total_maquinas_equipos);
+    
+        // 1. Calcular el valor base (sin IGV)
+        let base = suma_total / 1.18;
+    
+        // 2. Calcular el IGV (18% del valor base)
+        let IGV = base * 0.18;
+    
+        // 3. Calcular el crédito fiscal (18% de las compras)
+        let credito_fiscal = impuesto * 0.18;
+    
+        // 4. Calcular el IGV a pagar
+        let igv_a_pagar = IGV - credito_fiscal;
+    
+        // 5. Calcular el total (suma_total ya incluye IGV, no es necesario sumarlo de nuevo)
+        let total = suma_total;
+    
+        // Mostrar los resultados en el HTML
+        $("#sub_total_presupuesto").text(formatCurrency(base)); // Sub Total (sin IGV)
+        $("#sub_total_impuesto_presupuesto").text(formatCurrency(igv_a_pagar)); // Impuesto (IGV a pagar)
+        $("#total_presupuesto").text(formatCurrency(total)); // Total (suma_total con IGV)
+    }
 
 })

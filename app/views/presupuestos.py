@@ -1,11 +1,14 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import JsonResponse
-from ..models import Presupuesto, Trabajador, EquipoMaquinaria
+from ..models import Presupuesto, Trabajador, EquipoMaquinaria, Cliente, Comprobante
+from django.contrib.auth.models import User
 from django.views.decorators.csrf import csrf_exempt
 import os, json
 from django.utils import timezone
+from django.core.serializers import serialize
 from django.core.files.storage import default_storage
 from django.core.files.base import ContentFile
+from django.core.exceptions import ObjectDoesNotExist
 
 def index_presupuestos(request):
     return render(request, 'presupuestos/index.html')
@@ -79,62 +82,167 @@ def mostrar_sueldo_maquina(request):
 
     return JsonResponse({'status': False, 'message': 'Método no permitido'}, status=405)
 
+@csrf_exempt
 def lista_presupuesto(request):
     if request.method == 'GET':
         try:
-            # Obtener todos los presupuestos ordenados por ID de manera descendente
-            presupuestos = Presupuesto.objects.all().order_by('-id')
-            
-            # Lista para almacenar los datos de los presupuestos
-            presupuestos_data = []
-            
-            # Recorrer cada presupuesto
+            # Obtener todos los presupuestos con sus relaciones
+            presupuestos = Presupuesto.objects.select_related('id_cliente', 'id_comprobante').all()
+
+            # Formatear los datos para devolverlos en la respuesta
+            response_data = []
             for presupuesto in presupuestos:
-                # Obtener datos relacionados (cliente, usuario, comprobante)
-                cliente = presupuesto.id_cliente
-                usuario = presupuesto.id_usuario
-                comprobante = presupuesto.id_comprobante
-                
-                # Crear el diccionario con los datos del presupuesto
-                item = {
+                presupuesto_info = {
                     'id': presupuesto.id,
-                    'fecha': presupuesto.fecha.strftime('%Y-%m-%d') if presupuesto.fecha else None,
-                    'hora': presupuesto.hora.strftime('%H:%M:%S') if presupuesto.hora else None,
+                    'fecha': presupuesto.fecha.strftime('%Y-%m-%d'),  # Formatear fecha
+                    'hora': presupuesto.hora,   # Formatear hora
                     'serie': presupuesto.serie,
                     'numero': presupuesto.numero,
-                    'impuesto': str(presupuesto.impuesto) if presupuesto.impuesto else None,
-                    'sub_total': str(presupuesto.sub_total) if presupuesto.sub_total else None,
-                    'total_impuesto': str(presupuesto.total_impuesto) if presupuesto.total_impuesto else None,
-                    'total': str(presupuesto.total) if presupuesto.total else None,
+                    'impuesto': float(presupuesto.impuesto),          # Convertir a float
+                    'sub_total': float(presupuesto.sub_total),        # Convertir a float
+                    'total_impuesto': float(presupuesto.total_impuesto),  # Convertir a float
+                    'total': float(presupuesto.total),                # Convertir a float
                     'estado': presupuesto.estado,
-                    'id_cliente': {
-                        'id': cliente.id,
-                        'nombre': cliente.nombre if cliente else None
-                    } if cliente else None,
-                    'id_usuario': {
-                        'id': usuario.id,
-                    } if usuario else None,
+                    'id_cliente': presupuesto.id_cliente.id,
+                    'nombre_cliente': presupuesto.id_cliente.nombre,  # Nombre del cliente
+                    'id_usuario': presupuesto.id_usuario.id,
                     'condicion_pago': presupuesto.condicion_pago,
                     'descripcion': presupuesto.descripcion,
                     'garantia': presupuesto.garantia,
                     'notas': presupuesto.notas,
                     'observacion': presupuesto.observacion,
                     'plazo_ejecucion': presupuesto.plazo_ejecucion,
-                    'id_comprobante': {
-                        'id': comprobante.id,
-                        'nombre': comprobante.comprobante if comprobante else None
-                    } if comprobante else None,
+                    'id_comprobante': presupuesto.id_comprobante.id,
+                    'tipo_comprobante': presupuesto.id_comprobante.comprobante,  # Tipo de comprobante
                 }
-                # Agregar el diccionario a la lista
-                presupuestos_data.append(item)
-            
-            # Devolver la lista de presupuestos como JSON
-            return JsonResponse(presupuestos_data, safe=False)
-        
+                response_data.append(presupuesto_info)
+
+            # Devolver la respuesta en formato JSON
+            return JsonResponse({'status': 'success', 'presupuestos': response_data}, safe=False)
+
         except Exception as e:
             # Manejar errores
-            print(f"Error en la vista lista_presupuesto: {str(e)}")
-            return JsonResponse({'error': 'Error interno del servidor'}, status=500)
+            return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
+    else:
+        return JsonResponse({'status': 'error', 'message': 'Método no permitido'}, status=405)
     
-    # Si el método no es GET, devolver un error
-    return JsonResponse({'error': 'Método no permitido'}, status=405)
+@csrf_exempt
+def crear_presupuesto(request):
+    if request.method == 'POST':
+        try:
+            # Obtener los datos del formulario
+            id_usuario = request.POST.get('id_usuario')
+            id_cliente = request.POST.get('id_cliente')
+            id_comprobante = request.POST.get('id_comprobante')
+            
+            # Verificar que los objetos existen (opcional, si necesitas validar)
+            usuario = get_object_or_404(User, id=id_usuario)
+            cliente = get_object_or_404(Cliente, id=id_cliente)
+            comprobante = get_object_or_404(Comprobante, id=id_comprobante)
+            
+            fecha = request.POST.get('fecha')
+            hora = request.POST.get('hora')
+            serie = request.POST.get('serie')
+            numero = request.POST.get('numero')
+            impuesto = request.POST.get('impuesto')
+            descripcion = request.POST.get('descripcion')
+            condicion_pago = request.POST.get('condicion_pago')
+            plazo_ejecucion = request.POST.get('plazo_ejecucion')
+            garantia = request.POST.get('garantia')
+            nota = request.POST.get('nota')
+            observacion = request.POST.get('observacion')
+            sub_total = request.POST.get('sub_total')
+            total_impuesto = request.POST.get('total_impuesto')
+            total = request.POST.get('total')
+
+            # Crear el objeto Presupuesto
+            presupuesto = Presupuesto(
+                id_usuario_id=id_usuario,  # Asignar el ID directamente
+                id_cliente_id=id_cliente,  # Asignar el ID directamente
+                fecha=fecha,
+                hora=hora,
+                id_comprobante_id=id_comprobante,  # Asignar el ID directamente
+                serie=serie,
+                numero=numero,
+                impuesto=impuesto,
+                descripcion=descripcion,
+                condicion_pago=condicion_pago,
+                plazo_ejecucion=plazo_ejecucion,
+                garantia=garantia,
+                notas=nota,
+                observacion=observacion,
+                sub_total=sub_total,
+                total_impuesto=total_impuesto,
+                total=total
+            )
+            presupuesto.save()
+            return JsonResponse({'status': 'success', 'message': 'Presupuesto creado correctamente'})
+        except Exception as e:
+            return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
+    else:
+        return JsonResponse({'status': 'error', 'message': 'Método no permitido'}, status=405)
+    
+@csrf_exempt
+def ultimo_comprobante(request):
+    if request.method == 'GET':
+        try:
+            # Obtener el último registro usando el ORM de Django
+            ultimo_presupuesto = Presupuesto.objects.latest('id')
+
+            # Formatear los datos para devolverlos en la respuesta
+            response_data = {
+                'id_comprobante': ultimo_presupuesto.id_comprobante_id,
+                'comprobante': ultimo_presupuesto.id_comprobante.comprobante,
+                'serie': ultimo_presupuesto.serie,
+                'numero': ultimo_presupuesto.numero,
+            }
+
+            # Devolver la respuesta en formato JSON
+            return JsonResponse({'status': 'success', 'ultimo_comprobante': response_data}, safe=False)
+
+        except ObjectDoesNotExist:
+            # Manejar el caso en que no hay registros
+            return JsonResponse({'status': 'error', 'message': 'No se encontraron registros'}, status=404)
+
+        except Exception as e:
+            # Manejar otros errores
+            return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
+    else:
+        return JsonResponse({'status': 'error', 'message': 'Método no permitido'}, status=405)
+    
+@csrf_exempt
+def obtener_ultimo_comprobante(request):
+    if request.method == 'POST':
+        try:
+            # Obtener el id_comprobante enviado desde el formulario
+            id_comprobante = request.POST.get('id_comprobante')
+
+            # Validar que se haya enviado un id_comprobante
+            if not id_comprobante:
+                return JsonResponse({'status': 'error', 'message': 'id_comprobante no proporcionado'}, status=400)
+
+            # Verificar si hay registros para el id_comprobante especificado
+            if not Presupuesto.objects.filter(id_comprobante_id=id_comprobante).exists():
+                return JsonResponse({
+                    'status': 'not_found',
+                    'message': 'No hay registros para el comprobante especificado.'
+                }, status=200)  # Puedes usar status 200 o 404 según tu preferencia
+
+            # Obtener el último registro con el id_comprobante especificado
+            ultimo_presupuesto = Presupuesto.objects.filter(id_comprobante_id=id_comprobante).latest('id')
+
+            # Formatear la respuesta
+            response_data = {
+                'id_comprobante': ultimo_presupuesto.id_comprobante_id,
+                'serie': ultimo_presupuesto.serie,
+                'numero': ultimo_presupuesto.numero,
+            }
+
+            # Devolver la respuesta en formato JSON
+            return JsonResponse({'status': 'success', 'ultimo_comprobante': response_data}, safe=False)
+
+        except Exception as e:
+            # Manejar otros errores
+            return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
+    else:
+        return JsonResponse({'status': 'error', 'message': 'Método no permitido'}, status=405)

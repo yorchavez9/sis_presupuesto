@@ -8,12 +8,19 @@ urlpatterns = [
     path('consultar-ruc/<str:numero>/', clientes.consulta_ruc, name='consulta_ruc'),
     path('crear-cliente/', clientes.crear_cliente, name='crear_cliente'),
     path('lista-comprobantes/', comprobantes.lista_comprobantes, name='lista_comprobantes'),
-    path('lista-presupuestos/', presupuestos.lista_presupuesto, name='lista_presupuestos'),
+    
+    path('obtener-ultimo-comprobante/', presupuestos.obtener_ultimo_comprobante, name='obtener_ultimo_comprobante'),
+    path('ultimo-comprobante/', presupuestos.ultimo_comprobante, name='ultimo_comprobante_presupuesto'),
+    
     path('mostrar-serie-numero-comprobante/', comprobantes.mostrar_comprobante, name='mostrar_comprobante'),
     path('lista-materiales-servicios/', material_servicio.lista_materiales_servicios, name='mostrar_materiales'),
     path('lista-trabajadores/', trabajadores.lista_trabajadores, name='lista_trabajadores'),
     path('trabajador-sueldo/', presupuestos.mostrar_sueldo_trabajador, name='mostrar_sueldo_trabajador'),
     path('maquina-sueldo/', presupuestos.mostrar_sueldo_maquina, name='mostrar_sueldo_maquina'),
     path('lista-equipos-maquinas/', equipos_maquinarias.lista_equipos_maquinarias, name='lista_equipos_maquinarias'),
+    
+    path('crear-presupuesto/', presupuestos.crear_presupuesto, name='crear_presupuesto'),
+    path('lista-presupuestos/', presupuestos.lista_presupuesto, name='lista_presupuestos'),
+    
 
 ]
