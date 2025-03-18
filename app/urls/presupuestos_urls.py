@@ -3,6 +3,7 @@ from app.views import presupuestos, clientes, comprobantes, material_servicio, t
 
 urlpatterns = [
     path('', presupuestos.index_presupuestos, name='index_presupuestos'),
+    path('lista-presupuesto-general', presupuestos.index_presupuestos_lista, name='index_presupuestos_lista'),
     path('lista-clientes/', clientes.lista_clientes, name='lista_clientes'),
     path('consultar-dni/<str:numero>/', clientes.consultar_dni, name='consultar_dni'),
     path('consultar-ruc/<str:numero>/', clientes.consulta_ruc, name='consulta_ruc'),

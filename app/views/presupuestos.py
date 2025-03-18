@@ -13,6 +13,9 @@ from django.core.exceptions import ObjectDoesNotExist
 def index_presupuestos(request):
     return render(request, 'presupuestos/index.html')
 
+def index_presupuestos_lista(request):
+    return render(request, 'presupuestos/lista.html')
+
 
 @csrf_exempt
 def mostrar_sueldo_trabajador(request):
