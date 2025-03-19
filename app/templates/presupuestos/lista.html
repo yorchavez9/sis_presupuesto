@@ -8,6 +8,28 @@
   <script>
     const RUTA_BASE_IMAGENES = "{% static 'img/materiales_servicios/' %}";
   </script>
+  <style>
+    .dropdown-toggle {
+      background-color: transparent;
+      border: none;
+      color: #6c757d;
+  }
+  
+  .dropdown-toggle:hover {
+      color: white; 
+      background-color: #6973E3;
+  }
+  
+  .dropdown-item {
+      display: flex;
+      align-items: center;
+      padding: 8px 8px;
+  }
+  
+  .dropdown-item i {
+      margin-right: 8px;
+  }
+  </style>
 {% endblock %}
 
 {% block content_admin %}

@@ -188,17 +188,9 @@ $("#btn_crear_presupuesto").click(function (e) {
                             // Redirigir a la URL para generar el PDF
                             /* window.open(`generar-pdf-presupuesto/${response.presupuesto_id}/`, '_blank'); */
                             window.open(`generar-pdf-comprobante/${response.presupuesto_id}/`, '_blank');
+                            location.reload();
                         }
                     });
-                    /* location.reload(); */
-                   /*  Swal.fire({
-                        title: "¡Correcto!",
-                        text: response.message,
-                        icon: "success",
-                    }).then(() => {
-                        // Recargar la página después de cerrar el mensaje
-                        location.reload();
-                    }); */
                     cargarFecha();
                 } else {
                     // Mostrar mensaje de error

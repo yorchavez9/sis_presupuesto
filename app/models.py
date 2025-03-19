@@ -317,7 +317,6 @@ class Presupuesto(models.Model):
         verbose_name_plural = "Presupuestos"
         db_table = "presupuestos"
         
-
 class DetalleMetrosTerreno(models.Model):
     id_presupuesto = models.ForeignKey(
         Presupuesto,  # Referencia al modelo Presupuesto
@@ -349,7 +348,6 @@ class DetalleMetrosTerreno(models.Model):
         verbose_name_plural = "Detalles de Metros de Terreno"
         db_table = "detalle_metros_terreno"  # Nombre de la tabla en la base de datos
         
-
 class DetallePresupuestoMaterial(models.Model):
     id_presupuesto = models.ForeignKey(
         Presupuesto,  # Referencia al modelo Presupuesto
@@ -387,7 +385,6 @@ class DetallePresupuestoMaterial(models.Model):
         verbose_name_plural = "Detalles de Presupuesto Material"
         db_table = "detalle_presupuesto_material"  # Nombre de la tabla en la base de datos
         
-
 class DetallePresupuestoTrabajador(models.Model):
     # Opciones para el campo tipo_sueldo
     TIPO_SUELDO_CHOICES = [
@@ -436,7 +433,6 @@ class DetallePresupuestoTrabajador(models.Model):
         verbose_name = "Detalle de Presupuesto Trabajador"
         verbose_name_plural = "Detalles de Presupuesto Trabajador"
         db_table = "detalle_presupuesto_trabajador"  # Nombre de la tabla en la base de datos
-
 
 class DetallePresupuestoEquipoMaquina(models.Model):
     # Opciones para el campo tipo_costo

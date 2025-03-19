@@ -24,6 +24,7 @@ urlpatterns = [
     path('lista-presupuestos/', presupuestos.lista_presupuesto, name='lista_presupuestos'),
     path('generar-pdf-presupuesto/<int:presupuesto_id>/', presupuestos.generar_pdf_presupuesto, name='generar_pdf_presupuesto'),
     path('generar-pdf-comprobante/<int:presupuesto_id>/', presupuestos.generar_pdf_comprobante, name='generar_pdf_cotizacion'),
+    path('eliminar-presupuesto/', presupuestos.eliminar_presupuesto, name='eliminar_presupuesto'),
     
     
 

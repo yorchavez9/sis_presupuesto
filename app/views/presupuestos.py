@@ -9,6 +9,7 @@ from django.core.files.base import ContentFile
 from django.core.exceptions import ObjectDoesNotExist
 from django.template.loader import render_to_string
 from weasyprint import HTML
+from django.db.models import Sum
 
 
 
@@ -480,15 +481,19 @@ def generar_pdf_comprobante(request, presupuesto_id):
 
     # Obtener detalles de terreno
     detalles_terreno = DetalleMetrosTerreno.objects.filter(id_presupuesto=presupuesto)
-
     # Obtener detalles de materiales/servicios
     detalles_materiales = DetallePresupuestoMaterial.objects.filter(id_presupuesto=presupuesto)
-
     # Obtener detalles de trabajadores
     detalles_trabajadores = DetallePresupuestoTrabajador.objects.filter(id_presupuesto=presupuesto)
-
     # Obtener detalles de máquinas/equipos
     detalles_maquinas = DetallePresupuestoEquipoMaquina.objects.filter(id_presupuesto=presupuesto)
+    
+    # Calcular subtotales generales
+    subtotal_terreno = detalles_terreno.aggregate(total=Sum('sub_total'))['total'] or 0
+    subtotal_materiales = detalles_materiales.aggregate(total=Sum('sub_total'))['total'] or 0
+    subtotal_trabajadores = detalles_trabajadores.aggregate(total=Sum('sub_total'))['total'] or 0
+    subtotal_maquinas = detalles_maquinas.aggregate(total=Sum('sub_total'))['total'] or 0
+
 
     # Preparar el contexto para la plantilla
     contexto = {
@@ -497,6 +502,10 @@ def generar_pdf_comprobante(request, presupuesto_id):
         'detalles_materiales': detalles_materiales,
         'detalles_trabajadores': detalles_trabajadores,
         'detalles_maquinas': detalles_maquinas,
+        'subtotal_terreno': subtotal_terreno,
+        'subtotal_materiales': subtotal_materiales,
+        'subtotal_trabajadores': subtotal_trabajadores,
+        'subtotal_maquinas': subtotal_maquinas,
     }
 
     # Renderizar el template HTML con los datos
@@ -510,3 +519,14 @@ def generar_pdf_comprobante(request, presupuesto_id):
     response = HttpResponse(pdf, content_type='application/pdf')
     response['Content-Disposition'] = f'inline; filename="cotizacion_{presupuesto.serie}_{presupuesto.numero}.pdf"'
     return response
+
+
+@csrf_exempt
+def eliminar_presupuesto(request):
+    if request.method == 'POST':
+        id_presupuesto = request.POST.get('id_presupuesto')
+        presupuesto = get_object_or_404(Presupuesto, id=id_presupuesto)
+        presupuesto.delete()
+        return JsonResponse({'status': True, 'message': 'Presupuesto eliminado exitosamente'})
+    return JsonResponse({'status': False, 'message': 'Método no permitido'}, status=405)
+

@@ -1,4 +1,5 @@
 {% extends 'presupuestos/template_pdf/base.html' %}
+{% load static %}
 
 {% block title %}{{ presupuesto.id_comprobante.comprobante}} {% endblock title %}
 
@@ -8,36 +9,37 @@
         body {
             font-family: Arial, sans-serif;
             font-size: 12px;
-            color: #000;
+            color: #333;
+            line-height: 1.6;
         }
 
         .section {
-            margin-bottom: 20px;
+            margin-bottom: 30px;
         }
 
         .section h3 {
-            font-size: 14px;
-            color: #000;
-            margin-bottom: 10px;
-            border-bottom: 1px solid #000;
-            padding-bottom: 5px;
+            font-size: 16px;
+            color: #007bff;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #007bff;
+            padding-bottom: 10px;
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
         }
 
         table th, table td {
-            padding: 8px;
+            padding: 10px;
             text-align: center;
-            border: 1px solid #000;
+            border: 1px solid #ddd;
         }
 
         table th {
-            background-color: #f2f2f2;
-            color: #000;
+            background-color: #007bff;
+            color: #fff;
             font-weight: bold;
         }
 
@@ -57,50 +59,110 @@
         .totales table {
             width: 50%;
             margin: 0 auto;
-            border: 1px solid #000;
+            border: 1px solid #ddd;
         }
 
         .totales table td {
-            padding: 8px;
+            padding: 10px;
             text-align: right;
         }
 
-        header {
+        .title_comprobante h1 {
             text-align: center;
+            font-size: 24px;
+            color: #007bff;
             margin-bottom: 20px;
         }
 
-        header h1 {
-            font-size: 18px;
-            margin-bottom: 5px;
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .detalles_comprobante {
+            text-align: left;
+        }
+
+        .logo_comprobante {
+            margin-top: -60px;
+        }
+
+        .logo_comprobante img {
+            max-width: 150px;
+            height: auto;
         }
 
         header h2 {
-            font-size: 16px;
-            margin-bottom: 5px;
+            font-size: 18px;
+            margin-bottom: 10px;
+            color: #333;
         }
 
         header p {
-            font-size: 12px;
+            font-size: 14px;
             margin-bottom: 5px;
+            color: #555;
+        }
+
+        .data_adicionales {
+            background: #f8f9fa;
+            border-left: 5px solid #007bff;
+            padding: 20px;
+            margin-top: 30px;
+            border-radius: 8px;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .data_adicionales p {
+            margin: 10px 0;
+            font-size: 14px;
+            color: #333;
+        }
+
+        .data_adicionales strong {
+            color: #007bff;
+        }
+
+        .section_description_proyecto h2{
+            font-size: 14px;
+            font-weight: bold;
+        }
+        .section_description_proyecto p{
+            font-size: 13px;
         }
 
         footer {
             text-align: center;
-            margin-top: 20px;
-            font-size: 12px;
+            margin-top: 30px;
+            font-size: 14px;
+            color: #777;
         }
     </style>
 {% endblock extra_css %}
 
+{% load humanize %}
+
 {% block contenido %}
-    <header>
+    <section class="title_comprobante">
         <h1>{{ presupuesto.id_comprobante.comprobante}}</h1>
-        <h2>Cotización N° {{ presupuesto.numero }}</h2>
-        <p>Fecha: <strong>{{ presupuesto.fecha }}</strong></p>
-        <p>Cliente: <strong>{{ presupuesto.id_cliente }}</strong></p>
-        <p>DNI: <strong>{{ presupuesto.id_cliente.num_documento }}</strong></p>
+    </section>
+    <header>
+        <div class="detalles_comprobante">
+            <h2>Cotización N° {{ presupuesto.numero }}</h2>
+            <p>Fecha: <strong>{{ presupuesto.fecha }}</strong></p>
+            <p>Cliente: <strong>{{ presupuesto.id_cliente }}</strong></p>
+            <p>DNI: <strong>{{ presupuesto.id_cliente.num_documento }}</strong></p>
+        </div>
+        <div class="logo_comprobante">
+            <img src="{% static 'img/logo/logo.png' %}" alt="">
+        </div>
     </header>
+    <section class="section_description_proyecto">
+        <h2 class="title_description">Descripción del proyecto:</h2>
+        <p>{{presupuesto.descripcion}}</p>
+    </section>
 
     <section class="section">
         <h3>Precio terreno detalle</h3>
@@ -118,10 +180,15 @@
                 <tr>
                     <td>{{ forloop.counter }}</td>
                     <td>{{ terreno.medida }}</td>
-                    <td>S/ {{ terreno.precio }}</td>
-                    <td>S/ {{ terreno.sub_total }}</td>
+                    <td>S/ {{ terreno.precio|floatformat:2|intcomma }}</td>
+                    <td>S/ {{ terreno.sub_total|floatformat:2|intcomma }}</td>
                 </tr>
                 {% endfor %}
+                <!-- Subtotal general de terrenos -->
+                <tr class="total">
+                    <td colspan="3" style="text-align: right;"><strong>Subtotal Terrenos:</strong></td>
+                    <td><strong>S/ {{ subtotal_terreno|floatformat:2|intcomma }}</strong></td>
+                </tr>
             </tbody>
         </table>
     </section>
@@ -144,10 +211,15 @@
                     <td>{{ forloop.counter }}</td>
                     <td>{{ material.id_material_servicio.nombre }}</td>
                     <td>{{ material.cantidad }}</td>
-                    <td>S/ {{ material.precio }}</td>
-                    <td>S/ {{ material.sub_total }}</td>
+                    <td>S/ {{ material.precio|floatformat:2|intcomma }}</td>
+                    <td>S/ {{ material.sub_total|floatformat:2|intcomma }}</td>
                 </tr>
                 {% endfor %}
+                <!-- Subtotal general de materiales -->
+                <tr class="total">
+                    <td colspan="4" style="text-align: right;"><strong>Subtotal Materiales:</strong></td>
+                    <td><strong>S/ {{ subtotal_materiales|floatformat:2|intcomma }}</strong></td>
+                </tr>
             </tbody>
         </table>
     </section>
@@ -171,11 +243,16 @@
                     <td>{{ forloop.counter }}</td>
                     <td>{{ trabajador.id_trabajador.nombre }}</td>
                     <td>{{ trabajador.id_trabajador.id_especialidad }}</td>
-                    <td>S/ {{ trabajador.precio }}</td>
+                    <td>S/ {{ trabajador.precio|floatformat:2|intcomma }}</td>
                     <td>{{ trabajador.tiempo }}</td>
-                    <td>S/ {{ trabajador.sub_total }}</td>
+                    <td>S/ {{ trabajador.sub_total|floatformat:2|intcomma }}</td>
                 </tr>
                 {% endfor %}
+                <!-- Subtotal general de trabajadores -->
+                <tr class="total">
+                    <td colspan="5" style="text-align: right;"><strong>Subtotal Trabajadores:</strong></td>
+                    <td><strong>S/ {{ subtotal_trabajadores|floatformat:2|intcomma }}</strong></td>
+                </tr>
             </tbody>
         </table>
     </section>
@@ -199,11 +276,16 @@
                     <td>{{ forloop.counter }}</td>
                     <td>{{ maquina.id_maquina_equipo.nombre }}</td>
                     <td>{{ maquina.tipo_costo }}</td>
-                    <td>S/ {{ maquina.precio }}</td>
+                    <td>S/ {{ maquina.precio|floatformat:2|intcomma }}</td>
                     <td>{{ maquina.tiempo }}</td>
-                    <td>S/ {{ maquina.sub_total }}</td>
+                    <td>S/ {{ maquina.sub_total|floatformat:2|intcomma }}</td>
                 </tr>
                 {% endfor %}
+                <!-- Subtotal general de máquinas -->
+                <tr class="total">
+                    <td colspan="5" style="text-align: right;"><strong>Subtotal Máquinas:</strong></td>
+                    <td><strong>S/ {{ subtotal_maquinas|floatformat:2|intcomma }}</strong></td>
+                </tr>
             </tbody>
         </table>
     </section>
@@ -212,17 +294,25 @@
         <table>
             <tr>
                 <td>Sub total:</td>
-                <td><strong>S/ {{ presupuesto.sub_total }}</strong></td>
+                <td><strong>S/ {{ presupuesto.sub_total|floatformat:2|intcomma }}</strong></td>
             </tr>
             <tr>
                 <td>IGV (18%):</td>
-                <td><strong>S/ {{ presupuesto.total_impuesto }}</strong></td>
+                <td><strong>S/ {{ presupuesto.total_impuesto|floatformat:2|intcomma }}</strong></td>
             </tr>
             <tr>
                 <td>Total:</td>
-                <td><strong>S/ {{ presupuesto.total }}</strong></td>
+                <td><strong>S/ {{ presupuesto.total|floatformat:2|intcomma }}</strong></td>
             </tr>
         </table>
+    </section>
+    <section class="data_adicionales">
+        <p><strong>Condición de Pago:</strong> {{presupuesto.condicion_pago}}</p>
+        <p><strong>Plazo de Ejecución:</strong> {{presupuesto.plazo_ejecucion}}</p>
+        <p><strong>Garantía:</strong> {{presupuesto.garantia}}</p>
+        <p><strong>Notas:</strong> {{presupuesto.notas}}</p>
+        <p><strong>Observación:</strong>{{presupuesto.observacion}}</p>
+        
     </section>
     
     <footer>
