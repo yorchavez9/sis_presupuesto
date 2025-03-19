@@ -190,9 +190,8 @@ $("#btn_crear_presupuesto").click(function (e) {
                             window.open(`generar-pdf-comprobante/${response.presupuesto_id}/`, '_blank');
                         }
                     });
-
-                    /* // Mostrar mensaje de éxito
-                    Swal.fire({
+                    /* location.reload(); */
+                   /*  Swal.fire({
                         title: "¡Correcto!",
                         text: response.message,
                         icon: "success",

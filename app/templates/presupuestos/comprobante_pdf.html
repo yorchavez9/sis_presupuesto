@@ -1,6 +1,6 @@
 {% extends 'presupuestos/template_pdf/base.html' %}
 
-{% block title %}Cotización A4{% endblock title %}
+{% block title %}{{ presupuesto.id_comprobante.comprobante}} {% endblock title %}
 
 {% block extra_css %}
     <!-- Estilos específicos para la cotización -->
