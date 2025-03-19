@@ -1084,8 +1084,8 @@ $(document).ready(function () {
             error: function (error) {
                 console.log(error);
                 Swal.fire({
-                    icon: 'error',
-                    title: 'Error',
+                    icon: 'warning',
+                    title: '¡Aviso!',
                     text: error.responseJSON.message,
                 });
             }

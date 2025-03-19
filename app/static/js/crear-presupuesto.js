@@ -52,7 +52,6 @@ $("#btn_crear_presupuesto").click(function (e) {
         const materiales = {
             id_material: fila.find(".id_material_presupuesto").val(),
             cantidad: fila.find(".input-cantidad").val(),
-            cantidad: fila.find(".input-precio").val(),
             precio: fila.find(".input-precio").val(),
             sub_total: fila.find(".subtotal-material").text().replace(/[S/,]/g, "")
         };
@@ -176,7 +175,23 @@ $("#btn_crear_presupuesto").click(function (e) {
                     $("#data_detalles_trabajadores_presupuesto").empty();
                     $("#data_detalles_maquinas_equipos_presupuesto").empty();
 
-                    // Mostrar mensaje de éxito
+                     // Mostrar SweetAlert con el enlace al PDF
+                    Swal.fire({
+                        title: "¡Correcto!",
+                        text: response.message,
+                        icon: "success",
+                        showCancelButton: true,
+                        confirmButtonText: "Imprimir PDF",
+                        cancelButtonText: "Cerrar",
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            // Redirigir a la URL para generar el PDF
+                            /* window.open(`generar-pdf-presupuesto/${response.presupuesto_id}/`, '_blank'); */
+                            window.open(`generar-pdf-comprobante/${response.presupuesto_id}/`, '_blank');
+                        }
+                    });
+
+                    /* // Mostrar mensaje de éxito
                     Swal.fire({
                         title: "¡Correcto!",
                         text: response.message,
@@ -184,7 +199,7 @@ $("#btn_crear_presupuesto").click(function (e) {
                     }).then(() => {
                         // Recargar la página después de cerrar el mensaje
                         location.reload();
-                    });
+                    }); */
                     cargarFecha();
                 } else {
                     // Mostrar mensaje de error
