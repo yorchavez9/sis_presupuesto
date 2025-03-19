@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import JsonResponse
-from ..models import Presupuesto, Trabajador, EquipoMaquinaria, Cliente, Comprobante
+from ..models import Presupuesto, Trabajador, EquipoMaquinaria,  DetalleMetrosTerreno, DetallePresupuestoMaterial, DetallePresupuestoTrabajador, DetallePresupuestoEquipoMaquina
 from django.contrib.auth.models import User
 from django.views.decorators.csrf import csrf_exempt
 import os, json
@@ -138,11 +138,6 @@ def crear_presupuesto(request):
             id_cliente = request.POST.get('id_cliente')
             id_comprobante = request.POST.get('id_comprobante')
             
-            # Verificar que los objetos existen (opcional, si necesitas validar)
-            usuario = get_object_or_404(User, id=id_usuario)
-            cliente = get_object_or_404(Cliente, id=id_cliente)
-            comprobante = get_object_or_404(Comprobante, id=id_comprobante)
-            
             fecha = request.POST.get('fecha')
             hora = request.POST.get('hora')
             serie = request.POST.get('serie')
@@ -179,12 +174,58 @@ def crear_presupuesto(request):
                 total=total
             )
             presupuesto.save()
-            return JsonResponse({'status': 'success', 'message': 'Presupuesto creado correctamente'})
+
+            # Guardar detalles de metros de terreno
+            data_terreno = json.loads(request.POST.get('data_terreno', '[]'))
+            for terreno in data_terreno:
+                DetalleMetrosTerreno.objects.create(
+                    id_presupuesto=presupuesto,
+                    medida=terreno['medida_terreno'],
+                    precio=terreno['precio_terreno'],
+                    sub_total=terreno['sub_total_terreno']
+                )
+
+            # Guardar detalles de materiales
+            data_materiales = json.loads(request.POST.get('data_materiales', '[]'))
+            for material in data_materiales:
+                DetallePresupuestoMaterial.objects.create(
+                    id_presupuesto=presupuesto,
+                    id_material_servicio_id=material['id_material'],
+                    cantidad=material['cantidad'],
+                    precio=material['precio'],
+                    sub_total=material['sub_total']
+                )
+
+            # Guardar detalles de trabajadores
+            data_trabajadores = json.loads(request.POST.get('data_trabajadores', '[]'))
+            for trabajador in data_trabajadores:
+                DetallePresupuestoTrabajador.objects.create(
+                    id_presupuesto=presupuesto,
+                    id_trabajador_id=trabajador['id_trabajador'],
+                    tipo_sueldo=trabajador['tipo_sueldo'],
+                    precio=trabajador['precio'],
+                    tiempo=trabajador['tiempo'],
+                    sub_total=trabajador['sub_total']
+                )
+
+            # Guardar detalles de equipos/máquinas
+            data_maquinas_equipos = json.loads(request.POST.get('data_maquinas_equipos', '[]'))
+            for maquina in data_maquinas_equipos:
+                DetallePresupuestoEquipoMaquina.objects.create(
+                    id_presupuesto=presupuesto,
+                    id_maquina_equipo_id=maquina['id_equipo_maquina'],
+                    tipo_costo=maquina['tipo_sueldo'],
+                    precio=maquina['precio'],
+                    tiempo=maquina['tiempo'],
+                    sub_total=maquina['sub_total']
+                )
+
+            return JsonResponse({'status': 'success', 'message': 'Presupuesto y detalles creados correctamente'})
         except Exception as e:
             return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
     else:
         return JsonResponse({'status': 'error', 'message': 'Método no permitido'}, status=405)
-    
+
 @csrf_exempt
 def ultimo_comprobante(request):
     if request.method == 'GET':

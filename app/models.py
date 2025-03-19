@@ -316,3 +316,174 @@ class Presupuesto(models.Model):
         verbose_name = "Presupuesto"
         verbose_name_plural = "Presupuestos"
         db_table = "presupuestos"
+        
+
+class DetalleMetrosTerreno(models.Model):
+    id_presupuesto = models.ForeignKey(
+        Presupuesto,  # Referencia al modelo Presupuesto
+        on_delete=models.CASCADE,  # Eliminación en cascada
+        related_name='detalles_metros_terreno',  # Nombre para la relación inversa
+        verbose_name="Presupuesto"
+    )
+    medida = models.DecimalField(
+        max_digits=10,  # Máximo 10 dígitos
+        decimal_places=2,  # 2 decimales
+        verbose_name="Medida"
+    )
+    precio = models.DecimalField(
+        max_digits=10,  # Máximo 10 dígitos
+        decimal_places=2,  # 2 decimales
+        verbose_name="Precio"
+    )
+    sub_total = models.DecimalField(
+        max_digits=10,  # Máximo 10 dígitos
+        decimal_places=2,  # 2 decimales
+        verbose_name="Subtotal"
+    )
+
+    def __str__(self):
+        return f"Detalle {self.id} - Presupuesto {self.id_presupuesto.id}"
+
+    class Meta:
+        verbose_name = "Detalle de Metros de Terreno"
+        verbose_name_plural = "Detalles de Metros de Terreno"
+        db_table = "detalle_metros_terreno"  # Nombre de la tabla en la base de datos
+        
+
+class DetallePresupuestoMaterial(models.Model):
+    id_presupuesto = models.ForeignKey(
+        Presupuesto,  # Referencia al modelo Presupuesto
+        on_delete=models.CASCADE,  # Eliminación en cascada
+        related_name='detalles_presupuesto_material',  # Nombre para la relación inversa
+        verbose_name="Presupuesto"
+    )
+    id_material_servicio = models.ForeignKey(
+        MaterialServicio,  # Referencia al modelo MaterialServicio
+        on_delete=models.CASCADE,  # Eliminación en cascada
+        related_name='detalles_presupuesto_material',  # Nombre para la relación inversa
+        verbose_name="Material/Servicio"
+    )
+    cantidad = models.DecimalField(
+        max_digits=10,  # Máximo 10 dígitos
+        decimal_places=2,  # 2 decimales
+        verbose_name="Cantidad"
+    )
+    precio = models.DecimalField(
+        max_digits=10,  # Máximo 10 dígitos
+        decimal_places=2,  # 2 decimales
+        verbose_name="Precio Unitario"
+    )
+    sub_total = models.DecimalField(
+        max_digits=10,  # Máximo 10 dígitos
+        decimal_places=2,  # 2 decimales
+        verbose_name="Subtotal"
+    )
+
+    def __str__(self):
+        return f"Detalle {self.id} - Presupuesto {self.id_presupuesto.id} - Material {self.id_material_servicio.id}"
+
+    class Meta:
+        verbose_name = "Detalle de Presupuesto Material"
+        verbose_name_plural = "Detalles de Presupuesto Material"
+        db_table = "detalle_presupuesto_material"  # Nombre de la tabla en la base de datos
+        
+
+class DetallePresupuestoTrabajador(models.Model):
+    # Opciones para el campo tipo_sueldo
+    TIPO_SUELDO_CHOICES = [
+        ('diario', 'Diario'),
+        ('semanal', 'Semanal'),
+        ('quincenal', 'Quincenal'),
+        ('mensual', 'Mensual'),
+        ('proyecto', 'Por Proyecto'),
+    ]
+
+    id_presupuesto = models.ForeignKey(
+        Presupuesto,  # Referencia al modelo Presupuesto
+        on_delete=models.CASCADE,  # Eliminación en cascada
+        related_name='detalles_presupuesto_trabajador',  # Nombre para la relación inversa
+        verbose_name="Presupuesto"
+    )
+    id_trabajador = models.ForeignKey(
+        Trabajador,  # Referencia al modelo Trabajador
+        on_delete=models.CASCADE,  # Eliminación en cascada
+        related_name='detalles_presupuesto_trabajador',  # Nombre para la relación inversa
+        verbose_name="Trabajador"
+    )
+    tipo_sueldo = models.CharField(
+        max_length=100,  # Longitud máxima del texto
+        choices=TIPO_SUELDO_CHOICES,  # Opciones predefinidas
+        verbose_name="Tipo de Sueldo"
+    )
+    precio = models.DecimalField(
+        max_digits=10,  # Máximo 10 dígitos
+        decimal_places=2,  # 2 decimales
+        verbose_name="Precio Unitario"
+    )
+    tiempo = models.IntegerField(
+        verbose_name="Tiempo"
+    )
+    sub_total = models.DecimalField(
+        max_digits=10,  # Máximo 10 dígitos
+        decimal_places=2,  # 2 decimales
+        verbose_name="Subtotal"
+    )
+
+    def __str__(self):
+        return f"Detalle {self.id} - Presupuesto {self.id_presupuesto.id} - Trabajador {self.id_trabajador.id}"
+
+    class Meta:
+        verbose_name = "Detalle de Presupuesto Trabajador"
+        verbose_name_plural = "Detalles de Presupuesto Trabajador"
+        db_table = "detalle_presupuesto_trabajador"  # Nombre de la tabla en la base de datos
+
+
+class DetallePresupuestoEquipoMaquina(models.Model):
+    # Opciones para el campo tipo_costo
+    TIPO_COSTO_CHOICES = [
+        ('hora', 'Por Hora'),
+        ('diario', 'Diario'),
+        ('semanal', 'Semanal'),
+        ('quincenal', 'Quincenal'),
+        ('mensual', 'Mensual'),
+        ('proyecto', 'Por Proyecto'),
+    ]
+
+    id_presupuesto = models.ForeignKey(
+        Presupuesto,  # Referencia al modelo Presupuesto
+        on_delete=models.CASCADE,  # Eliminación en cascada
+        related_name='detalles_presupuesto_equipo_maquina',  # Nombre para la relación inversa
+        verbose_name="Presupuesto"
+    )
+    id_maquina_equipo = models.ForeignKey(
+        EquipoMaquinaria,  # Referencia al modelo EquipoMaquinaria
+        on_delete=models.CASCADE,  # Eliminación en cascada
+        related_name='detalles_presupuesto_equipo_maquina',  # Nombre para la relación inversa
+        verbose_name="Equipo/Máquina"
+    )
+    tipo_costo = models.CharField(
+        max_length=100,  # Longitud máxima del texto
+        choices=TIPO_COSTO_CHOICES,  # Opciones predefinidas
+        verbose_name="Tipo de Costo"
+    )
+    precio = models.DecimalField(
+        max_digits=10,  # Máximo 10 dígitos
+        decimal_places=2,  # 2 decimales
+        verbose_name="Precio Unitario"
+    )
+    tiempo = models.IntegerField(
+        verbose_name="Tiempo"
+    )
+    sub_total = models.DecimalField(
+        max_digits=10,  # Máximo 10 dígitos
+        decimal_places=2,  # 2 decimales
+        verbose_name="Subtotal"
+    )
+
+    def __str__(self):
+        return f"Detalle {self.id} - Presupuesto {self.id_presupuesto.id} - Equipo/Máquina {self.id_maquina_equipo.id}"
+
+    class Meta:
+        verbose_name = "Detalle de Presupuesto Equipo/Máquina"
+        verbose_name_plural = "Detalles de Presupuesto Equipo/Máquina"
+        db_table = "detalle_presupuesto_equipo_maquina"  # Nombre de la tabla en la base de datos

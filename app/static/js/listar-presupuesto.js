@@ -1,4 +1,11 @@
 $(document).ready(function () {
+
+    function formatCurrency(value) {
+        if (!value) return "S/ 0.00";
+        return new Intl.NumberFormat('es-PE', { style: 'currency', currency: 'PEN' }).format(value);
+    }
+
+
     function inicializarTabla() {
         return $('#tabla_lista_presupuesto').DataTable({
             "destroy": true,
@@ -26,9 +33,9 @@ $(document).ready(function () {
                         dato.tipo_comprobante,
                         dato.descripcion,
                         dato.impuesto,
-                        dato.sub_total,
-                        dato.total_impuesto,
-                        dato.total,
+                        formatCurrency(dato.sub_total),
+                        formatCurrency(dato.total_impuesto),
+                        formatCurrency(dato.total),
                         dato.fecha,
                         dato.estado ?
                             '<button class="btn bg-success text-white badges btn-sm rounded btnActivar" idPresupuesto="' + dato.id + '" estadoPresupuesto="0">Activado</button>' :
