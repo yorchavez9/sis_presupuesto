@@ -6,6 +6,15 @@
 
 {% block extra_css %}
   <style>
+    .imagen_vista_material {
+      transition: transform 0.3s ease; /* Transición suave */
+      cursor: pointer;
+  }
+
+  .imagen_vista_material:hover {
+      transform: scale(2); /* Escala la imagen al 200% de su tamaño */
+  }
+
     .tabla_materiales_servicios_presupuesto tbody tr {
       cursor: pointer;
     }
@@ -36,7 +45,9 @@
       font-weight: bold;
     }
   </style>
-
+  <script>
+    const RUTA_BASE_IMAGENES = "{% static 'img/materiales_servicios/' %}";
+  </script>
 {% endblock %}
 
 {% block content_admin %}
@@ -393,7 +404,7 @@
 
     {% comment %}MODAL LISTA DE MATERIAL O SERVICIO{% endcomment %}
     <div id="modal_agregar_materiales" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="standard-modalLabel" aria-hidden="true">
-      <div class="modal-dialog modal-lg">
+      <div class="modal-dialog modal-xl modal-dialog-scrollable">
         <div class="modal-content">
           <div class="modal-header">
             <h4 class="modal-title" id="standard-modalLabel">Selecione el material para agregar</h4>
@@ -408,6 +419,7 @@
                       <th>N°</th>
                       <th hidden>Id</th>
                       <th>Categoría</th>
+                      <th>Imagen</th>
                       <th>Nombre</th>
                       <th>Precio</th>
                       <th>Stock</th>

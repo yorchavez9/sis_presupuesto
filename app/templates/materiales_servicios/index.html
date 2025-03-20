@@ -5,6 +5,17 @@
 {% load static %}
 
 {% block extra_css %}
+  <style>
+    .imagen_vista_material {
+      transition: transform 0.3s ease; /* Transición suave */
+      cursor: pointer;
+  }
+
+  .imagen_vista_material:hover {
+      transform: scale(5); /* Escala la imagen al 200% de su tamaño */
+  }
+
+  </style>
   <script>
     const RUTA_BASE_IMAGENES = "{% static 'img/materiales_servicios/' %}";
   </script>
@@ -42,6 +53,7 @@
               <h4 class="header-title mb-0">Tabla de Materiales o Servicios</h4>
               <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal_nuevo_material_servicio"><i class="uil-plus"></i> Nuevo Material o Servicio</button>
             </div>
+            
             <div class="tab-content">
               <div class="tab-pane show active" id="basic-datatable-preview">
                 <table id="basic-datatable" class="tabla_materiales_servicios table table-striped dt-responsive nowrap w-100">
@@ -50,12 +62,12 @@
                       <th>N°</th>
                       <th>Categoria</th>
                       <th>Nombre</th>
+                      <th>Imagen</th>
                       <th>Tipo</th>
                       <th>Unidad de Medida</th>
                       <th>Precio Compra</th>
                       <th>Precio Venta</th>
                       <th>Stock</th>
-                      <th>Stock Mínimo</th>
                       <th>Estado</th>
                       <th>Acciones</th>
                     </tr>
@@ -138,7 +150,7 @@
                 <div class="col-md-6">
                   <div class="form-group mb-2">
                     <label for="precio_compra" class="form-label">Precio Compra</label>
-                    <input type="number" step="0.01" name="precio_compra" id="precio_compra" class="form-control" placeholder="Ingrese el precio de compra" />
+                    <input type="number" step="0.01" name="precio_compra" id="precio_compra" value="0.00" min="0" class="form-control" placeholder="Ingrese el precio de compra" />
                   </div>
                 </div>
               </div>
@@ -146,14 +158,14 @@
                 <div class="col-md-6">
                   <div class="form-group mb-2">
                     <label for="precio_venta" class="form-label">Precio Venta <span class="text-danger">(*)</span></label>
-                    <input type="number" step="0.01" name="precio_venta" id="precio_venta" class="form-control" placeholder="Ingrese el precio de venta" />
+                    <input type="number" step="0.01" name="precio_venta" id="precio_venta" value="0.00" min="0.00" class="form-control" placeholder="Ingrese el precio de venta" />
                     <span class="text-danger" id="error_precio_venta"></span>
                   </div>
                 </div>
                 <div class="col-md-6">
                   <div class="form-group mb-2">
                     <label for="stock" class="form-label">Stock <span class="text-danger">(*)</span></label>
-                    <input type="number" name="stock" id="stock" class="form-control" placeholder="Ingrese el stock" />
+                    <input type="number" name="stock" id="stock" class="form-control" value="0" min="0" placeholder="Ingrese el stock" />
                     <span class="text-danger" id="error_stock"></span>
                   </div>
                 </div>
@@ -162,7 +174,7 @@
                 <div class="col-md-6">
                   <div class="form-group mb-2">
                     <label for="stock_minimo" class="form-label">Stock Mínimo <span class="text-danger">(*)</span></label>
-                    <input type="number" name="stock_minimo" id="stock_minimo" class="form-control" placeholder="Ingrese el stock mínimo" />
+                    <input type="number" name="stock_minimo" id="stock_minimo" value="0" min="0" class="form-control" placeholder="Ingrese el stock mínimo" />
                     <span class="text-danger" id="error_stock_minimo"></span>
                   </div>
                 </div>
@@ -268,7 +280,7 @@
                 <div class="col-md-6">
                   <div class="form-group mb-2">
                     <label for="precio_compra_edit" class="form-label">Precio Compra</label>
-                    <input type="number" step="0.01" name="precio_compra" id="precio_compra_edit" class="form-control" placeholder="Ingrese el precio de compra" />
+                    <input type="number" step="0.01" name="precio_compra" id="precio_compra_edit" value="0.00" class="form-control" placeholder="Ingrese el precio de compra" />
                   </div>
                 </div>
               </div>
@@ -276,14 +288,14 @@
                 <div class="col-md-6">
                   <div class="form-group mb-2">
                     <label for="precio_venta_edit" class="form-label">Precio Venta <span class="text-danger">(*)</span></label>
-                    <input type="number" step="0.01" name="precio_venta" id="precio_venta_edit" class="form-control" placeholder="Ingrese el precio de venta" />
+                    <input type="number" step="0.01" name="precio_venta" id="precio_venta_edit" value="0.00" min="0.00" class="form-control" placeholder="Ingrese el precio de venta" />
                     <span class="text-danger" id="error_precio_venta_edit"></span>
                   </div>
                 </div>
                 <div class="col-md-6">
                   <div class="form-group mb-2">
                     <label for="stock_edit" class="form-label">Stock <span class="text-danger">(*)</span></label>
-                    <input type="number" name="stock" id="stock_edit" class="form-control" placeholder="Ingrese el stock" />
+                    <input type="number" name="stock" id="stock_edit" class="form-control" value="0" placeholder="Ingrese el stock" />
                     <span class="text-danger" id="error_stock_edit"></span>
                   </div>
                 </div>
@@ -292,7 +304,7 @@
                 <div class="col-md-6">
                   <div class="form-group mb-2">
                     <label for="stock_minimo_edit" class="form-label">Stock Mínimo <span class="text-danger">(*)</span></label>
-                    <input type="number" name="stock_minimo" id="stock_minimo_edit" class="form-control" placeholder="Ingrese el stock mínimo" />
+                    <input type="number" name="stock_minimo" id="stock_minimo_edit" value="0" class="form-control" placeholder="Ingrese el stock mínimo" />
                     <span class="text-danger" id="error_stock_minimo_edit"></span>
                   </div>
                 </div>

@@ -1,4 +1,10 @@
 $(document).ready(function () {
+
+    function formatCurrency(value) {
+        if (!value) return "S/ 0.00";
+        return new Intl.NumberFormat('es-PE', { style: 'currency', currency: 'PEN' }).format(value);
+    }
+
     function inicializarTabla() {
         return $('.tabla_materiales_servicios').DataTable({
             "destroy": true,
@@ -19,7 +25,9 @@ $(document).ready(function () {
             dataType: 'json',
             success: function (response) {
                 tabla.clear();
+                
                 response.forEach(function (dato, index) {
+                    const ruta_imagen = RUTA_BASE_IMAGENES + dato.imagen;
                     let stockClass = '';
                     if (dato.stock <= dato.stock_minimo) {
                         stockClass = 'bg-danger text-white';
@@ -32,10 +40,11 @@ $(document).ready(function () {
                         index + 1,
                         dato.id_categoria.nombre,
                         dato.nombre,
+                        `<img src="${ruta_imagen}" alt="" width="50%" class="img-fluid imagen_vista_material">`,
                         dato.tipo,
                         dato.id_unidad_medida.nombre,
-                        `S/ ${dato.precio_compra}`,
-                        `S/ ${dato.precio_venta}`,
+                        formatCurrency(dato.precio_compra),
+                        formatCurrency(dato.precio_venta),
                         `<div class="${stockClass} text-center" style="border-radius: 5px;">${dato.stock}</div>`,
                         dato.stock_minimo,
                         dato.estado ?
@@ -258,6 +267,7 @@ $(document).ready(function () {
                         cargarMaterialesServicios();
                         $("#modal_nuevo_material_servicio").modal("hide");
                         $("#form_crear_material_servicio")[0].reset();
+                        $('#vista_previa_imagen').attr('src', '');
                        
                         Swal.fire({
                             title: "¡Correcto!",

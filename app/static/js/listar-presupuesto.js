@@ -53,12 +53,12 @@ $(document).ready(function () {
                                         </a>
                                     </li>
                                     <li>
-                                        <a class="dropdown-item" href="#" onclick="window.print()">
+                                        <a class="dropdown-item btnImprimirPresupuesto" href="#" idPresupuesto="${dato.id}">
                                             <i class="ri-printer-line text-success me-2 fs-4"></i> Imprimir
                                         </a>
                                     </li>
                                     <li>
-                                        <a class="dropdown-item" href="#">
+                                        <a class="dropdown-item btnDescargarPresupuesto" href="#" idPresupuesto="${dato.id}">
                                             <i class="ri-download-line text-success me-2 fs-4"></i> Descargar
                                         </a>
                                     </li>
@@ -91,7 +91,7 @@ $(document).ready(function () {
 
 
     /* =========================================
-      ELIMINAR MATERIAL O SERVICIO
+      ELIMINAR PRESUPUESTO
       ========================================= */
     $("#tabla_lista_presupuesto").on("click", '.btnEliminarPresupuesto', function (e) {
         e.preventDefault();
@@ -142,5 +142,30 @@ $(document).ready(function () {
             }
         });
     });
+
+    /* =========================================
+      DESCARGAR COMPROBANTE PRESUPUESTO
+      ========================================= */
+      $("#tabla_lista_presupuesto").on("click", '.btnDescargarPresupuesto', function (e){
+        e.preventDefault();
+        let presupuesto_id = $(this).attr("idPresupuesto");
+        const datos = new FormData();
+        datos.append("presupuesto_id", presupuesto_id);
+        window.open(`generar-pdf-comprobante/${presupuesto_id}/`, '_blank');
+      });
+
+    /* =========================================
+      IMPRIMIR COMPROBANTE PRESUPUESTO
+      ========================================= */
+      $("#tabla_lista_presupuesto").on("click", '.btnImprimirPresupuesto', function (e) {
+        e.preventDefault();
+        let presupuesto_id = $(this).attr("idPresupuesto");
+        let nuevaVentana = window.open(`generar-pdf-comprobante/${presupuesto_id}/`, '_blank');
+
+        nuevaVentana.onload = function() {
+          nuevaVentana.print();
+        };
+      });
+    
 })
 

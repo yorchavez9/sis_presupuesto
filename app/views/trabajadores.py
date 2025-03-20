@@ -7,7 +7,7 @@ import json
 
 def index_trabajadores(request):
     return render(request, 'trabajadores/index.html')
-
+@csrf_exempt
 def lista_trabajadores(request):
     if request.method == 'GET':
         try:
@@ -38,7 +38,7 @@ def lista_trabajadores(request):
             print(f"Error en la vista lista_trabajadores: {str(e)}")
             return JsonResponse({'error': 'Error interno del servidor'}, status=500)
     return JsonResponse({'error': 'Método no permitido'}, status=405)
-
+@csrf_exempt
 def lista_especialidades(request):
     if request.method == 'GET':
         especialidades = Especialidad.objects.all().order_by('-id')
@@ -50,7 +50,7 @@ def lista_especialidades(request):
         ]
         return JsonResponse(especialidades_data, safe=False)
     return JsonResponse({'error': 'Solicitud no válida'}, status = 4000)
-
+@csrf_exempt
 def consultar_dni(request, numero):
     try:
         api_url = f"https://api.apis.net.pe/v2/reniec/dni?numero={numero}"
@@ -65,7 +65,7 @@ def consultar_dni(request, numero):
     
     except requests.exceptions.RequestException as e:
         return JsonResponse({'error': str(e)}, status=500)
-
+@csrf_exempt
 def consulta_ruc(request, numero):
     try:
         api_url = f"https://api.apis.net.pe/v2/sunat/ruc?numero={numero}"
@@ -137,7 +137,7 @@ def editar_trabajador(request):
     
     return JsonResponse({'status': False, 'message': 'Método no permitido'}, status=405)
 
-
+@csrf_exempt
 def actualizar_trabajador(request):
     if request.method == 'POST':
         trabajador_id = request.POST.get('trabajador_id')

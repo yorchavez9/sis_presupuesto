@@ -362,6 +362,7 @@ $(document).ready(function () {
             success: function (response) {
                 tabla_materiales.clear();
                 response.forEach(function (dato, index) {
+                    const ruta_imagen = RUTA_BASE_IMAGENES + dato.imagen;
                     let stockClass = '';
                     if (dato.stock <= dato.stock_minimo) {
                         stockClass = 'bg-danger text-white';
@@ -375,8 +376,9 @@ $(document).ready(function () {
                         index + 1,
                         dato.id,
                         dato.id_categoria.nombre,
+                        `<img src="${ruta_imagen}" alt="" width="50%" class="img-fluid imagen_vista_material">`,
                         dato.nombre,
-                        formatCurrency(dato.precio_venta),
+                        `<b>${formatCurrency(dato.precio_venta)}</b>`,
                         `<div class="${stockClass} text-center" style="border-radius: 5px;">${dato.stock}</div>`,
                         dato.estado ?
                             `<button class="btn bg-success text-white badges btn-sm rounded btnActivar" idMaterial="${dato.id}" estadoMaterial="0">Activado</button>` :
