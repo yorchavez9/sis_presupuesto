@@ -473,7 +473,6 @@ def generar_pdf_presupuesto(request, presupuesto_id):
     response['Content-Disposition'] = f'inline; filename="presupuesto_{presupuesto.serie}_{presupuesto.numero}.pdf"'
     return response
     
-
 @csrf_exempt
 def generar_pdf_comprobante(request, presupuesto_id):
     # Obtener el presupuesto

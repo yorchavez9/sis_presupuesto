@@ -1,14 +1,5 @@
 $(document).ready(function () {
 
-    let tabla = $('.tabla_clientes').DataTable({
-        "destroy": true,
-        "responsive": true, // Habilita el modo responsive
-        "scrollX": true, // Permite el desplazamiento horizontal
-        "pageLength": 10,
-        "language": {
-            "url": "//cdn.datatables.net/plug-ins/1.10.25/i18n/Spanish.json"
-        }
-    });
 
     function cargarClientes() {
         $.ajax({
@@ -16,35 +7,59 @@ $(document).ready(function () {
             type: 'GET',
             dataType: 'json',
             success: function (clientes) {
-                tabla.clear();
+                var tabla = $("#tabla_clientes");
+                var tbody = tabla.find("tbody");
+                tbody.empty(); // Limpiar el contenido actual del tbody
+    
+                // Agregar los nuevos datos
                 clientes.forEach(function (dato, index) {
-                    tabla.row.add([
-                        index + 1,
-                        dato.nombre,
-                        `${dato.tipo_documento}: ${dato.num_documento}`,
-                        dato.direccion || "Sin direción",
-                        dato.telefono || "Sin telefono",
-                        dato.correo || "Sin correo",
-                        dato.estado ?
-                            '<button class="btn bg-success text-white badges btn-sm rounded btnActivar" idCliente="' + dato.id + '" estadoCliente="0">Activado</button>' :
-                            '<button class="btn bg-danger text-white badges btn-sm rounded btnActivar" idCliente="' + dato.id + '" estadoCliente="1">Desactivado</button>',
-                        `
-                        <div class="text-center">
-                            <a href="#" class="me-3 btnEditarCliente" idCliente="${dato.id}" data-bs-toggle="modal" data-bs-target="#modal_editar_cliente">
-                            <i class="ri-edit-box-line text-warning fs-3"></i>
-                            </a>
-                            <a href="#" class="me-3 confirm-text btnEliminarCliente" idCliente="${dato.id}">
-                            <i class="ri-delete-bin-line text-danger fs-3"></i>
-                            </a>
-                        </div>
-                        `
-                    ]);
+                    var fila = `
+                        <tr>
+                            <td>${index + 1}</td>
+                            <td>${dato.nombre}</td>
+                            <td>${dato.tipo_documento}: ${dato.num_documento}</td>
+                            <td>${dato.direccion || "Sin dirección"}</td>
+                            <td>${dato.telefono || "Sin teléfono"}</td>
+                            <td>${dato.correo || "Sin correo"}</td>
+                            <td>
+                                ${dato.estado ?
+                                    '<button class="btn bg-success text-white badges btn-sm rounded btnActivar" idCliente="' + dato.id + '" estadoCliente="0">Activado</button>' :
+                                    '<button class="btn bg-danger text-white badges btn-sm rounded btnActivar" idCliente="' + dato.id + '" estadoCliente="1">Desactivado</button>'
+                                }
+                            </td>
+                            <td class="text-center">
+                                <div class="text-center">
+                                    <a href="#" class="me-3 btnEditarCliente" idCliente="${dato.id}" data-bs-toggle="modal" data-bs-target="#modal_editar_cliente">
+                                        <i class="ri-edit-box-line text-warning fs-3"></i>
+                                    </a>
+                                    <a href="#" class="me-3 confirm-text btnEliminarCliente" idCliente="${dato.id}">
+                                        <i class="ri-delete-bin-line text-danger fs-3"></i>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    `;
+                    tbody.append(fila);
                 });
-                tabla.draw();
+    
+                // Destruir DataTable si ya está inicializado
+                if ($.fn.DataTable.isDataTable("#tabla_clientes")) {
+                    tabla.DataTable().destroy();
+                }
+    
+                // Re-inicializar DataTables
+                tabla.DataTable({
+                    autoWidth: true,
+                    responsive: true,
+                });
+            },
+            error: function (xhr, status, error) {
+                console.error("Error al cargar los clientes:", error);
             }
         });
     }
-
+    
+    // Cargar clientes al inicio
     cargarClientes();
 
     /* ===========================================
@@ -110,11 +125,11 @@ $(document).ready(function () {
     =========================================== */
     $('#seccion_nombre').hide();
     $('#tipo_documento').change(function () {
-        let tipo_documento = $(this).val(); 
+        let tipo_documento = $(this).val();
         if (tipo_documento === "DNI" || tipo_documento === "RUC") {
-            $('#seccion_nombre').show(); 
+            $('#seccion_nombre').show();
             if (tipo_documento === "DNI") {
-                $('#nombre_razon_social').html('Nombre Completo <span class="text-danger">(*)</span>'); 
+                $('#nombre_razon_social').html('Nombre Completo <span class="text-danger">(*)</span>');
             } else if (tipo_documento === "RUC") {
                 $('#nombre_razon_social').html('Razón Social <span class="text-danger">(*)</span>');
             }
@@ -195,7 +210,7 @@ $(document).ready(function () {
             datos.append("correo", correo);
 
             $.ajax({
-                url: "crear/",
+                url: "crear-cliente/",
                 type: 'POST',
                 data: datos,
                 processData: false,
@@ -204,7 +219,7 @@ $(document).ready(function () {
                     if (response.status) {
                         cargarClientes();
                         tabla.destroy();
-                        tabla = $('.tabla_clientes').DataTable({
+                        tabla = $('#tabla_clientes').DataTable({
                             "destroy": true,
                             "responsive": true,
                             "pageLength": 10,
@@ -237,7 +252,7 @@ $(document).ready(function () {
     /* =========================================
     EDITAR CLIENTE
     ========================================= */
-    $(".tabla_clientes").on("click", '.btnEditarCliente', function (e) {
+    $("#tabla_clientes").on("click", '.btnEditarCliente', function (e) {
         e.preventDefault();
         let cliente_id = $(this).attr("idCliente");
         const datos = new FormData();
@@ -331,7 +346,14 @@ $(document).ready(function () {
                 contentType: false,
                 success: function (response) {
                     if (response.status) {
+                        // Destruir la DataTable si ya está inicializada
+                        if ($.fn.DataTable.isDataTable("#tabla_clientes")) {
+                            $("#tabla_clientes").DataTable().destroy();
+                        }
+
+                        // Cargar los clientes nuevamente
                         cargarClientes();
+                
                         $("#modal_editar_cliente").modal("hide");
                         $("#form_editar_cliente")[0].reset();
                         Swal.fire({
@@ -347,6 +369,7 @@ $(document).ready(function () {
                         });
                     }
                 }
+                
             })
         }
     });
@@ -354,7 +377,7 @@ $(document).ready(function () {
     /* =========================================
     ACTIVAR O DESACTIVAR CLIENTE
     ========================================= */
-    $(".tabla_clientes").on("click", '.btnActivar', function (e) {
+    $("#tabla_clientes").on("click", '.btnActivar', function (e) {
         e.preventDefault();
 
         let cliente_id = $(this).attr("idCliente");
@@ -402,7 +425,7 @@ $(document).ready(function () {
     /* =========================================
     ELIMINAR CLIENTE
     ========================================= */
-    $(".tabla_clientes").on("click", '.btnEliminarCliente', function (e) {
+    $("#tabla_clientes").on("click", '.btnEliminarCliente', function (e) {
         e.preventDefault();
         let cliente_id = $(this).attr("idCliente");
         const datos = new FormData();
@@ -427,6 +450,12 @@ $(document).ready(function () {
                     contentType: false,
                     success: function (response) {
                         if (response.status) {
+                            // Destruir la DataTable si ya está inicializada
+                            if ($.fn.DataTable.isDataTable("#tabla_clientes")) {
+                                $("#tabla_clientes").DataTable().destroy();
+                            }
+
+                            // Cargar los clientes nuevamente
                             cargarClientes();
                             Swal.fire({
                                 title: "¡Eliminado!",

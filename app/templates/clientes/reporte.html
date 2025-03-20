@@ -1,8 +1,6 @@
 {% extends 'layouts/base.html' %}
-{% load static %}
 {% block title %}
   Clientes
-
 {% endblock %}
 {% block content_admin %}
   <!-- Start Content -->
@@ -38,7 +36,7 @@
             </div>
             <div class="tab-content">
               <div class="tab-pane show active" id="basic-datatable-preview">
-                <table id="tabla_clientes" class="tabla_clientes table table-striped dt-responsive nowrap " width="100%" >
+                <table id="basic-datatable" class="tabla_clientes table table-striped dt-responsive nowrap w-100">
                   <thead>
                     <tr>
                       <th>N°</th>
@@ -192,5 +190,5 @@
 {% endblock %}
 
 {% block extra_js %}
-  <script src="{% static 'js/clientes.js' %}"></script>
-{% endblock extra_js %}
+
+{% endblock %}

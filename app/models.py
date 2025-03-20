@@ -483,3 +483,20 @@ class DetallePresupuestoEquipoMaquina(models.Model):
         verbose_name = "Detalle de Presupuesto Equipo/Máquina"
         verbose_name_plural = "Detalles de Presupuesto Equipo/Máquina"
         db_table = "detalle_presupuesto_equipo_maquina"  # Nombre de la tabla en la base de datos
+
+class Contacto(models.Model):
+    nombre = models.CharField(max_length=150, verbose_name="Nombre") 
+    correo = models.EmailField(max_length=150, null=True, blank=True, verbose_name="Correo") 
+    telefono = models.CharField(max_length=20, verbose_name="Teléfono") 
+    mensaje = models.TextField(null=True, blank=True, verbose_name="Mensaje") 
+    estado = models.IntegerField(default=0, verbose_name="Estado") 
+    fecha = models.DateTimeField(auto_now_add=True, verbose_name="Fecha")
+
+    class Meta:
+        db_table = 'contactos'
+        verbose_name = 'Contacto'
+        verbose_name_plural = 'Contactos'
+
+    def __str__(self):
+        return self.nombre
+    

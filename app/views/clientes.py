@@ -1,9 +1,11 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.http import JsonResponse
+from django.template.loader import render_to_string
+from django.http import JsonResponse, HttpResponse
 from ..models import Cliente
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.hashers import make_password
 import requests
+from weasyprint import HTML
 
 def index_clientes(request):
     return render(request, 'clientes/index.html')
@@ -145,3 +147,22 @@ def eliminar_cliente(request):
         cliente.delete()
         return JsonResponse({'status': True, 'message': 'Cliente eliminado exitosamente'})
     return JsonResponse({'status': False, 'message': 'Método no permitido'}, status=405)
+
+@csrf_exempt
+
+def reporte_cliente_pdf(request):
+    clientes = Cliente.objects.all().order_by('-id')
+        # Renderizar el template HTML con los datos
+    html_string = render_to_string('clientes/reporte.html', clientes)
+
+    # Generar el PDF con WeasyPrint
+    html = HTML(string=html_string, base_url=request.build_absolute_uri())
+    pdf = html.write_pdf()
+
+    # Devolver el PDF como respuesta
+    response = HttpResponse(pdf, content_type='application/pdf')
+    response['Content-Disposition'] = f'inline; filename="reporte_clientes.pdf"'
+    return response
+
+def reporte_cliente(request):
+    return render(request, 'clientes/reporte.html')
