@@ -2,6 +2,7 @@
 {% block title %}
     Comprobantes
 {% endblock %}
+{% load static %}
 {% block content_admin %}
     <!-- Start Content -->
     <div class="container-fluid">
@@ -150,5 +151,5 @@
 {% endblock %}
 
 {% block extra_js %}
-
+<script src="{% static 'js/comprobantes.js' %}"></script>
 {% endblock %}

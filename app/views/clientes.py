@@ -5,7 +5,9 @@ from ..models import Cliente
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.hashers import make_password
 import requests
+import json
 from weasyprint import HTML
+from django.utils.dateparse import parse_date
 
 def index_clientes(request):
     return render(request, 'clientes/index.html')
@@ -30,6 +32,54 @@ def lista_clientes(request):
         ]
         return JsonResponse(clientes_data, safe=False)
     return JsonResponse({'error': 'Solicitud no válida'}, status=400)
+
+@csrf_exempt
+def lista_clientes_reporte(request):
+    if request.method == 'POST':
+        print(request.POST)
+        try:
+            data = json.loads(request.body)
+            desde_fecha = data.get('desde_fecha')
+            hasta_fecha = data.get('hasta_fecha')
+
+            if not desde_fecha or not hasta_fecha:
+                return JsonResponse({'error': 'Las fechas enviadas no son válidas'}, status=400)
+
+            if not desde_fecha or not hasta_fecha:
+                return JsonResponse({'error': 'Las fechas tienen un formato incorrecto'}, status=400)
+
+            # Filtrar clientes por rango de fechas
+            clientes = Cliente.objects.filter(fecha__date__range=[desde_fecha, hasta_fecha]).order_by('-id')
+            print(clientes)  # Para verificar en la consola si realmente se obtienen datos
+
+
+        except json.JSONDecodeError:
+            return JsonResponse({'error': 'Formato JSON no válido'}, status=400)
+
+    elif request.method == 'GET':
+        # Obtener todos los clientes sin filtro
+        clientes = Cliente.objects.all().order_by('-id')
+
+    else:
+        return JsonResponse({'error': 'Método no permitido'}, status=405)
+
+    # Convertir los datos a JSON
+    clientes_data = [
+        {
+            'id': cliente.id,
+            'tipo_documento': cliente.tipo_documento,
+            'num_documento': cliente.num_documento,
+            'nombre': cliente.nombre,
+            'direccion': cliente.direccion,
+            'telefono': cliente.telefono,
+            'correo': cliente.correo,
+            'estado': cliente.estado,
+            'estado': cliente.estado,
+            'fecha': cliente.fecha.strftime('%Y-%m-%d')
+        } for cliente in clientes
+    ]
+
+    return JsonResponse(clientes_data, safe=False)
 
 def consultar_dni(request, numero):
     try:
@@ -139,7 +189,6 @@ def actualizar_cliente(request):
         
         return JsonResponse({'status': True, 'message': 'Cliente actualizado correctamente'})
     return JsonResponse({'status': False, 'message': 'Método no permitido'}, status=405)
-
 
 @csrf_exempt
 def eliminar_cliente(request):

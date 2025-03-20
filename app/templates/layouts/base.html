@@ -1,39 +1,85 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="es">
-<head>
-    <title>{% block title %} Inicio {% endblock title %}</title>
+  <head>
+    <title>
+      {% block title %}
+        Inicio
+      {% endblock %}
+    </title>
     {% include 'layouts/_partials/head.html' %}
-    {% block extra_css %}{% endblock %}  <!-- Bloques para CSS adicionales -->
-</head>
+    {% block extra_css %}
+    {% endblock %} <!-- Bloques para CSS adicionales -->
+  </head>
 
-<body>
-
+  <body>
     {% if user.is_authenticated %}
-        <div class="wrapper">
-            {% include 'layouts/_partials/navbar-header.html' %}
-            {% include 'layouts/_partials/sidebar.html' %}
-            <div class="content-page">
-                <div class="content">
-                    {% block content_admin %}
-                        {% include 'inicio/inicio.html' %}
-                    {% endblock content_admin %}
-                </div>
-                {% include 'layouts/_partials/footer_content.html' %}
-            </div>
+      <div class="wrapper">
+        {% include 'layouts/_partials/navbar-header.html' %}
+        {% include 'layouts/_partials/sidebar.html' %}
+        <div class="content-page">
+          <div class="content">
+            {% block content_admin %}
+              {% include 'inicio/inicio.html' %}
+            {% endblock %}
+          </div>
+          {% include 'layouts/_partials/footer_content.html' %}
         </div>
+      </div>
     {% else %}
-        {% comment %} Nav Bar de la página de inicio {% endcomment %}  
-        {% include 'layouts/_partials/navbar.html' %}
+      {% comment %}Nav Bar de la página de inicio{% endcomment %}
+      {% include 'layouts/_partials/navbar.html' %}
 
-        {% comment %} Contenido de la página  {% endcomment %}
-        {% block content %}
-        
-        {% endblock content %}
+      {% comment %}Contenido de la página{% endcomment %}
+      {% block content %}
+
+      {% endblock %}
     {% endif %}
-                    
-    {% include 'layouts/_partials/footer.html' %}
-    {% block extra_js %}{% endblock %}  <!-- Bloques para JS adicionales -->
-</body>
 
+    <!-- Vendor js -->
+    <script src="{% static 'assets/js/vendor.min.js' %}"></script>
+
+    <!-- Daterangepicker js -->
+    <script src="{% static 'assets/vendor/daterangepicker/moment.min.js' %}"></script>
+    <script src="{% static 'assets/vendor/daterangepicker/daterangepicker.js' %}"></script>
+
+    <!-- Apex Charts js -->
+    <script src="{% static 'assets/vendor/apexcharts/apexcharts.min.js' %}"></script>
+
+    <!-- Vector Map Js -->
+    <script src="{% static 'assets/vendor/jsvectormap/jsvectormap.min.js' %}"></script>
+    <script src="{% static 'assets/vendor/jsvectormap/maps/world-merc.js' %}"></script>
+    <script src="{% static 'assets/vendor/jsvectormap/maps/world.js' %}"></script>
+
+    <!-- Dashboard App js -->
+    <script src="{% static 'assets/js/pages/demo.dashboard.js' %}"></script>
+
+    <!-- Datatables js -->
+    <script src="{% static 'assets/vendor/datatables.net/js/jquery.dataTables.min.js' %}"></script>
+    <script src="{% static 'assets/vendor/datatables.net-bs5/js/dataTables.bootstrap5.min.js' %}"></script>
+    <script src="{% static 'assets/vendor/datatables.net-responsive/js/dataTables.responsive.min.js' %}"></script>
+    <script src="{% static 'assets/vendor/datatables.net-responsive-bs5/js/responsive.bootstrap5.min.js' %}"></script>
+    <script src="{% static 'assets/vendor/datatables.net-fixedcolumns-bs5/js/fixedColumns.bootstrap5.min.js' %}"></script>
+    <script src="{% static 'assets/vendor/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js' %}"></script>
+    <script src="{% static 'assets/vendor/datatables.net-buttons/js/dataTables.buttons.min.js' %}"></script>
+    <script src="{% static 'assets/vendor/datatables.net-buttons-bs5/js/buttons.bootstrap5.min.js' %}"></script>
+    <script src="{% static 'assets/vendor/datatables.net-buttons/js/buttons.html5.min.js' %}"></script>
+    <script src="{% static 'assets/vendor/datatables.net-buttons/js/buttons.flash.min.js' %}"></script>
+    <script src="{% static 'assets/vendor/datatables.net-buttons/js/buttons.print.min.js' %}"></script>
+    <script src="{% static 'assets/vendor/datatables.net-keytable/js/dataTables.keyTable.min.js' %}"></script>
+    <script src="{% static 'assets/vendor/datatables.net-select/js/dataTables.select.min.js' %}"></script>
+
+    <!-- Datatable Demo App js -->
+    <script src="{% static 'assets/js/pages/demo.datatable-init.js' %}"></script>
+
+    <!-- App js -->
+    <script src="{% static 'assets/js/app.min.js' %}"></script>
+
+    <!-- =======================================================
+    SCRITP PARA TRABAJAR CON AJAX DEL PROYECTO
+    ======================================================= -->
+
+    {% block extra_js %}
+    {% endblock %}
+  </body>
 </html>

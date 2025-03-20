@@ -2,6 +2,7 @@
 {% block title %}
     Unidades de Medida
 {% endblock %}
+{% load static %}
 {% block content_admin %}
     <!-- Start Content -->
     <div class="container-fluid">
@@ -125,5 +126,5 @@
 {% endblock %}
 
 {% block extra_js %}
-
+<script src="{% static 'js/unida_medida.js' %}"></script>
 {% endblock %}

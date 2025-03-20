@@ -1,4 +1,5 @@
 {% extends 'layouts/base.html' %}
+{% load static %}
 {% block title %}Usuarios{% endblock title %}
 {% block content_admin %}
   <!-- Start Content -->
@@ -171,5 +172,5 @@
 {% endblock %}
 
 {% block extra_js %}
-
+<script src="{% static 'js/usuarios.js' %}"></script>
 {% endblock %}

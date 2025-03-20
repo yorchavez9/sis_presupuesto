@@ -1,57 +1,77 @@
 $(document).ready(function () {
-
-    function cargarClientes() {
-        $.ajax({
-            url: "lista-clientes/",
-            type: 'GET',
-            dataType: 'json',
-            success: function (clientes) {
-                var tabla = $("#tabla_clientes_reporte");
-                var tbody = tabla.find("tbody");
-                tbody.empty();
-                clientes.forEach(function (dato, index) {
-                    var fila = `
-                        <tr>
-                            <td>${index + 1}</td>
-                            <td>${dato.nombre}</td>
-                            <td>${dato.tipo_documento}: ${dato.num_documento}</td>
-                            <td>${dato.direccion || "Sin dirección"}</td>
-                            <td>${dato.telefono || "Sin teléfono"}</td>
-                            <td>${dato.correo || "Sin correo"}</td>
-                            <td>
-                                ${dato.estado ?
-                            '<button class="btn bg-success text-white badges btn-sm rounded btnActivar" idCliente="' + dato.id + '" estadoCliente="0">Activado</button>' :
-                            '<button class="btn bg-danger text-white badges btn-sm rounded btnActivar" idCliente="' + dato.id + '" estadoCliente="1">Desactivado</button>'
-                        }
-                            </td>
-                            <td class="text-center">
-                                <div class="text-center">
-                                    <a href="#" class="me-3 btnEditarCliente" idCliente="${dato.id}" data-bs-toggle="modal" data-bs-target="#modal_editar_cliente">
-                                        <i class="ri-edit-box-line text-warning fs-3"></i>
-                                    </a>
-                                    <a href="#" class="me-3 confirm-text btnEliminarCliente" idCliente="${dato.id}">
-                                        <i class="ri-delete-bin-line text-danger fs-3"></i>
-                                    </a>
-                                </div>
-                            </td>
-                        </tr>
-                    `;
-                    tbody.append(fila);
-                });
-                if ($.fn.DataTable.isDataTable("#tabla_clientes_reporte")) {
-                    tabla.DataTable().destroy();
-                }
-                tabla.DataTable({
-                    autoWidth: true,
-                    responsive: true,
-                });
-            },
-            error: function (xhr, status, error) {
-                console.error("Error al cargar los clientes:", error);
-                console.log(xhr);
-                console.log(status);
-            }
-        });
+    // Función para crear una fila de la tabla
+    function crearFila(dato, index) {
+        return `
+            <tr>
+                <td>${index + 1}</td>
+                <td>${dato.nombre}</td>
+                <td>${dato.tipo_documento}: ${dato.num_documento}</td>
+                <td>${dato.direccion || "Sin dirección"}</td>
+                <td>${dato.telefono || "Sin teléfono"}</td>
+                <td>${dato.correo || "Sin correo"}</td>
+                <td>
+                    <button class="btn ${dato.estado ? 'bg-success' : 'bg-danger'} text-white btn-sm rounded btnActivar" 
+                        idCliente="${dato.id}" estadoCliente="${dato.estado ? 0 : 1}">
+                        ${dato.estado ? 'Activado' : 'Desactivado'}
+                    </button>
+                </td>
+                <td>${dato.fecha || "Sin fecha"}</td>
+            </tr>
+        `;
     }
+
+    // Función para cargar clientes usando async/await
+    async function cargarClientes(datos = null) {
+        try {
+            const metodo = datos ? 'POST' : 'GET';
+            const response = await fetch("lista-clientes/", {
+                method: metodo,
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: datos ? JSON.stringify(datos) : null,
+            });
+
+            if (!response.ok) {
+                throw new Error(`Error en la solicitud: ${response.statusText}`);
+            }
+
+            const clientes = await response.json();
+
+            const tabla = $("#tabla_clientes_reporte");
+            const tbody = tabla.find("tbody");
+            tbody.empty(); // Limpiar el contenido actual de la tabla
+
+            // Agregar los nuevos datos a la tabla
+            clientes.forEach((dato, index) => {
+                tbody.append(crearFila(dato, index));
+            });
+
+            tabla.DataTable({
+                autoWidth: true,
+                responsive: true,
+                destroy: true,
+                retrieve: true,
+            });
+        } catch (error) {
+            console.error("Error al cargar los clientes:", error);
+        }
+    }
+
+    // Cargar clientes al inicio
     cargarClientes();
-})
+
+    // Capturar evento de búsqueda con fechas
+    $("#btn_generar_reporte_clientes").click(async function () {
+        const desde_fecha = $("#desde_fecha").val();
+        const hasta_fecha = $("#hasta_fecha").val();
+
+        if (!desde_fecha || !hasta_fecha) {
+            alert("Por favor, selecciona ambas fechas.");
+            return;
+        }
+
+        const datos = { desde_fecha, hasta_fecha };
+        await cargarClientes(datos); // Usar await para esperar a que se carguen los clientes
+    });
+});

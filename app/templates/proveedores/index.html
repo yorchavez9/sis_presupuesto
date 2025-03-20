@@ -1,4 +1,5 @@
 {% extends 'layouts/base.html' %}
+{% load static %}
 {% block title %} 
     Proveedores
 {% endblock %}
@@ -212,5 +213,5 @@
 {% endblock %}
 
 {% block extra_js %}
-
+<script src="{% static 'js/proveedores.js' %}"></script>
 {% endblock %}
