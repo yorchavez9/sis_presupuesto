@@ -10,6 +10,9 @@ from weasyprint import HTML
 def index_clientes(request):
     return render(request, 'clientes/index.html')
 
+def index_reporte_clientes(request):
+    return render(request, 'clientes/reporte.html')
+
 def lista_clientes(request):
     if request.method == 'GET':
         clientes = Cliente.objects.all().order_by('-id')
@@ -87,7 +90,6 @@ def crear_cliente(request):
 
     return JsonResponse({'status': False, 'message': 'Método no permitido'}, status=405)
 
-
 @csrf_exempt
 def activar_cliente(request):
     if request.method == 'POST':
@@ -164,5 +166,3 @@ def reporte_cliente_pdf(request):
     response['Content-Disposition'] = f'inline; filename="reporte_clientes.pdf"'
     return response
 
-def reporte_cliente(request):
-    return render(request, 'clientes/reporte.html')

@@ -3,7 +3,7 @@ $(document).ready(function () {
 
     function cargarClientes() {
         $.ajax({
-            url: "lista/",
+            url: "lista-clientes/",
             type: 'GET',
             dataType: 'json',
             success: function (clientes) {
