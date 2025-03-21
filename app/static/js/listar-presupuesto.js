@@ -1,38 +1,9 @@
 $(document).ready(function () {
 
-    $('input').each(function () {
-        // Guardar el valor por defecto
-        $(this).data('default', $(this).val());
-    }).focus(function () {
-        // Limpiar el input solo si el valor es "0" o "0.00"
-        if ($(this).val() === '0' || $(this).val() === '0.00') {
-            $(this).val('');
-        }
-    }).blur(function () {
-        // Restaurar el valor por defecto si el campo está vacío
-        if ($(this).val() === '') {
-            $(this).val($(this).data('default'));
-        }
-    });
-
     function formatCurrency(value) {
         if (!value) return "S/ 0.00";
         return new Intl.NumberFormat('es-PE', { style: 'currency', currency: 'PEN' }).format(value);
     }
-
-
-    function inicializarTabla() {
-        return $('#tabla_lista_presupuesto').DataTable({
-            "destroy": true,
-            "responsive": true,
-            "pageLength": 10,
-            "language": {
-                "url": "//cdn.datatables.net/plug-ins/1.10.25/i18n/Spanish.json"
-            }
-        });
-    }
-
-    let tabla = inicializarTabla();
 
     function cargarPresupuestos() {
         $.ajax({
@@ -40,61 +11,75 @@ $(document).ready(function () {
             type: 'GET',
             dataType: 'json',
             success: function (response) {
-                tabla.clear();
+                var tabla = $("#tabla_lista_presupuesto");
+                var tbody = tabla.find("tbody");
+                tbody.empty();
                 response.presupuestos.forEach(function (dato, index) {
-                    tabla.row.add([
-                        index + 1,
-                        dato.nombre_cliente,
-                        dato.tipo_comprobante,
-                        dato.descripcion,
-                        dato.impuesto,
-                        formatCurrency(dato.sub_total),
-                        formatCurrency(dato.total_impuesto),
-                        formatCurrency(dato.total),
-                        dato.fecha,
-                        dato.estado ?
-                            '<button class="btn bg-success text-white badges btn-sm rounded btnActivar" idPresupuesto="' + dato.id + '" estadoPresupuesto="0">Activado</button>' :
-                            '<button class="btn bg-danger text-white badges btn-sm rounded btnActivar" idPresupuesto="' + dato.id + '" estadoPresupuesto="1">Desactivado</button>',
-                        `
-                       <div class="">
-                            <div class="dropdown">
-                                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                                    <i class="ri-more-2-fill"></i>
-                                </button>
-                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                    <li>
-                                        <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#modal_editar_material_servicio">
-                                            <i class="ri-edit-box-line text-warning me-2 fs-4"></i> Editar
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item btnImprimirPresupuesto" href="#" idPresupuesto="${dato.id}">
-                                            <i class="ri-printer-line text-success me-2 fs-4"></i> Imprimir
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item btnDescargarPresupuesto" href="#" idPresupuesto="${dato.id}">
-                                            <i class="ri-download-line text-success me-2 fs-4"></i> Descargar
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#modal_ver_material_servicio">
-                                            <i class="ri-eye-line text-primary me-2 fs-4"></i> Ver
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item confirm-text btnEliminarPresupuesto" href="#" idPresupuesto="${dato.id}">
-                                            <i class="ri-delete-bin-line text-danger me-2 fs-4"></i> Eliminar
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                        `
-                    ]);
+                    let fila = `
+                                <tr>
+                                    <td>${index + 1}</td>
+                                    <td>${dato.nombre_cliente}</td>
+                                    <td>${dato.tipo_comprobante}</td>
+                                    <td>${dato.descripcion}</td>
+                                    <td>${dato.impuesto}</td>
+                                    <td>${formatCurrency(dato.sub_total)}</td>
+                                    <td>${formatCurrency(dato.total_impuesto)}</td>
+                                    <td>${formatCurrency(dato.total)}</td>
+                                    <td>${dato.fecha}</td>
+                                    <td>
+                                        ${dato.estado 
+                                            ? `<button class="btn bg-success text-white btn-sm rounded btnActivar" idPresupuesto="${dato.id}" estadoPresupuesto="0">Activado</button>`
+                                            : `<button class="btn bg-danger text-white btn-sm rounded btnActivar" idPresupuesto="${dato.id}" estadoPresupuesto="1">Desactivado</button>`}
+                                    </td>
+                                    <td>
+                                        <div class="dropdown">
+                                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                                                <i class="ri-more-2-fill"></i>
+                                            </button>
+                                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                                <li>
+                                                    <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#modal_editar_material_servicio">
+                                                        <i class="ri-edit-box-line text-warning me-2 fs-4"></i> Editar
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a class="dropdown-item btnImprimirPresupuesto" href="#" idPresupuesto="${dato.id}">
+                                                        <i class="ri-printer-line text-success me-2 fs-4"></i> Imprimir
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a class="dropdown-item btnDescargarPresupuesto" href="#" idPresupuesto="${dato.id}">
+                                                        <i class="ri-download-line text-success me-2 fs-4"></i> Descargar
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#modal_ver_material_servicio">
+                                                        <i class="ri-eye-line text-primary me-2 fs-4"></i> Ver
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a class="dropdown-item confirm-text btnEliminarPresupuesto" href="#" idPresupuesto="${dato.id}">
+                                                        <i class="ri-delete-bin-line text-danger me-2 fs-4"></i> Eliminar
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                </tr>
+                            `;
+                            tbody.append(fila);
                 });
-                tabla.draw();
+    
+                // Destruir DataTable si ya está inicializado
+                if ($.fn.DataTable.isDataTable("#tabla_lista_presupuesto")) {
+                    tabla.DataTable().destroy();
+                }
 
+                // Re-inicializar DataTables
+                tabla.DataTable({
+                    autoWidth: true,
+                    responsive: true,
+                });
             },
             error: function (error) {
                 console.error("Error al cargar proveedores:", error);
@@ -132,6 +117,11 @@ $(document).ready(function () {
                     contentType: false,
                     success: function (response) {
                         if (response.status) {
+                            // Destruir la DataTable si ya está inicializada
+                            if ($.fn.DataTable.isDataTable("#tabla_lista_presupuesto")) {
+                                $("#tabla_lista_presupuesto").DataTable().destroy();
+                            }
+
                             cargarPresupuestos();
                             Swal.fire({
                                 title: "¡Eliminado!",

@@ -322,7 +322,6 @@ def obtener_ultimo_comprobante(request):
     else:
         return JsonResponse({'status': 'error', 'message': 'Método no permitido'}, status=405)
 
-
 @csrf_exempt
 def generar_pdf_presupuesto(request, presupuesto_id):
     # Obtener el presupuesto
@@ -518,7 +517,6 @@ def generar_pdf_comprobante(request, presupuesto_id):
     response = HttpResponse(pdf, content_type='application/pdf')
     response['Content-Disposition'] = f'inline; filename="cotizacion_{presupuesto.serie}_{presupuesto.numero}.pdf"'
     return response
-
 
 @csrf_exempt
 def eliminar_presupuesto(request):

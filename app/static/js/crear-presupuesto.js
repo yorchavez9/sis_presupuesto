@@ -4,6 +4,10 @@ function cargarFecha() {
     $("#fecha").val(fechaFormateada);
 }
 
+function limpiarValorNumerico(valor) {
+    return valor.replace(/[^0-9.]/g, ''); // Elimina todo excepto números y puntos
+}
+
 $('input').each(function () {
     // Guardar el valor por defecto
     $(this).data('default', $(this).val());
@@ -63,11 +67,12 @@ $("#btn_crear_presupuesto").click(function (e) {
     const datos_materiales = [];
     $("#data_detalles_materiales_presupuesto tr").each(function () {
         const fila = $(this);
+        const id_material = fila.find(".btnEliminarMaterial").data("id"); 
         const materiales = {
-            id_material: fila.find(".id_material_presupuesto").val(),
-            cantidad: fila.find(".input-cantidad").val(),
-            precio: fila.find(".input-precio").val(),
-            sub_total: fila.find(".subtotal-material").text().replace(/[S/,]/g, "")
+            id_material: id_material,
+            cantidad: limpiarValorNumerico(fila.find(".input-cantidad").val()),
+            precio: limpiarValorNumerico(fila.find(".input-precio").val()),
+            sub_total: limpiarValorNumerico(fila.find(".subtotal-material").text().replace(/[S/,]/g, ""))
         };
         datos_materiales.push(materiales);
     });
@@ -78,12 +83,13 @@ $("#btn_crear_presupuesto").click(function (e) {
     const datos_trabajadores = [];
     $("#data_detalles_trabajadores_presupuesto tr").each(function () {
         const fila = $(this);
+        const id_trabajador = fila.find(".btnEliminarTrabajador").data("id"); 
         const trabajadores = {
-            id_trabajador: fila.find(".id_trabajador_presupuesto").val(),
+            id_trabajador: id_trabajador,
             tipo_sueldo: fila.find(".tipo_sueldo_trabajador").val(),
-            precio: fila.find(".input-precio-trabajador").val(),
-            tiempo: fila.find(".input-cantidad-tiempo-trabajador").val(),
-            sub_total: fila.find(".sub_total_trabajador").text().replace(/[S/,]/g, "")
+            precio: limpiarValorNumerico(fila.find(".input-precio-trabajador").val()),
+            tiempo: limpiarValorNumerico(fila.find(".input-cantidad-tiempo-trabajador").val()),
+            sub_total: limpiarValorNumerico(fila.find(".sub_total_trabajador").text().replace(/[S/,]/g, ""))
         }
         datos_trabajadores.push(trabajadores);
     });
@@ -93,12 +99,13 @@ $("#btn_crear_presupuesto").click(function (e) {
     const datos_maquinas_equipos = [];
     $("#data_detalles_maquinas_equipos_presupuesto tr").each(function () {
         const fila = $(this);
+        const id_equipo_maquina = fila.find(".btnEliminarMaquina").data("id"); 
         const trabajadores = {
-            id_equipo_maquina: fila.find(".id_equipo_maquina").val(),
+            id_equipo_maquina: id_equipo_maquina,
             tipo_sueldo: fila.find(".tipo_sueldo_maquina").val(),
-            precio: fila.find(".input-precio-maquina").val(),
-            tiempo: fila.find(".input-cantidad-tiempo-maquina").val(),
-            sub_total: fila.find(".sub_total_maquina").text().replace(/[S/,]/g, "")
+            precio: limpiarValorNumerico(fila.find(".input-precio-maquina").val()),
+            tiempo: limpiarValorNumerico(fila.find(".input-cantidad-tiempo-maquina").val()),
+            sub_total: limpiarValorNumerico(fila.find(".sub_total_equipo_maquina").text().replace(/[S/,]/g, ""))
         }
         datos_maquinas_equipos.push(trabajadores);
     });
@@ -135,9 +142,9 @@ $("#btn_crear_presupuesto").click(function (e) {
         });
     }
 
-    let sub_total = parseFloat($("#sub_total_presupuesto").text().replace(/[S/,]/g, ""));
-    let total_impuesto = parseFloat($("#sub_total_impuesto_presupuesto").text().replace(/[S/,]/g, ""));
-    let total = parseFloat($("#total_presupuesto").text().replace(/[S/,]/g, ""));
+    let sub_total = parseFloat(limpiarValorNumerico($("#sub_total_presupuesto").text().replace(/[S/,]/g, "")));
+    let total_impuesto = parseFloat(limpiarValorNumerico($("#sub_total_impuesto_presupuesto").text().replace(/[S/,]/g, "")));
+    let total = parseFloat(limpiarValorNumerico($("#total_presupuesto").text().replace(/[S/,]/g, "")));
 
     if(isValid){
         const datos = new FormData();
@@ -162,6 +169,10 @@ $("#btn_crear_presupuesto").click(function (e) {
         datos.append("sub_total", sub_total);
         datos.append("total_impuesto", total_impuesto);
         datos.append("total", total);
+        datos.forEach(element => {
+            console.log(element);
+        });
+
 
         $.ajax({
             url: "crear-presupuesto/",
