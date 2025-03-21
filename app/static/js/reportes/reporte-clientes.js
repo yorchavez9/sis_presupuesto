@@ -67,11 +67,28 @@ $(document).ready(function () {
         const hasta_fecha = $("#hasta_fecha").val();
 
         if (!desde_fecha || !hasta_fecha) {
-            alert("Por favor, selecciona ambas fechas.");
+            Swal.fire({
+                title: "¡Aviso!",
+                text: "Selecione los rangos de fechas",
+                icon: "warning",
+            });
             return;
         }
 
         const datos = { desde_fecha, hasta_fecha };
-        await cargarClientes(datos); // Usar await para esperar a que se carguen los clientes
+        await cargarClientes(datos);
+    });
+
+    // Capturar evento de búsqueda con fechas
+    $("#btn_imprimir_reporte_clientes").click(async function () {
+        const desde_fecha = $("#desde_fecha").val();
+        const hasta_fecha = $("#hasta_fecha").val();
+        
+        let url = 'generar-reporte-pdf/';
+        if (desde_fecha && hasta_fecha) {
+            url += `${desde_fecha}/${hasta_fecha}/`;
+        }
+        
+        window.open(url, '_blank');
     });
 });

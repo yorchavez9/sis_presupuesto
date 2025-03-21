@@ -1,49 +1,45 @@
 {% extends 'layouts/base.html' %}
-
-
+{% load static %}
 {% block content %}
-        <!-- START HERO -->
+        <!-- INICIO HERO -->
         <section class="hero-section">
             <div class="container">
                 <div class="row align-items-center">
                     <div class="col-md-5">
                         <div class="mt-md-4">
                             <div>
-                                <span class="badge bg-danger font-13 rounded-pill">New</span>
-                                <span class="text-white-50 ms-1">Welcome to new landing page</span>
+                                <span class="badge bg-danger font-13 rounded-pill">Nuevo</span>
+                                <span class="text-white-50 ms-1">Bienvenido a nuestra plataforma</span>
                             </div>
                             <h2 class="text-white fw-normal mb-4 mt-3 lh-base">
-                                Hyper - Responsive Web UI Kit & Dashboard Template
+                                Construye y Cotiza tus Proyectos de Obra con Nosotros
                             </h2>
     
-                            <p class="mb-4 font-16 text-white-50">Hyper is a fully featured dashboard and admin template
-                                comes with tones of well designed UI elements, components, widgets and pages.</p>
+                            <p class="mb-4 font-16 text-white-50">Nuestra plataforma está diseñada para ayudarte a gestionar y cotizar proyectos de construcción de manera eficiente. Simplifica tus procesos y optimiza tus recursos.</p>
     
-                            <a href="#" target="_blank" class="btn btn-lg font-16 btn-success">Get Free Trial <i class="mdi mdi-arrow-right ms-1"></i></a>
-                            <a href="#" target="_blank" class="btn btn-lg font-16 btn-info">Check Demos</a>
+                            <a href="#" target="_blank" class="btn btn-lg font-16 btn-success">Prueba Gratis <i class="mdi mdi-arrow-right ms-1"></i></a>
+                            <a href="#" target="_blank" class="btn btn-lg font-16 btn-info">Ver Demostraciones</a>
                         </div>
                     </div>
                     <div class="col-md-5 offset-md-2">
                         <div class="text-md-end mt-3 mt-md-0">
-                            <img src="assets/images/svg/startup.svg" alt="" class="img-fluid" />
+                            <img src="{% static 'assets/images/svg/startup.svg' %}" alt="" class="img-fluid" />
                         </div>
                     </div>
                 </div>
             </div>
         </section>
-        <!-- END HERO -->
+        <!-- FIN HERO -->
     
-        <!-- START SERVICES -->
+        <!-- INICIO SERVICIOS -->
         <section class="py-5">
             <div class="container">
                 <div class="row py-4">
                     <div class="col-lg-12">
                         <div class="text-center">
-                            <h1 class="mt-0"><i class="mdi mdi-infinity"></i></h1>
-                            <h3>The admin is fully <span class="text-primary">responsive</span> and easy to <span class="text-primary">customize</span></h3>
-                            <p class="text-muted mt-2">The clean and well commented code allows easy customization of the
-                                theme.It's designed for
-                                <br>describing your app, agency or business.
+                            <h1 class="mt-0"><i class="mdi mdi-hard-hat"></i></h1>
+                            <h3>Nuestra plataforma es <span class="text-primary">flexible</span> y fácil de <span class="text-primary">personalizar</span></h3>
+                            <p class="text-muted mt-2">Diseñada para adaptarse a las necesidades de tu empresa de construcción. Simplifica la gestión de proyectos, cotizaciones y presupuestos.
                             </p>
                         </div>
                     </div>
@@ -54,12 +50,11 @@
                         <div class="text-center p-2 p-sm-3">
                             <div class="avatar-sm m-auto">
                                 <span class="avatar-title bg-primary-lighten rounded-circle">
-                                    <i class="uil uil-desktop text-primary font-24"></i>
+                                    <i class="uil uil-calculator-alt text-primary font-24"></i>
                                 </span>
                             </div>
-                            <h4 class="mt-3">Responsive Layouts</h4>
-                            <p class="text-muted mt-2 mb-0">Et harum quidem rerum as expedita distinctio nam libero tempore
-                                cum soluta nobis est cumque quo.
+                            <h4 class="mt-3">Calculadora de Presupuestos</h4>
+                            <p class="text-muted mt-2 mb-0">Calcula costos de materiales, mano de obra y más de manera rápida y precisa.
                             </p>
                         </div>
                     </div>
@@ -68,12 +63,11 @@
                         <div class="text-center p-2 p-sm-3">
                             <div class="avatar-sm m-auto">
                                 <span class="avatar-title bg-primary-lighten rounded-circle">
-                                    <i class="uil uil-vector-square text-primary font-24"></i>
+                                    <i class="uil uil-clipboard-notes text-primary font-24"></i>
                                 </span>
                             </div>
-                            <h4 class="mt-3">Based on Bootstrap UI</h4>
-                            <p class="text-muted mt-2 mb-0">Temporibus autem quibusdam et aut officiis necessitatibus saepe
-                                eveniet ut sit et recusandae.
+                            <h4 class="mt-3">Gestión de Proyectos</h4>
+                            <p class="text-muted mt-2 mb-0">Organiza y supervisa todos tus proyectos de construcción en un solo lugar.
                             </p>
                         </div>
                     </div>
@@ -82,12 +76,11 @@
                         <div class="text-center p-2 p-sm-3">
                             <div class="avatar-sm m-auto">
                                 <span class="avatar-title bg-primary-lighten rounded-circle">
-                                    <i class="uil uil-presentation text-primary font-24"></i>
+                                    <i class="uil uil-file-contract text-primary font-24"></i>
                                 </span>
                             </div>
-                            <h4 class="mt-3">Creative Design</h4>
-                            <p class="text-muted mt-2 mb-0">Nam libero tempore, cum soluta a est eligendi minus id quod
-                                maxime placeate facere assumenda est.
+                            <h4 class="mt-3">Cotizaciones Automatizadas</h4>
+                            <p class="text-muted mt-2 mb-0">Genera cotizaciones profesionales en minutos y envíalas directamente a tus clientes.
                             </p>
                         </div>
                     </div>
@@ -96,12 +89,11 @@
                         <div class="text-center p-2 p-sm-3">
                             <div class="avatar-sm m-auto">
                                 <span class="avatar-title bg-primary-lighten rounded-circle">
-                                    <i class="uil uil-apps text-primary font-24"></i>
+                                    <i class="uil uil-chart-pie-alt text-primary font-24"></i>
                                 </span>
                             </div>
-                            <h4 class="mt-3">Multiple Applications</h4>
-                            <p class="text-muted mt-2 mb-0">Et harum quidem rerum as expedita distinctio nam libero tempore
-                                cum soluta nobis est cumque quo.
+                            <h4 class="mt-3">Reportes y Análisis</h4>
+                            <p class="text-muted mt-2 mb-0">Obtén reportes detallados y análisis de costos para tomar decisiones informadas.
                             </p>
                         </div>
                     </div>
@@ -110,12 +102,11 @@
                         <div class="text-center p-2 p-sm-3">
                             <div class="avatar-sm m-auto">
                                 <span class="avatar-title bg-primary-lighten rounded-circle">
-                                    <i class="uil uil-shopping-cart-alt text-primary font-24"></i>
+                                    <i class="uil uil-users-alt text-primary font-24"></i>
                                 </span>
                             </div>
-                            <h4 class="mt-3">Ecommerce Pages</h4>
-                            <p class="text-muted mt-2 mb-0">Temporibus autem quibusdam et aut officiis necessitatibus saepe
-                                eveniet ut sit et recusandae.
+                            <h4 class="mt-3">Colaboración en Equipo</h4>
+                            <p class="text-muted mt-2 mb-0">Trabaja en equipo y mantén a todos los miembros del proyecto alineados.
                             </p>
                         </div>
                     </div>
@@ -124,12 +115,11 @@
                         <div class="text-center p-2 p-sm-3">
                             <div class="avatar-sm m-auto">
                                 <span class="avatar-title bg-primary-lighten rounded-circle">
-                                    <i class="uil uil-grids text-primary font-24"></i>
+                                    <i class="uil uil-cloud-share text-primary font-24"></i>
                                 </span>
                             </div>
-                            <h4 class="mt-3">Multiple Layouts</h4>
-                            <p class="text-muted mt-2 mb-0">Nam libero tempore, cum soluta a est eligendi minus id quod
-                                maxime placeate facere assumenda est.
+                            <h4 class="mt-3">Acceso en la Nube</h4>
+                            <p class="text-muted mt-2 mb-0">Accede a tus proyectos y cotizaciones desde cualquier lugar y en cualquier momento.
                             </p>
                         </div>
                     </div>
@@ -137,18 +127,17 @@
     
             </div>
         </section>
-        <!-- END SERVICES -->
+        <!-- FIN SERVICIOS -->
     
-        <!-- START FEATURES 1 -->
+        <!-- INICIO CARACTERÍSTICAS -->
         <section class="py-5 bg-light-lighten border-top border-bottom border-light">
             <div class="container">
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="text-center">
-                            <h3>Flexible <span class="text-primary">Layouts</span></h3>
-                            <p class="text-muted mt-2">There are three different layout options available to cater need for
-                                any <br /> modern web
-                                application.</p>
+                            <h3>Funcionalidades <span class="text-primary">Destacadas</span></h3>
+                            <p class="text-muted mt-2">Descubre las herramientas que te ayudarán a optimizar la gestión de tus proyectos de construcción.
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -156,118 +145,39 @@
                 <div class="row mt-1">
                     <div class="col-lg-4 col-md-6">
                         <div class="demo-box text-center mt-3">
-                            <img src="assets/images/layouts/layout-1.png" alt="demo-img" class="img-fluid shadow-sm rounded">
-                            <h5 class="mt-3 f-17">Vertical Layout</h5>
+                            <img src="{% static 'assets/images/layouts/budget-calculator.png' %}" alt="demo-img" class="img-fluid shadow-sm rounded">
+                            <h5 class="mt-3 f-17">Calculadora de Presupuestos</h5>
                         </div>
                     </div>
     
                     <div class="col-lg-4 col-md-6">
                         <div class="demo-box text-center mt-3">
-                            <img src="assets/images/layouts/layout-2.png" alt="demo-img" class="img-fluid shadow-sm rounded">
-                            <h5 class="mt-3 f-17">Horizontal Layout</h5>
+                            <img src="{% static 'assets/images/layouts/project-management.png' %}" alt="demo-img" class="img-fluid shadow-sm rounded">
+                            <h5 class="mt-3 f-17">Gestión de Proyectos</h5>
                         </div>
                     </div>
     
                     <div class="col-lg-4 col-md-6">
                         <div class="demo-box text-center mt-3">
-                            <img src="assets/images/layouts/layout-3.png" alt="demo-img" class="img-fluid shadow-sm rounded">
-                            <h5 class="mt-3 f-17">Detached Layout</h5>
-                        </div>
-                    </div>
-    
-                    <div class="col-lg-4 col-md-6">
-                        <div class="demo-box text-center mt-3">
-                            <img src="assets/images/layouts/layout-5.png" alt="demo-img" class="img-fluid shadow-sm rounded">
-                            <h5 class="mt-3 f-17">Light Sidenav Layout</h5>
-                        </div>
-                    </div>
-    
-                    <div class="col-lg-4 col-md-6">
-                        <div class="demo-box text-center mt-3">
-                            <img src="assets/images/layouts/layout-6.png" alt="demo-img" class="img-fluid shadow-sm rounded">
-                            <h5 class="mt-3 f-17">Boxed Layout</h5>
-                        </div>
-                    </div>
-    
-                    <div class="col-lg-4 col-md-6">
-                        <div class="demo-box text-center mt-3">
-                            <img src="assets/images/layouts/layout-4.png" alt="demo-img" class="img-fluid shadow-sm rounded">
-                            <h5 class="mt-3 f-17">Semi Dark Layout</h5>
+                            <img src="{% static 'assets/images/layouts/reporting.png' %}" alt="demo-img" class="img-fluid shadow-sm rounded">
+                            <h5 class="mt-3 f-17">Reportes Detallados</h5>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
-        <!-- END FEATURES 1 -->
+        <!-- FIN CARACTERÍSTICAS -->
     
-        <!-- START FEATURES 2 -->
-        <section class="py-5">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="text-center">
-                            <h1 class="mt-0"><i class="mdi mdi-heart-multiple-outline"></i></h1>
-                            <h3>Features you'll <span class="text-danger">love</span></h3>
-                            <p class="text-muted mt-2">Hyper comes with next generation ui design and have multiple benefits
-                            </p>
-                        </div>
-                    </div>
-                </div>
-                <div class="row mt-2 py-5 align-items-center">
-                    <div class="col-lg-5 col-md-6">
-                        <img src="assets/images/svg/features-1.svg" class="img-fluid" alt="">
-                    </div>
-                    <div class="col-lg-6 offset-md-1 col-md-5">
-                        <h3 class="fw-normal">Inbuilt applications and pages</h3>
-                        <p class="text-muted mt-3">Hyper comes with a variety of ready-to-use applications and pages that help to speed up the development</p>
-    
-                        <div class="mt-4">
-                            <p class="text-muted"><i class="mdi mdi-circle-medium text-primary"></i> Projects & Tasks</p>
-                            <p class="text-muted"><i class="mdi mdi-circle-medium text-primary"></i> Ecommerce Application Pages</p>
-                            <p class="text-muted"><i class="mdi mdi-circle-medium text-primary"></i> Profile, pricing, invoice</p>
-                            <p class="text-muted"><i class="mdi mdi-circle-medium text-primary"></i> Login, signup, forget password</p>
-                        </div>
-    
-                        <a href="#" class="btn btn-primary rounded-pill mt-3">Read More <i class="mdi mdi-arrow-right ms-1"></i></a>
-    
-                    </div>
-                </div>
-    
-                <div class="row pb-3 pt-5 align-items-center">
-                    <div class="col-lg-6 col-md-5">
-                        <h3 class="fw-normal">Simply beautiful design</h3>
-                        <p class="text-muted mt-3">The simplest and fastest way to build dashboard or admin panel. Hyper is built using the latest tech and tools and provide an easy way to customize anything, including an overall color schemes, layout, etc.</p>
-    
-                        <div class="mt-4">
-                            <p class="text-muted"><i class="mdi mdi-circle-medium text-success"></i> Built with latest Bootstrap</p>
-                            <p class="text-muted"><i class="mdi mdi-circle-medium text-success"></i> Extensive use of SCSS variables</p>
-                            <p class="text-muted"><i class="mdi mdi-circle-medium text-success"></i> Well documented and structured code</p>
-                            <p class="text-muted"><i class="mdi mdi-circle-medium text-success"></i> Detailed Documentation</p>
-                        </div>
-    
-                        <a href="#" class="btn btn-success rounded-pill mt-3">Read More <i class="mdi mdi-arrow-right ms-1"></i></a>
-    
-                    </div>
-                    <div class="col-lg-5 col-md-6 offset-md-1">
-                        <img src="assets/images/svg/features-2.svg" class="img-fluid" alt="">
-                    </div>
-                </div>
-    
-            </div>
-        </section>
-        <!-- END FEATURES 2 -->
-    
-        <!-- START PRICING -->
+
+        <!-- INICIO PLANES -->
         <section class="py-5 bg-light-lighten border-top border-bottom border-light">
             <div class="container">
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="text-center">
                             <h1 class="mt-0"><i class="mdi mdi-tag-multiple"></i></h1>
-                            <h3>Choose Simple <span class="text-primary">Pricing</span></h3>
-                            <p class="text-muted mt-2">The clean and well commented code allows easy customization of the
-                                theme.It's designed for
-                                <br>describing your app, agency or business.
+                            <h3>Elige el Plan que Mejor se Adapte a Ti</h3>
+                            <p class="text-muted mt-2">Nuestros planes están diseñados para empresas de construcción de todos los tamaños. Encuentra el que mejor se ajuste a tus necesidades.
                             </p>
                         </div>
                     </div>
@@ -277,148 +187,68 @@
                     <div class="col-md-4">
                         <div class="card card-pricing">
                             <div class="card-body text-center">
-                                <p class="card-pricing-plan-name fw-bold text-uppercase">Standard License </p>
+                                <p class="card-pricing-plan-name fw-bold text-uppercase">Plan Básico</p>
                                 <i class="card-pricing-icon ri-user-line text-primary"></i>
-                                <h2 class="card-pricing-price">$49 <span>/ License</span></h2>
+                                <h2 class="card-pricing-price">$49 <span>/ mes</span></h2>
                                 <ul class="card-pricing-features">
-                                    <li>10 GB Storage</li>
-                                    <li>500 GB Bandwidth</li>
-                                    <li>No Domain</li>
-                                    <li>1 User</li>
-                                    <li>Email Support</li>
-                                    <li>24x7 Support</li>
+                                    <li>5 Proyectos Activos</li>
+                                    <li>10 GB Almacenamiento</li>
+                                    <li>Soporte por Email</li>
+                                    <li>Acceso Básico</li>
                                 </ul>
-                                <button class="btn btn-primary mt-4 mb-2 rounded-pill">Choose Plan</button>
+                                <button class="btn btn-primary mt-4 mb-2 rounded-pill">Elegir Plan</button>
                             </div>
                         </div>
-                        <!-- end Pricing_card -->
                     </div>
-                    <!-- end col -->
     
                     <div class="col-md-4">
                         <div class="card card-pricing card-pricing-recommended">
                             <div class="card-body text-center">
-                                <div class="card-pricing-plan-tag">Recommended</div>
-                                <p class="card-pricing-plan-name fw-bold text-uppercase">Multiple License</p>
+                                <div class="card-pricing-plan-tag">Recomendado</div>
+                                <p class="card-pricing-plan-name fw-bold text-uppercase">Plan Profesional</p>
                                 <i class="card-pricing-icon ri-briefcase-line text-primary"></i>
-                                <h2 class="card-pricing-price">$99 <span>/ License</span></h2>
+                                <h2 class="card-pricing-price">$99 <span>/ mes</span></h2>
                                 <ul class="card-pricing-features">
-                                    <li>50 GB Storage</li>
-                                    <li>900 GB Bandwidth</li>
-                                    <li>2 Domain</li>
-                                    <li>10 User</li>
-                                    <li>Email Support</li>
-                                    <li>24x7 Support</li>
+                                    <li>20 Proyectos Activos</li>
+                                    <li>50 GB Almacenamiento</li>
+                                    <li>Soporte Prioritario</li>
+                                    <li>Acceso Completo</li>
                                 </ul>
-                                <button class="btn btn-primary mt-4 mb-2 rounded-pill">Choose Plan</button>
+                                <button class="btn btn-primary mt-4 mb-2 rounded-pill">Elegir Plan</button>
                             </div>
                         </div>
-                        <!-- end Pricing_card -->
                     </div>
-                    <!-- end col -->
     
                     <div class="col-md-4">
                         <div class="card card-pricing">
                             <div class="card-body text-center">
-                                <p class="card-pricing-plan-name fw-bold text-uppercase">Extended License</p>
+                                <p class="card-pricing-plan-name fw-bold text-uppercase">Plan Empresarial</p>
                                 <i class="card-pricing-icon ri-store-2-line text-primary"></i>
-                                <h2 class="card-pricing-price">$599 <span>/ License</span></h2>
+                                <h2 class="card-pricing-price">$199 <span>/ mes</span></h2>
                                 <ul class="card-pricing-features">
-                                    <li>100 GB Storege</li>
-                                    <li>Unlimited Bandwidth</li>
-                                    <li>10 Domain</li>
-                                    <li>Unlimited User</li>
-                                    <li>Email Support</li>
-                                    <li>24x7 Support</li>
+                                    <li>Proyectos Ilimitados</li>
+                                    <li>100 GB Almacenamiento</li>
+                                    <li>Soporte 24/7</li>
+                                    <li>Acceso Premium</li>
                                 </ul>
-                                <button class="btn btn-primary mt-4 mb-2 rounded-pill">Choose Plan</button>
+                                <button class="btn btn-primary mt-4 mb-2 rounded-pill">Elegir Plan</button>
                             </div>
                         </div>
-                        <!-- end Pricing_card -->
                     </div>
-                    <!-- end col -->
-    
                 </div>
-    
             </div>
         </section>
-        <!-- END PRICING -->
+        <!-- FIN PLANES -->
     
-        <!-- START FAQ -->
-        <section class="py-5">
+    
+        <!-- INICIO CONTACTO -->
+        <section id="contactos" class="py-5 bg-light-lighten border-top border-bottom border-light">
             <div class="container">
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="text-center">
-                            <h1 class="mt-0"><i class="mdi mdi-frequently-asked-questions"></i></h1>
-                            <h3>Frequently Asked <span class="text-primary">Questions</span></h3>
-                            <p class="text-muted mt-2">Here are some of the basic types of questions for our customers. For more
-                                <br>information please contact us.
-                            </p>
-    
-                            <button type="button" class="btn btn-success btn-sm mt-2"><i class="mdi mdi-email-outline me-1"></i> Email us your question</button>
-                            <button type="button" class="btn btn-info btn-sm mt-2 ms-1"><i class="mdi mdi-twitter me-1"></i> Send us a tweet</button>
-                        </div>
-                    </div>
-                </div>
-    
-                <div class="row mt-5">
-                    <div class="col-lg-5 offset-lg-1">
-                        <!-- Question/Answer -->
-                        <div>
-                            <div class="faq-question-q-box">Q.</div>
-                            <h4 class="faq-question text-body">Can I use this template for my client?</h4>
-                            <p class="faq-answer mb-4 pb-1 text-muted">Yup, the marketplace license allows you to use this theme
-                                in any end products.
-                                For more information on licenses, please refere <a href="https://support.wrapbootstrap.com/help/usage-licenses" target="_blank">here</a>.</p>
-                        </div>
-    
-                        <!-- Question/Answer -->
-                        <div>
-                            <div class="faq-question-q-box">Q.</div>
-                            <h4 class="faq-question text-body">How do I get help with the theme?</h4>
-                            <p class="faq-answer mb-4 pb-1 text-muted">Use our dedicated support email (support@coderthemes.com) to send your issues or feedback. We are here to help anytime.</p>
-                        </div>
-    
-                    </div>
-                    <!--/col-lg-5 -->
-    
-                    <div class="col-lg-5">
-                        <!-- Question/Answer -->
-                        <div>
-                            <div class="faq-question-q-box">Q.</div>
-                            <h4 class="faq-question text-body">Can this theme work with Wordpress?</h4>
-                            <p class="faq-answer mb-4 pb-1 text-muted">No. This is a HTML template. It won't directly with
-                                wordpress, though you can convert this into wordpress compatible theme.</p>
-                        </div>
-    
-                        <!-- Question/Answer -->
-                        <div>
-                            <div class="faq-question-q-box">Q.</div>
-                            <h4 class="faq-question text-body">Will you regularly give updates of Hyper?</h4>
-                            <p class="faq-answer mb-4 pb-1 text-muted">Yes, We will update the Hyper regularly. All the
-                                future updates would be available without any cost.</p>
-                        </div>
-    
-                    </div>
-                    <!--/col-lg-5-->
-                </div>
-                <!-- end row -->
-    
-            </div> <!-- end container-->
-        </section>
-        <!-- END FAQ -->
-    
-    
-        <!-- START CONTACT -->
-        <section class="py-5 bg-light-lighten border-top border-bottom border-light">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="text-center">
-                            <h3>Get In <span class="text-primary">Touch</span></h3>
-                            <p class="text-muted mt-2">Please fill out the following form and we will get back to you shortly. For more
-                                <br>information please contact us.
+                            <h3>Contáctanos</h3>
+                            <p class="text-muted mt-2">¿Tienes alguna pregunta? Completa el siguiente formulario y nos pondremos en contacto contigo lo antes posible.
                             </p>
                         </div>
                     </div>
@@ -426,10 +256,10 @@
     
                 <div class="row align-items-center mt-3">
                     <div class="col-md-4">
-                        <p class="text-muted"><span class="fw-bold">Customer Support:</span><br> <span class="d-block mt-1">+1 234 56 7894</span></p>
-                        <p class="text-muted mt-4"><span class="fw-bold">Email Address:</span><br> <span class="d-block mt-1">info@gmail.com</span></p>
-                        <p class="text-muted mt-4"><span class="fw-bold">Office Address:</span><br> <span class="d-block mt-1">4461 Cedar Street Moro, AR 72368</span></p>
-                        <p class="text-muted mt-4"><span class="fw-bold">Office Time:</span><br> <span class="d-block mt-1">9:00AM To 6:00PM</span></p>
+                        <p class="text-muted"><span class="fw-bold">Soporte al Cliente:</span><br> <span class="d-block mt-1">+1 234 567 890</span></p>
+                        <p class="text-muted mt-4"><span class="fw-bold">Correo Electrónico:</span><br> <span class="d-block mt-1">info@construccion.com</span></p>
+                        <p class="text-muted mt-4"><span class="fw-bold">Dirección:</span><br> <span class="d-block mt-1">Calle Falsa 123, Ciudad, País</span></p>
+                        <p class="text-muted mt-4"><span class="fw-bold">Horario de Atención:</span><br> <span class="d-block mt-1">Lunes a Viernes, 9:00 AM - 6:00 PM</span></p>
                     </div>
     
                     <div class="col-md-7">
@@ -437,14 +267,14 @@
                             <div class="row mt-4">
                                 <div class="col-lg-6">
                                     <div class="mb-2">
-                                        <label for="fullname" class="form-label">Your Name</label>
-                                        <input class="form-control form-control-light py-2" type="text" id="fullname" placeholder="Name...">
+                                        <label for="fullname" class="form-label">Nombre Completo</label>
+                                        <input class="form-control form-control-light py-2" type="text" id="fullname" placeholder="Nombre...">
                                     </div>
                                 </div>
                                 <div class="col-lg-6">
                                     <div class="mb-2">
-                                        <label for="emailaddress" class="form-label">Your Email</label>
-                                        <input class="form-control form-control-light py-2" type="email" required="" id="emailaddress" placeholder="Enter you email...">
+                                        <label for="emailaddress" class="form-label">Correo Electrónico</label>
+                                        <input class="form-control form-control-light py-2" type="email" required="" id="emailaddress" placeholder="Ingresa tu correo...">
                                     </div>
                                 </div>
                             </div>
@@ -452,8 +282,8 @@
                             <div class="row mt-1">
                                 <div class="col-lg-12">
                                     <div class="mb-2">
-                                        <label for="subject" class="form-label">Your Subject</label>
-                                        <input class="form-control form-control-light py-2" type="text" id="subject" placeholder="Enter subject...">
+                                        <label for="subject" class="form-label">Asunto</label>
+                                        <input class="form-control form-control-light py-2" type="text" id="subject" placeholder="Ingresa el asunto...">
                                     </div>
                                 </div>
                             </div>
@@ -461,15 +291,15 @@
                             <div class="row mt-1">
                                 <div class="col-lg-12">
                                     <div class="mb-2">
-                                        <label for="comments" class="form-label">Message</label>
-                                        <textarea id="comments" rows="4" class="form-control form-control-light" placeholder="Type your message here..."></textarea>
+                                        <label for="comments" class="form-label">Mensaje</label>
+                                        <textarea id="comments" rows="4" class="form-control form-control-light" placeholder="Escribe tu mensaje aquí..."></textarea>
                                     </div>
                                 </div>
                             </div>
     
                             <div class="row mt-2">
                                 <div class="col-12 text-end">
-                                    <button class="btn btn-primary">Send a Message <i class="mdi mdi-telegram ms-1"></i> </button>
+                                    <button class="btn btn-primary">Enviar Mensaje <i class="mdi mdi-telegram ms-1"></i> </button>
                                 </div>
                             </div>
                         </form>
@@ -477,17 +307,15 @@
                 </div>
             </div>
         </section>
-        <!-- END CONTACT -->
+        <!-- FIN CONTACTO -->
     
-        <!-- START FOOTER -->
+        <!-- INICIO FOOTER -->
         <footer class="bg-dark py-5">
             <div class="container">
                 <div class="row">
                     <div class="col-lg-6">
-                        <img src="assets/images/logo.png" alt="logo" class="logo-dark" height="22" />
-                        <p class="text-light text-opacity-50 mt-4">Hyper makes it easier to build better websites with
-                            <br> great speed. Save hundreds of hours of design
-                            <br> and development by using it.
+                        <img src="{% static 'assets/images/logo.png' %}" alt="logo" class="logo-dark" height="40" />
+                        <p class="text-light text-opacity-50 mt-4">Simplificamos la gestión de proyectos de construcción para que puedas enfocarte en lo que realmente importa: construir.
                         </p>
     
                         <ul class="social-list list-inline mt-3">
@@ -508,36 +336,34 @@
                     </div>
     
                     <div class="col-lg-2 col-md-4 mt-3 mt-lg-0">
-                        <h5 class="text-light">Company</h5>
+                        <h5 class="text-light">Empresa</h5>
     
                         <ul class="list-unstyled ps-0 mb-0 mt-3">
-                            <li class="mt-2"><a href="javascript: void(0);" class="text-light text-opacity-50">About Us</a></li>
-                            <li class="mt-2"><a href="javascript: void(0);" class="text-light text-opacity-50">Documentation</a></li>
+                            <li class="mt-2"><a href="javascript: void(0);" class="text-light text-opacity-50">Sobre Nosotros</a></li>
+                            <li class="mt-2"><a href="javascript: void(0);" class="text-light text-opacity-50">Documentación</a></li>
                             <li class="mt-2"><a href="javascript: void(0);" class="text-light text-opacity-50">Blog</a></li>
-                            <li class="mt-2"><a href="javascript: void(0);" class="text-light text-opacity-50">Affiliate Program</a></li>
+                            <li class="mt-2"><a href="javascript: void(0);" class="text-light text-opacity-50">Programa de Afiliados</a></li>
                         </ul>
     
                     </div>
     
                     <div class="col-lg-2 col-md-4 mt-3 mt-lg-0">
-                        <h5 class="text-light">Apps</h5>
+                        <h5 class="text-light">Recursos</h5>
     
                         <ul class="list-unstyled ps-0 mb-0 mt-3">
-                            <li class="mt-2"><a href="javascript: void(0);" class="text-light text-opacity-50">Ecommerce Pages</a></li>
-                            <li class="mt-2"><a href="javascript: void(0);" class="text-light text-opacity-50">Email</a></li>
-                            <li class="mt-2"><a href="javascript: void(0);" class="text-light text-opacity-50">Social Feed</a></li>
-                            <li class="mt-2"><a href="javascript: void(0);" class="text-light text-opacity-50">Projects</a></li>
-                            <li class="mt-2"><a href="javascript: void(0);" class="text-light text-opacity-50">Tasks Management</a></li>
+                            <li class="mt-2"><a href="javascript: void(0);" class="text-light text-opacity-50">Calculadora de Presupuestos</a></li>
+                            <li class="mt-2"><a href="javascript: void(0);" class="text-light text-opacity-50">Gestión de Proyectos</a></li>
+                            <li class="mt-2"><a href="javascript: void(0);" class="text-light text-opacity-50">Reportes</a></li>
+                            <li class="mt-2"><a href="javascript: void(0);" class="text-light text-opacity-50">Soporte</a></li>
                         </ul>
                     </div>
     
                     <div class="col-lg-2 col-md-4 mt-3 mt-lg-0">
-                        <h5 class="text-light">Discover</h5>
+                        <h5 class="text-light">Legal</h5>
     
                         <ul class="list-unstyled ps-0 mb-0 mt-3">
-                            <li class="mt-2"><a href="javascript: void(0);" class="text-light text-opacity-50">Help Center</a></li>
-                            <li class="mt-2"><a href="javascript: void(0);" class="text-light text-opacity-50">Our Products</a></li>
-                            <li class="mt-2"><a href="javascript: void(0);" class="text-light text-opacity-50">Privacy</a></li>
+                            <li class="mt-2"><a href="javascript: void(0);" class="text-light text-opacity-50">Política de Privacidad</a></li>
+                            <li class="mt-2"><a href="javascript: void(0);" class="text-light text-opacity-50">Términos y Condiciones</a></li>
                         </ul>
                     </div>
                 </div>
@@ -546,14 +372,12 @@
                     <div class="col-lg-12">
                         <div class="mt-5">
                             <p class="text-light text-opacity-50 mt-4 text-center mb-0">© 2018 -
-                                <script>document.write(new Date().getFullYear())</script> Hyper. Design and coded by
-                                Coderthemes
+                                <script>document.write(new Date().getFullYear())</script> Netkonect Software. Todos los derechos reservados
                             </p>
                         </div>
                     </div>
                 </div>
             </div>
         </footer>
-        <!-- END FOOTER -->
+        <!-- FIN FOOTER -->
 {% endblock content %}
-    

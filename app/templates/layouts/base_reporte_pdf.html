@@ -1,18 +1,63 @@
-{% load static %}
+
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>{% block title %}{% endblock title %}</title>
-    <link rel="stylesheet" href="{% static 'assets/css/style_pdf.css' %}">
-    {% block extra_css %}{% endblock extra_css %}
+    <meta charset="UTF-8">
+    <title>{% block title %}Reporte PDF{% endblock %}</title>
+    <style>
+        /* Estilos globales */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px; /* Margen mínimo */
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            table-layout: fixed; /* Forzar el ajuste de las columnas */
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px; /* Reducir el padding para ahorrar espacio */
+            text-align: left;
+            word-wrap: break-word; /* Permitir que el texto se divida en varias líneas */
+            font-size: 12px; /* Reducir el tamaño de la fuente */
+        }
+        th {
+            background-color: #f8f9fa;
+            color: #333;
+            font-weight: bold;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+        .fecha {
+            text-align: right;
+            font-size: 0.9em;
+            color: #666;
+        }
+        .total {
+            margin-top: 20px;
+            text-align: right;
+            font-size: 1.1em;
+            font-weight: bold;
+        }
+    </style>
+    <link rel="stylesheet" href="style.css">
+    {% block extra_css %}{% endblock %}
 </head>
 <body>
-    <div class="container">
-        {% block contenido %}{% endblock contenido %}
-    </div>
-
-    {% block extra_js %}{% endblock extra_js %}
+    <h1>{% block contenido %}Reporte PDF{% endblock %}</h1>
+    {% block contenido_adicional %}{% endblock %}
+    {% block extra_js %}{% endblock %}
 </body>
 </html>

@@ -5,7 +5,7 @@
 
             <!-- logo -->
             <a href="{% url 'index' %}" class="navbar-brand me-lg-5">
-                <img src="{% static 'assets/images/logo.png' %}" alt="logo" class="logo-dark" height="22" />
+                <img src="{% static 'assets/images/logo.png' %}" alt="logo" class="logo-dark" height="50" />
             </a>
 
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
@@ -18,22 +18,19 @@
                 <!-- left menu -->
                 <ul class="navbar-nav me-auto align-items-center">
                     <li class="nav-item mx-lg-1">
-                        <a class="nav-link active" href="{% url 'index' %}">Home</a>
+                        <a class="nav-link active" href="{% url 'index' %}">Inicio</a>
                     </li>
                     <li class="nav-item mx-lg-1">
-                        <a class="nav-link" href="#">Features</a>
+                        <a class="nav-link" href="#">Sobre nosotros</a>
                     </li>
                     <li class="nav-item mx-lg-1">
-                        <a class="nav-link" href="#">Pricing</a>
+                        <a class="nav-link" href="#">Proyectos</a>
                     </li>
                     <li class="nav-item mx-lg-1">
-                        <a class="nav-link" href="#">FAQs</a>
+                        <a class="nav-link" href="#">Servicios</a>
                     </li>
                     <li class="nav-item mx-lg-1">
-                        <a class="nav-link" href="#">Clients</a>
-                    </li>
-                    <li class="nav-item mx-lg-1">
-                        <a class="nav-link" href="#">Contact</a>
+                        <a class="nav-link" href="#contactos">Contactos</a>
                     </li>
                 </ul>
 
@@ -43,10 +40,10 @@
                         <a href="{% url 'signin' %}" class="nav-link d-lg-none">Iniciar sesión</a>
                         <a href="{% url 'signup' %}" class="nav-link d-lg-none">Registrarse</a>
                         <a href="{% url 'signin' %}" class="btn btn-sm btn-light rounded-pill d-none d-lg-inline-flex">
-                            <i class="mdi mdi-basket me-2"></i> Iniciar sesión
+                            <i class="mdi mdi-account me-2"></i> Iniciar sesión
                         </a>
                         <a href="{% url 'signup' %}" class="btn btn-sm btn-light rounded-pill d-none d-lg-inline-flex">
-                            <i class="mdi mdi-basket me-2"></i> Registrarse
+                            <i class="mdi mdi-account-plus me-2"></i> Registrarse
                         </a>
                     </li>
                 </ul>

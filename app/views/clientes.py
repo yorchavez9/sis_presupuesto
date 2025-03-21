@@ -5,6 +5,7 @@ from ..models import Cliente
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.hashers import make_password
 import requests
+from django.template.loader import get_template
 import json
 from weasyprint import HTML
 from django.utils.dateparse import parse_date
@@ -200,11 +201,27 @@ def eliminar_cliente(request):
     return JsonResponse({'status': False, 'message': 'Método no permitido'}, status=405)
 
 @csrf_exempt
+def generar_reporte_pdf(request, desde_fecha=None, hasta_fecha=None):
+    # Si no se proporcionan fechas, obtener todos los clientes
+    if desde_fecha is None or hasta_fecha is None:
+        clientes = Cliente.objects.all()
+    else:
+        # Filtrar clientes dentro del rango de fechas
+        clientes = Cliente.objects.filter(fecha__range=[desde_fecha, hasta_fecha])
 
-def reporte_cliente_pdf(request):
-    clientes = Cliente.objects.all().order_by('-id')
-        # Renderizar el template HTML con los datos
-    html_string = render_to_string('clientes/reporte.html', clientes)
+    # Calcular totales u otros datos necesarios (si aplica)
+    total_clientes = clientes.count()  # Ejemplo: contar el número de clientes
+
+    # Preparar el contexto para la plantilla
+    data_clientes = {
+        'clientes': clientes,
+        'desde_fecha': desde_fecha,
+        'hasta_fecha': hasta_fecha,
+        'total_clientes': total_clientes,
+    }
+
+    # Renderizar el template HTML con los datos
+    html_string = render_to_string('clientes/reporte_pdf.html', data_clientes)
 
     # Generar el PDF con WeasyPrint
     html = HTML(string=html_string, base_url=request.build_absolute_uri())
@@ -212,6 +229,8 @@ def reporte_cliente_pdf(request):
 
     # Devolver el PDF como respuesta
     response = HttpResponse(pdf, content_type='application/pdf')
-    response['Content-Disposition'] = f'inline; filename="reporte_clientes.pdf"'
+    if desde_fecha and hasta_fecha:
+        response['Content-Disposition'] = f'inline; filename="reporte_clientes_{desde_fecha}_{hasta_fecha}.pdf"'
+    else:
+        response['Content-Disposition'] = 'inline; filename="reporte_clientes_todos.pdf"'
     return response
-

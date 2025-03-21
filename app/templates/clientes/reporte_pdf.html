@@ -1,14 +1,42 @@
-{% extends 'layouts/base_reporte_pdf' %}
+{% extends 'layouts/base_reporte_pdf.html' %}
+
 {% block title %}
-  Reporte clientes
+  Reporte de Clientes
 {% endblock %}
-{% block extra_css %}
 
-{% endblock %}
 {% block contenido %}
-  Reporte de cliente
+  Reporte de Clientes
 {% endblock %}
 
-{% block extra_js %}
-
+{% block contenido_adicional %}
+  <p class="fecha">Desde: {{ desde_fecha }} - Hasta: {{ hasta_fecha }}</p>
+  <table>
+      <thead>
+          <tr>
+              <th>#</th>
+              <th>Nombre</th>
+              <th>Documento</th>
+              <th>Dirección</th>
+              <th>Teléfono</th>
+              <th>Correo</th>
+              <th>Estado</th>
+              <th>Fecha</th>
+          </tr>
+      </thead>
+      <tbody>
+          {% for cliente in clientes %}
+          <tr>
+              <td>{{ forloop.counter }}</td>
+              <td>{{ cliente.nombre }}</td>
+              <td>{{ cliente.tipo_documento }}: {{ cliente.num_documento }}</td>
+              <td>{{ cliente.direccion }}</td>
+              <td>{{ cliente.telefono }}</td>
+              <td>{{ cliente.correo }}</td>
+              <td>{{ cliente.estado|yesno:"Activado,Desactivado" }}</td>
+              <td>{{ cliente.fecha }}</td>
+          </tr>
+          {% endfor %}
+      </tbody>
+  </table>
+  <p class="total">Total de clientes: {{ total_clientes }}</p>
 {% endblock %}
