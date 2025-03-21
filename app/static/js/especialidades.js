@@ -1,5 +1,20 @@
 $(document).ready(function () {
 
+    $('input').each(function () {
+        // Guardar el valor por defecto
+        $(this).data('default', $(this).val());
+    }).focus(function () {
+        // Limpiar el input solo si el valor es "0" o "0.00"
+        if ($(this).val() === '0' || $(this).val() === '0.00') {
+            $(this).val('');
+        }
+    }).blur(function () {
+        // Restaurar el valor por defecto si el campo está vacío
+        if ($(this).val() === '') {
+            $(this).val($(this).data('default'));
+        }
+    });
+
     let tabla = $('.tabla_especialidades').DataTable({
         "destroy": true,
         "responsive": true,

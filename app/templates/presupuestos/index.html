@@ -9,12 +9,12 @@
     .imagen_vista_material {
       transition: transform 0.3s ease; /* Transición suave */
       cursor: pointer;
-  }
-
-  .imagen_vista_material:hover {
+    }
+    
+    .imagen_vista_material:hover {
       transform: scale(2); /* Escala la imagen al 200% de su tamaño */
-  }
-
+    }
+    
     .tabla_materiales_servicios_presupuesto tbody tr {
       cursor: pointer;
     }
@@ -24,29 +24,29 @@
     .tabla_lista_equipos_maquinas tbody tr {
       cursor: pointer;
     }
-
+    
     .tabla_materiales_servicios_presupuesto tbody tr.selected {
       background-color: #e0f7fa;
       font-weight: bold;
     }
-    #sub_total_terreno{
+    #sub_total_terreno {
       text-align: right;
     }
-    .sub_total_maquina{
-      text-align: right;
-      font-weight: bold;
-    }
-    .subtotal-material{
+    .sub_total_equipo_maquina {
       text-align: right;
       font-weight: bold;
     }
-    .sub_total_trabajador{
+    .subtotal-material {
+      text-align: right;
+      font-weight: bold;
+    }
+    .sub_total_trabajador {
       text-align: right;
       font-weight: bold;
     }
   </style>
   <script>
-    const RUTA_BASE_IMAGENES = "{% static 'img/materiales_servicios/' %}";
+    const RUTA_BASE_IMAGENES = "{% static 'img/materiales_servicios/' %}"
   </script>
 {% endblock %}
 
@@ -81,13 +81,11 @@
               <div class="row align-items-end">
                 <div class="form-group mb-2 col-md-4">
                   <label for="" class="form-label">Selecione el cliente (<span class="text-danger">*</span>)</label>
-                  <select name="id_cliente_presupuesto" id="id_cliente_presupuesto" class="form-select">
-
-                  </select>
+                  <select name="id_cliente_presupuesto" id="id_cliente_presupuesto" class="form-select"></select>
                   <span class="text-danger" id="id_cliente_presupuesto_error"></span>
                 </div>
                 <div class="form-group mb-2 col-md-2 justify-content-center align-items-center">
-                  <button type="button" class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#modal_nuevo_cliente" ><i class="uil-plus"></i> Agregar</button>
+                  <button type="button" class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#modal_nuevo_cliente"><i class="uil-plus"></i> Agregar</button>
                 </div>
 
                 <div class="form-group mb-2 col-md-3">
@@ -106,9 +104,7 @@
               <div class="row">
                 <div class="form-group mb-2 col-md-3">
                   <label for="id_comprobante" class="form-label">Selecione el comprobante (<span class="text-danger">*</span>)</label>
-                  <select name="id_comprobante" id="id_comprobante" class="form-select">
-
-                  </select>
+                  <select name="id_comprobante" id="id_comprobante" class="form-select"></select>
                   <span class="text-danger" id="id_comprobante_presupuesto_error"></span>
                 </div>
                 <div class="form-group mb-2 col-md-3">
@@ -150,7 +146,6 @@
               </ul>
 
               <div class="tab-content">
-
                 {% comment %}======================================================= SECCION DE METROS DE TERRENO ======================================================={% endcomment %}
                 <div class="tab-pane fade show active" id="seccion_metros_terreno_presupuesto">
                   <div class="row">
@@ -169,8 +164,8 @@
                           <input type="number" id="sub_total_terreno" name="sub_total_terreno" value="0.00" class="form-control" readonly disabled />
                         </div>
                       </div>
-                       <!-- Contenedor del subtotal alineado a la derecha -->
-                       <div class="d-flex justify-content-end align-items-end mt-3">
+                      <!-- Contenedor del subtotal alineado a la derecha -->
+                      <div class="d-flex justify-content-end align-items-end mt-3">
                         <h4 class="mb-0">Sub Total: <span id="sub_total_metros_terreno" class="fw-bold">S/ 0.00</span></h4>
                       </div>
                     </div>
@@ -184,7 +179,7 @@
                       <button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#modal_agregar_materiales" style="width: auto;"><i class="uil-plus"></i> Agregar materiales</button>
                       <div class="tab-content">
                         <div class="tab-pane show active" id="basic-datatable-preview">
-                          <table id="basic-datatable" class="tabla_materiales_seleccionado_presupuesto table table-striped dt-responsive nowrap" width="100%">
+                          <table id="tabla_materiales_seleccionado_presupuesto" class="tabla_materiales_seleccionado_presupuesto table table-striped dt-responsive nowrap" width="100%">
                             <thead>
                               <tr>
                                 <th>N°</th>
@@ -195,14 +190,12 @@
                                 <th>Sub total</th>
                               </tr>
                             </thead>
-                            <tbody id="data_detalles_materiales_presupuesto">
-
-                            </tbody>
+                            <tbody id="data_detalles_materiales_presupuesto"></tbody>
                           </table>
                         </div>
                       </div>
                       <div class="d-flex justify-content-end align-items-end mt-3">
-                        <h4 class="mb-0">Sub Total: <span id="sub_total_meteriales" class="fw-bold">S/ 2,234.00</span></h4>
+                        <h4 class="mb-0">Sub Total: <span id="sub_total_meteriales" class="fw-bold">S/ 0.00</span></h4>
                       </div>
                     </div>
                   </div>
@@ -228,10 +221,7 @@
                                 <th>Sub total</th>
                               </tr>
                             </thead>
-                            <tbody id="data_detalles_trabajadores_presupuesto">
-                              
-
-                            </tbody>
+                            <tbody id="data_detalles_trabajadores_presupuesto"></tbody>
                           </table>
                         </div>
                       </div>
@@ -262,9 +252,7 @@
                                 <th>Sub total</th>
                               </tr>
                             </thead>
-                            <tbody id="data_detalles_maquinas_equipos_presupuesto">
-
-                            </tbody>
+                            <tbody id="data_detalles_maquinas_equipos_presupuesto"></tbody>
                           </table>
                         </div>
                       </div>
@@ -274,13 +262,11 @@
                     </div>
                   </div>
                 </div>
-
               </div>
 
-              <hr>
+              <hr />
 
               <div class="row">
-                
                 <div class="form-group mb-2 col-md-4">
                   <label for="condicion_pago">Condición de pago</label>
                   <textarea name="condicion_pago" id="condicion_pago" class="form-control" placeholder="Ingrese las condiciones del pago"></textarea>
@@ -305,7 +291,6 @@
                   <label for="observacion">Observaciones</label>
                   <textarea name="observacion" id="observacion" class="form-control" placeholder="Ingrese algunas observaciones"></textarea>
                 </div>
-
               </div>
 
               <div class="row d-flex justify-content-end">
@@ -330,7 +315,6 @@
                   <button type="button" id="btn_crear_presupuesto" class="btn btn-primary w-50">Crear presupuesto</button>
                 </div>
               </div>
-
             </form>
           </div>
         </div>
@@ -476,7 +460,7 @@
           <div class="modal-body">
             <div class="tab-content">
               <div class="tab-pane show active" id="basic-datatable-preview">
-                <table id="basic-datatable" class="tabla_lista_equipos_maquinas table table-striped dt-responsive nowrap w-100">
+                <table id="#tabla_lista_equipos_maquinas" class="tabla_lista_equipos_maquinas table table-striped dt-responsive nowrap" width="100%">
                   <thead>
                     <tr>
                       <th>N°</th>
@@ -494,11 +478,27 @@
         <!-- /.modal-content -->
       </div>
     </div>
-
   </div>
 {% endblock %}
 
 {% block extra_js %}
-<script src="{% static 'js/agregar-presupuesto.js' %}"></script>
-<script src="{% static 'js/crear-presupuesto.js' %}"></script>
+  <script>
+    const tablas = [
+      '#tabla_materiales_seleccionado_presupuesto',
+      '#tabla_detalle_trabajadores',
+      '#tabla_detalle_maquinas_equipos_presupuesto'
+    ];
+
+    tablas.forEach(selector => {
+      new DataTable(selector, {
+        responsive: true,
+        autoWidth: true,
+        destroy: true, // Asegura que se pueda reinicializar
+        retrieve: true // Mantiene la instancia si ya existe
+      });
+    });
+  </script>
+
+  <script src="{% static 'js/agregar-presupuesto.js' %}"></script>
+  <script src="{% static 'js/crear-presupuesto.js' %}"></script>
 {% endblock %}
