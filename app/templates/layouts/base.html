@@ -32,9 +32,11 @@
 
       {% comment %}Contenido de la página{% endcomment %}
       {% block content %}
-
+      
       {% endblock %}
+      {% include 'layouts/_partials/chatbot.html' %}
     {% endif %}
+    
 
     <!-- Vendor js -->
     <script src="{% static 'assets/js/vendor.min.js' %}"></script>
