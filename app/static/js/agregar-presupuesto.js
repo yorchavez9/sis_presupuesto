@@ -525,7 +525,7 @@ $(document).ready(function () {
     $("#tabla_materiales_servicios_presupuesto tbody").on("click", "tr", function () {
         const fila = $(this); // Obtener la fila seleccionada
         const id = fila.find("td:eq(1)").text().trim(); // Obtener el ID de la segunda columna
-        const nombre = fila.find("td:eq(2)").text().trim(); // Obtener el nombre de la tercera columna
+        const nombre = fila.find("td:eq(4)").text().trim(); // Obtener el nombre de la tercera columna
         const precio = parseFloat(fila.find("td:eq(5)").text().replace(/[^\d.]/g, '')); // Obtener el precio de la quinta columna
 
         const material = {
@@ -533,6 +533,7 @@ $(document).ready(function () {
             nombre: nombre,
             precio: precio
         };
+        console.log(material);
 
         agregarMaterialSeleccionado(material);
     });
