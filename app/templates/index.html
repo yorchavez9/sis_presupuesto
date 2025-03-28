@@ -1,5 +1,6 @@
 {% extends 'layouts/base.html' %}
 {% load static %}
+{% load static %}
 {% block content %}
         <!-- INICIO HERO -->
         <section class="hero-section">
@@ -241,14 +242,14 @@
         <!-- FIN PLANES -->
     
     
-        <!-- INICIO CONTACTO -->
-        <section id="contactos" class="py-5 bg-light-lighten border-top border-bottom border-light">
+         <!-- INICIO CONTACTO -->
+         <section id="contactos" class="py-5 bg-light-lighten border-top border-bottom border-light">
             <div class="container">
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="text-center">
-                            <h3>Contáctanos</h3>
-                            <p class="text-muted mt-2">¿Tienes alguna pregunta? Completa el siguiente formulario y nos pondremos en contacto contigo lo antes posible.
+                            <h3>¿Necesitas ayuda?</h3>
+                            <p class="text-muted mt-2">Nuestro equipo especializado en RRHH para construcción está listo para atenderte.
                             </p>
                         </div>
                     </div>
@@ -256,25 +257,28 @@
     
                 <div class="row align-items-center mt-3">
                     <div class="col-md-4">
-                        <p class="text-muted"><span class="fw-bold">Soporte al Cliente:</span><br> <span class="d-block mt-1">+1 234 567 890</span></p>
-                        <p class="text-muted mt-4"><span class="fw-bold">Correo Electrónico:</span><br> <span class="d-block mt-1">info@construccion.com</span></p>
-                        <p class="text-muted mt-4"><span class="fw-bold">Dirección:</span><br> <span class="d-block mt-1">Calle Falsa 123, Ciudad, País</span></p>
-                        <p class="text-muted mt-4"><span class="fw-bold">Horario de Atención:</span><br> <span class="d-block mt-1">Lunes a Viernes, 9:00 AM - 6:00 PM</span></p>
+                        <p class="text-muted"><span class="fw-bold">Soporte Técnico:</span><br> <span class="d-block mt-1">+1 234 567 890</span></p>
+                        <p class="text-muted mt-4"><span class="fw-bold">Correo Electrónico:</span><br> <span class="d-block mt-1">rrhh@construccion.com</span></p>
+                        <p class="text-muted mt-4"><span class="fw-bold">Dirección:</span><br> <span class="d-block mt-1">Av. Constructores 456, Ciudad, País</span></p>
+                        <p class="text-muted mt-4"><span class="fw-bold">Horario de Atención:</span><br> <span class="d-block mt-1">Lunes a Viernes, 7:00 AM - 5:00 PM</span></p>
                     </div>
     
                     <div class="col-md-7">
-                        <form>
+                        <form action="POST" id="form_agregar_mensaje">
+                          
                             <div class="row mt-4">
                                 <div class="col-lg-6">
                                     <div class="mb-2">
-                                        <label for="fullname" class="form-label">Nombre Completo</label>
-                                        <input class="form-control form-control-light py-2" type="text" id="fullname" placeholder="Nombre...">
+                                        <label for="agregar_nombre" class="form-label">Nombre Completo (<span class="text-danger">*</span>)</label>
+                                        <input class="form-control form-control-light py-2" type="text" id="agregar_nombre" name="nombre" placeholder="Nombre...">
+                                        <span class="text-danger" id="error_agregar_nombre"></span>
                                     </div>
                                 </div>
                                 <div class="col-lg-6">
                                     <div class="mb-2">
-                                        <label for="emailaddress" class="form-label">Correo Electrónico</label>
-                                        <input class="form-control form-control-light py-2" type="email" required="" id="emailaddress" placeholder="Ingresa tu correo...">
+                                        <label for="agregar_correo" class="form-label">Correo Electrónico (<span class="text-danger">*</span>)</label>
+                                        <input class="form-control form-control-light py-2" type="email" id="agregar_correo" name="correo" placeholder="Ingresa tu correo...">
+                                        <span class="text-danger" id="error_agregar_correo"></span>
                                     </div>
                                 </div>
                             </div>
@@ -282,8 +286,8 @@
                             <div class="row mt-1">
                                 <div class="col-lg-12">
                                     <div class="mb-2">
-                                        <label for="subject" class="form-label">Asunto</label>
-                                        <input class="form-control form-control-light py-2" type="text" id="subject" placeholder="Ingresa el asunto...">
+                                        <label for="agregar_telefono" class="form-label">Teléfono (Opcional)</label>
+                                        <input class="form-control form-control-light py-2" type="text" id="agregar_telefono" name="telefono" placeholder="Teléfono...">
                                     </div>
                                 </div>
                             </div>
@@ -291,15 +295,16 @@
                             <div class="row mt-1">
                                 <div class="col-lg-12">
                                     <div class="mb-2">
-                                        <label for="comments" class="form-label">Mensaje</label>
-                                        <textarea id="comments" rows="4" class="form-control form-control-light" placeholder="Escribe tu mensaje aquí..."></textarea>
+                                        <label for="agregar_mensaje" class="form-label">¿Cómo podemos ayudarte? (<span class="text-danger">*</span>)</label>
+                                        <textarea id="agregar_mensaje" name="mensaje" rows="4" class="form-control form-control-light" placeholder="Describe tus necesidades..."></textarea>
+                                        <span class="text-danger" id="error_agregar_mensaje"></span>
                                     </div>
                                 </div>
                             </div>
     
                             <div class="row mt-2">
                                 <div class="col-12 text-end">
-                                    <button class="btn btn-primary">Enviar Mensaje <i class="mdi mdi-telegram ms-1"></i> </button>
+                                    <button class="btn btn-primary" type="submit" id="btn_send_message">Enviar Mensaje <i class="mdi mdi-telegram ms-1"></i> </button>
                                 </div>
                             </div>
                         </form>
@@ -308,7 +313,7 @@
             </div>
         </section>
         <!-- FIN CONTACTO -->
-    
+        
         <!-- INICIO FOOTER -->
         <footer class="bg-dark py-5">
             <div class="container">
@@ -381,3 +386,7 @@
         </footer>
         <!-- FIN FOOTER -->
 {% endblock content %}
+
+{% block extra_js %}
+<script src="{% static 'js/send_message.js' %}"></script>
+{% endblock extra_js %}
