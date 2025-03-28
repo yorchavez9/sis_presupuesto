@@ -20,6 +20,8 @@ urlpatterns = [
     path('maquina-sueldo/', presupuestos.mostrar_sueldo_maquina, name='mostrar_sueldo_maquina'),
     path('lista-equipos-maquinas/', equipos_maquinarias.lista_equipos_maquinarias, name='lista_equipos_maquinarias'),
     
+    path('cambiar-estado-presupuesto/', presupuestos.cambiar_estado_presupuesto, name='cambiar_estado_presupuesto'),
+    
     path('crear-presupuesto/', presupuestos.crear_presupuesto, name='crear_presupuesto'),
     path('lista-presupuestos/', presupuestos.lista_presupuesto, name='lista_presupuestos'),
     path('generar-pdf-presupuesto/<int:presupuesto_id>/', presupuestos.generar_pdf_presupuesto, name='generar_pdf_presupuesto'),

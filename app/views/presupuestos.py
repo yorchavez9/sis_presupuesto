@@ -528,6 +528,37 @@ def generar_pdf_comprobante(request, presupuesto_id):
     response['Content-Disposition'] = f'inline; filename="cotizacion_{presupuesto.serie}_{presupuesto.numero}.pdf"'
     return response
 
+@csrf_exempt
+def cambiar_estado_presupuesto(request):
+    try:
+        presupuesto_id = request.POST.get('id')
+        nuevo_estado = request.POST.get('nuevo_estado')
+        
+        if not presupuesto_id or not nuevo_estado:
+            return JsonResponse({'success': False, 'error': 'Datos incompletos'}, status=400)
+        
+        try:
+            presupuesto = Presupuesto.objects.get(id=presupuesto_id)
+        except Presupuesto.DoesNotExist:
+            return JsonResponse({'success': False, 'error': 'Presupuesto no encontrado'}, status=404)
+        
+        # Validar que el estado sea válido (1, 2 o 3)
+        if nuevo_estado not in ['1', '2', '3']:
+            return JsonResponse({'success': False, 'error': 'Estado inválido'}, status=400)
+        
+        presupuesto.estado = nuevo_estado
+        presupuesto.save()
+        
+        return JsonResponse({
+            'success': True,
+            'nuevo_estado': nuevo_estado,
+            'nombre_estado': presupuesto.get_estado_display()
+        })
+        
+    except Exception as e:
+        return JsonResponse({'success': False, 'error': str(e)}, status=500)
+
+
 
 def presupuestos_vs_real(request):
     # Obtener los últimos 6 meses
@@ -558,6 +589,7 @@ def presupuestos_vs_real(request):
         'monto_proyectado': [float(d['monto_total'] or 0) for d in datos],
         'monto_real': [float(d['monto_aprobado'] or 0) for d in datos]
     })
+    
 
 @csrf_exempt
 def eliminar_presupuesto(request):
