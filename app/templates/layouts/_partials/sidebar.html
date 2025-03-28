@@ -38,7 +38,7 @@
         <div class="leftbar-user">
             <a href="pages-profile.html">
                 <img src="{% static 'assets/images/users/avatar-1.jpg' %}" alt="user-image" height="42" class="rounded-circle shadow-sm">
-                <span class="leftbar-user-name mt-2">Dominic Keller</span>
+                <span class="leftbar-user-name mt-2">{{ user.get_full_name|default:user.username }}</span>
             </a>
         </div>
 
@@ -52,9 +52,9 @@
                     <i class="uil-home-alt"></i>
                     <span> Inicio </span>
                 </a>
-                
             </li>
 
+            {% if user.profile.rol == 'admin' or user.profile.rol == 'gerente' %}
             <li class="side-nav-title">usuario / Cliente</li>
 
             <li class="side-nav-item">
@@ -71,6 +71,9 @@
                     </ul>
                 </div>
             </li>
+            {% endif %}
+
+            {% if user.profile.rol == 'admin' or user.profile.rol == 'gerente' or user.profile.rol == 'cliente' %}
             <li class="side-nav-item">
                 <a data-bs-toggle="collapse" href="#sidebarClients" aria-expanded="false" aria-controls="sidebarEcommerce" class="side-nav-link">
                     <i class="uil-users-alt"></i>
@@ -79,16 +82,22 @@
                 </a>
                 <div class="collapse" id="sidebarClients">
                     <ul class="side-nav-second-level">
+                        {% if user.profile.rol == 'admin' or user.profile.rol == 'gerente' %}
                         <li>
                             <a href="{% url 'index_clientes' %}">Clientes</a>
                         </li>
+                        {% endif %}
                         <li>
-                            <a href="{% url 'index_mensaje' %}">Mensajes</a>
+                            <a href="{% url 'index_mensaje' %}">
+                                {% if user.profile.rol == 'cliente' %}Mis Mensajes{% else %}Mensajes{% endif %}
+                            </a>
                         </li>
                     </ul>
                 </div>
             </li>
+            {% endif %}
 
+            {% if user.profile.rol == 'admin' or user.profile.rol == 'gerente' or user.profile.rol == 'analista' or user.profile.rol == 'supervisor' %}
             <li class="side-nav-title">Inventario</li>
 
             <li class="side-nav-item">
@@ -99,6 +108,7 @@
                 </a>
                 <div class="collapse" id="sidebarInventario">
                     <ul class="side-nav-second-level">
+                        {% if user.profile.rol == 'admin' or user.profile.rol == 'gerente' %}
                         <li>
                             <a href="{% url 'index_categorias' %}">Categorias</a>
                         </li>
@@ -108,6 +118,7 @@
                         <li>
                             <a href="{% url 'index_proveedores' %}">Proveedores</a>
                         </li>
+                        {% endif %}
                         <li>
                             <a href="{% url 'index_materiales_servicios' %}">Materiales</a>
                         </li>
@@ -128,8 +139,10 @@
                     <span> Trabajadores </span>
                 </a>
             </li>
+            {% endif %}
 
-            <li class="side-nav-title">Equipso y maquinarias</li>
+            {% if user.profile.rol == 'admin' or user.profile.rol == 'gerente' or user.profile.rol == 'supervisor' %}
+            <li class="side-nav-title">Equipos y maquinarias</li>
 
             <li class="side-nav-item">
                 <a href="{% url 'index_equipos_maquinarias' %}" class="side-nav-link">
@@ -144,7 +157,9 @@
                     <span> Encargar maquinaria </span>
                 </a>
             </li>
+            {% endif %}
 
+            {% if user.profile.rol == 'admin' or user.profile.rol == 'gerente' or user.profile.rol == 'analista' or user.profile.rol == 'cliente' %}
             <li class="side-nav-title">Presupuesto</li>
 
             <li class="side-nav-item">
@@ -155,16 +170,22 @@
                 </a>
                 <div class="collapse" id="sidebarPresupuesto">
                     <ul class="side-nav-second-level">
+                        {% if user.profile.rol == 'admin' or user.profile.rol == 'gerente' or user.profile.rol == 'analista' %}
                         <li>
                             <a href="{% url 'index_presupuestos' %}">Crear</a>
                         </li>
+                        {% endif %}
                         <li>
-                            <a href="{% url 'index_presupuestos_lista' %}">Listar</a>
+                            <a href="{% url 'index_presupuestos_lista' %}">
+                                {% if user.profile.rol == 'cliente' %}Mis Presupuestos{% else %}Listar{% endif %}
+                            </a>
                         </li>
                     </ul>
                 </div>
             </li>
+            {% endif %}
 
+            {% if user.profile.rol == 'admin' or user.profile.rol == 'gerente' or user.profile.rol == 'supervisor' or user.profile.rol == 'analista' %}
             <li class="side-nav-title">Reportes</li>
 
             <li class="side-nav-item">
@@ -175,31 +196,37 @@
                 </a>
                 <div class="collapse" id="sidebarReportes">
                     <ul class="side-nav-second-level">
+                        {% if user.profile.rol == 'admin' or user.profile.rol == 'gerente' %}
                         <li>
                             <a href="{% url 'index_clientes_reporte' %}">Clientes</a>
                         </li>
                         <li>
                             <a href="#">Proveedores</a>
                         </li>
+                        {% endif %}
                         <li>
                             <a href="#">Materiales</a>
                         </li>
                         <li>
                             <a href="#">Trabajadores</a>
                         </li>
+                        {% if user.profile.rol == 'admin' or user.profile.rol == 'gerente' or user.profile.rol == 'supervisor' %}
                         <li>
                             <a href="#">Equipos y maquinarias</a>
                         </li>
                         <li>
                             <a href="#">Encargaturas de Maquina/Equipo</a>
                         </li>
+                        {% endif %}
                         <li>
                             <a href="#">Presupuestos</a>
                         </li>
                     </ul>
                 </div>
             </li>
+            {% endif %}
 
+            {% if user.profile.rol == 'admin' %}
             <li class="side-nav-title">Configuraciones</li>
 
             <li class="side-nav-item">
@@ -219,6 +246,8 @@
                     </ul>
                 </div>
             </li>
+            {% endif %}
+
             <li class="side-nav-item">
                 <a href="#" class="side-nav-link">
                     <i class="uil-comments-alt"></i>
