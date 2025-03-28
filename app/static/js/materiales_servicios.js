@@ -61,7 +61,6 @@ $(document).ready(function () {
                         formatCurrency(dato.precio_compra),
                         formatCurrency(dato.precio_venta),
                         `<div class="${stockClass} text-center" style="border-radius: 5px;">${dato.stock}</div>`,
-                        dato.stock_minimo,
                         dato.estado ?
                             '<button class="btn bg-success text-white badges btn-sm rounded btnActivar" idMaterial="' + dato.id + '" estadoMaterial="0">Activado</button>' :
                             '<button class="btn bg-danger text-white badges btn-sm rounded btnActivar" idMaterial="' + dato.id + '" estadoMaterial="1">Desactivado</button>',

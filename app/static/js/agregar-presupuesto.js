@@ -2,6 +2,104 @@
 $(document).ready(function () {
 
 
+       /* ===========================================
+    OBTNER DATOS DEL DNI
+    =========================================== */
+    async function obtenerDatosDNI(numeroDNI) {
+        try {
+            const url = `consultar-dni/${numeroDNI}/`;
+            const response = await fetch(url, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+            if (!response.ok) {
+                throw new Error(`Error HTTP: ${response.status} - ${response.statusText}`);
+            }
+            const datos = await response.json();
+            return datos;
+        } catch (error) {
+            console.error('Error detallado:', {
+                message: error.message,
+                name: error.name,
+                stack: error.stack
+            });
+            if (error instanceof TypeError) {
+                console.error('Posible problema de conexión. Verifica el servidor.');
+            }
+        }
+    }
+
+    /* ===========================================
+    OBTNER DATOS DEL RUC
+    =========================================== */
+    async function obtenerDatosRUC(numeroRUC) {
+        try {
+            const url = `consultar-ruc/${numeroRUC}/`;
+            const response = await fetch(url, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+            if (!response.ok) {
+                throw new Error(`Error HTTP: ${response.status} - ${response.statusText}`);
+            }
+            const datos = await response.json();
+            return datos;
+        } catch (error) {
+            console.error('Error detallado:', {
+                message: error.message,
+                name: error.name,
+                stack: error.stack
+            });
+            if (error instanceof TypeError) {
+                console.error('Posible problema de conexión. Verifica el servidor.');
+            }
+        }
+    }
+
+    /* ===========================================
+    SELECIONANDO EL TIPO DE DOCUMENTO
+    =========================================== */
+    $('#seccion_nombre').hide();
+    $('#tipo_documento').change(function () {
+        let tipo_documento = $(this).val();
+        if (tipo_documento === "DNI" || tipo_documento === "RUC") {
+            $('#seccion_nombre').show();
+            if (tipo_documento === "DNI") {
+                $('#nombre_razon_social').html('Nombre Completo <span class="text-danger">(*)</span>');
+            } else if (tipo_documento === "RUC") {
+                $('#nombre_razon_social').html('Razón Social <span class="text-danger">(*)</span>');
+            }
+        } else {
+            $('#seccion_nombre').hide();
+        }
+    });
+
+
+    $('#btn_consultar_documento').click(async function (e) {
+        e.preventDefault();
+        let tipo_documento = $('#tipo_documento').val();
+        let num_documento = $('#num_documento').val();
+        if (tipo_documento == "DNI") {
+            let datos = await obtenerDatosDNI(num_documento);
+            if (datos && datos.nombreCompleto) {
+                $('#nombre').val(datos.nombreCompleto);
+                $('#section_nombre').show();
+            }
+        } else if (tipo_documento == "RUC") {
+            let datos = await obtenerDatosRUC(num_documento);
+            if (datos && datos.razonSocial) {
+                $('#nombre').val(datos.razonSocial);
+                $('#direccion').val(datos.direccion);
+                $('#section_nombre').show();
+            }
+        }
+    });
+
+
     /* ============================================================ DATOS PRINCIPALES ============================================================================= */
 
     /* =========================================

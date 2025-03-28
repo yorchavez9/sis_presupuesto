@@ -217,16 +217,10 @@ $(document).ready(function () {
                 contentType: false,
                 success: function (response) {
                     if (response.status) {
+                        if ($.fn.DataTable.isDataTable("#tabla_clientes")) {
+                            $("#tabla_clientes").DataTable().destroy();
+                        }
                         cargarClientes();
-                        tabla.destroy();
-                        tabla = $('#tabla_clientes').DataTable({
-                            "destroy": true,
-                            "responsive": true,
-                            "pageLength": 10,
-                            "language": {
-                                "url": "//cdn.datatables.net/plug-ins/1.10.25/i18n/Spanish.json"
-                            }
-                        });
                         $("#modal_nuevo_cliente").modal("hide");
                         $("#form_crear_cliente")[0].reset();
                         Swal.fire({
@@ -243,9 +237,13 @@ $(document).ready(function () {
                     }
                 },
                 error: function (error) {
-                    console.error("Error al crear usuario:", error);
+                    Swal.fire({
+                        title: "¡Error!",
+                        text: error.responseJSON ? error.responseJSON.message : "Ocurrió un error inesperado.",
+                        icon: "error",
+                    });
                 }
-            })
+            });
         }
     });
 
@@ -395,6 +393,9 @@ $(document).ready(function () {
             contentType: false,
             success: function (response) {
                 if (response.status) {
+                    if ($.fn.DataTable.isDataTable("#tabla_clientes")) {
+                        $("#tabla_clientes").DataTable().destroy();
+                    }
                     cargarClientes();
                     Swal.fire({
                         title: "¡Correcto!",

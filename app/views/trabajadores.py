@@ -84,8 +84,13 @@ def consulta_ruc(request, numero):
 @csrf_exempt
 def crear_trabajador(request):
     if request.method == 'POST':
-        tipo_documento = request.POST.get('tipo_documento')
         num_documento = request.POST.get('num_documento')
+        
+        # Verificar si ya existe un trabajador con el mismo num_documento
+        if Trabajador.objects.filter(num_documento=num_documento).exists():
+            return JsonResponse({'status': False, 'message': 'El número de documento ya está registrado'}, status=400)
+        
+        tipo_documento = request.POST.get('tipo_documento')
         nombre = request.POST.get('nombre')
         id_especialidad = int(request.POST.get('id_especialidad'))
         especialidad = get_object_or_404(Especialidad, id=id_especialidad)

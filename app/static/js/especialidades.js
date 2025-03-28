@@ -1,5 +1,22 @@
 $(document).ready(function () {
 
+
+
+
+
+    /* ===========================================
+    FUNCION PARA FORMATEAR FECHAS
+    =========================================== */
+    function formatDate(dateString) {
+        if (!dateString) return "Sin fecha";
+        const date = new Date(dateString);
+        return date.toLocaleDateString('es-PE', {
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit'
+        });
+    }
+
     $('input').each(function () {
         // Guardar el valor por defecto
         $(this).data('default', $(this).val());
@@ -37,7 +54,7 @@ $(document).ready(function () {
                         index + 1,
                         dato.especialidad,
                         dato.funcion || "Sin función",
-                        dato.fecha,
+                        formatDate(dato.fecha),
                         `
                         <div class="text-center">
                             <a href="#" class="me-3 btnEditarEspecialidad" idEspecialidad="${dato.id}" data-bs-toggle="modal" data-bs-target="#modal_editar_especialidad">
