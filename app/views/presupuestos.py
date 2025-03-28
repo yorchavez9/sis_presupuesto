@@ -221,10 +221,10 @@ def crear_presupuesto(request):
             data_materiales = json.loads(request.POST.get('data_materiales', '[]'))
             for material in data_materiales:
                 
-                material_obj = MaterialServicio.objects.get(id=material["id_material"])
+                """ material_obj = MaterialServicio.objects.get(id=material["id_material"])
                 material_obj.stock -= material['cantidad']
                 material_obj.save();
-                
+                 """
                 DetallePresupuestoMaterial.objects.create(
                     id_presupuesto=presupuesto,
                     id_material_servicio_id=material['id_material'],
