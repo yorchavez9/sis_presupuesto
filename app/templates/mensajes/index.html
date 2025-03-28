@@ -1,0 +1,177 @@
+{% extends 'layouts/base.html' %}
+{% load static %}
+{% block title %}
+  Mensajes
+{% endblock %}
+{% block content_admin %}
+  <!-- Start Content -->
+  <div class="container-fluid">
+    <!-- start page title -->
+    <div class="row">
+      <div class="col-12">
+        <div class="page-title-box">
+          <div class="page-title-right">
+            <ol class="breadcrumb m-0">
+              <li class="breadcrumb-item">
+                <a href="{% url 'index' %}">Inicio</a>
+              </li>
+              <li class="breadcrumb-item active">Mensajes</li>
+            </ol>
+          </div>
+          <h4 class="page-title">Administrar Mensajes</h4>
+        </div>
+      </div>
+    </div>
+    <!-- end page title -->
+
+    <div class="row">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              {% if user.profile.rol == 'cliente' %}
+                <h4>Póngase en contacto con nosotros</h4>
+              {% else %}
+                <h4 class="header-title mb-0">Lista de Mensajes</h4>
+              {% endif %}
+
+              <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal_agregar_mensaje">Enviar Mensaje</button>
+            </div>
+
+            <div class="tab-content text-center py-5">
+              {% if user.profile.rol == 'cliente' %}
+                <div class="d-flex flex-column align-items-center">
+                  <i class="mdi mdi-email-check-outline display-3 text-success mb-3"></i>
+                  <h3 class="text-muted">Pronto estaremos en contacto contigo</h3>
+                  <div style="font-size: 2rem;">
+                    😊
+                  </div>
+                </div>
+              {% else %}
+                <div class="tab-pane show active" id="basic-datatable-preview">
+                  <table id="tabla_mensajes" class="table table-striped dt-responsive nowrap w-100">
+                    <thead>
+                      <tr>
+                        <th>N°</th>
+                        <th>Nombre</th>
+                        <th>Correo</th>
+                        <th>Teléfono</th>
+                        <th>Mensaje</th>
+                        <th>Fecha</th>
+                        <th>Leído</th>
+                        <th>Acciones</th>
+                      </tr>
+                    </thead>
+
+                    <tbody id="datos_mensajes"></tbody>
+                  </table>
+                </div>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {% comment %}MODAL AGREGAR MENSAJE{% endcomment %}
+    <div id="modal_agregar_mensaje" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="add-modalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header bg-success text-white">
+            <h4 class="modal-title" id="add-modalLabel">¡Envíanos tu mensaje!</h4>
+            <button type="button" class="btn-close text-white" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <form id="form_agregar_mensaje">
+            <div class="modal-body">
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="mb-3">
+                    <label for="agregar_nombre" class="form-label">🌟 Nombre</label>
+                    <input type="text" id="agregar_nombre" name="nombre" class="form-control border-success" placeholder="Tu nombre completo" required />
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="mb-3">
+                    <label for="agregar_correo" class="form-label">📧 Correo</label>
+                    <input type="email" id="agregar_correo" name="correo" class="form-control border-success" placeholder="Tu correo electrónico" required />
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="mb-3">
+                    <label for="agregar_telefono" class="form-label">📞 Teléfono</label>
+                    <input type="text" id="agregar_telefono" name="telefono" class="form-control border-success" placeholder="Tu número de teléfono" required />
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="mb-3">
+                    <label for="agregar_fecha" class="form-label">📅 Fecha</label>
+                    <input type="date" id="agregar_fecha" name="fecha" class="form-control border-success" required />
+                  </div>
+                </div>
+                <div class="col-12">
+                  <div class="mb-3">
+                    <label for="agregar_mensaje" class="form-label">💬 Mensaje</label>
+                    <textarea id="agregar_mensaje" name="mensaje" class="form-control border-success" rows="4" placeholder="Escribe tu mensaje aquí..." required></textarea>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancelar</button>
+              <button type="submit" class="btn btn-success">Enviar Mensaje 😊</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    {% comment %}MODAL VER MENSAJE{% endcomment %}
+    <div id="modal_ver_mensaje" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="view-modalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header bg-primary text-white">
+            <h4 class="modal-title" id="view-modalLabel">Ver Mensaje</h4>
+            <button type="button" class="btn-close text-white" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <p>
+                  <strong>Nombre:</strong> <span id="ver_nombre" class="text-muted"></span>
+                </p>
+              </div>
+              <div class="col-md-6 mb-3">
+                <p>
+                  <strong>Correo:</strong> <span id="ver_correo" class="text-muted"></span>
+                </p>
+              </div>
+              <div class="col-md-6 mb-3">
+                <p>
+                  <strong>Teléfono:</strong> <span id="ver_telefono" class="text-muted"></span>
+                </p>
+              </div>
+              <div class="col-md-6 mb-3">
+                <p>
+                  <strong>Fecha:</strong> <span id="ver_fecha" class="text-muted"></span>
+                </p>
+              </div>
+              <div class="col-12">
+                <p>
+                  <strong>Mensaje:</strong>
+                </p>
+                <div class="alert alert-secondary" id="ver_mensaje"></div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block extra_js %}
+  <script src="{% static 'js/mensajes.js' %}"></script>
+{% endblock %}

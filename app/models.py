@@ -1,5 +1,21 @@
 from django.db import models
 from django.conf import settings  # Para referenciar el modelo de usuario de Django
+from django.contrib.auth.models import User
+
+
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    ROLES = (
+        ('admin', 'Administrador del Sistema'),
+        ('gerente', 'Gerente de Proyectos'),
+        ('analista', 'Analista de Presupuestos'),
+        ('cliente', 'Cliente'),
+        ('supervisor', 'Supervisor de Obras'),
+    )
+    rol = models.CharField(max_length=30, choices=ROLES, default='cliente')
+
+    def __str__(self):
+        return f"{self.user.username} - {self.rol}"
 
 class Cliente(models.Model):
     # Opciones para el campo 'tipo_documento'
@@ -499,4 +515,20 @@ class Contacto(models.Model):
 
     def __str__(self):
         return self.nombre
+    
+class Mensaje(models.Model):
+    nombre = models.CharField(max_length=100)
+    correo = models.EmailField(max_length=100)
+    telefono = models.CharField(max_length=15, null=True, blank=True)  # Hacer opcional el teléfono
+    mensaje = models.TextField()
+    fecha = models.DateField(auto_now_add=True)  # Establecer la fecha automáticamente al crear
+    leido = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        db_table = 'mensajes'  # Especificar el nombre de la tabla
+
+    def __str__(self):
+        return f"Mensaje {self.id} - {self.nombre}"
     

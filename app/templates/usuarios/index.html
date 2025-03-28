@@ -1,6 +1,8 @@
 {% extends 'layouts/base.html' %}
 {% load static %}
-{% block title %}Usuarios{% endblock title %}
+{% block title %}
+  Usuarios
+{% endblock %}
 {% block content_admin %}
   <!-- Start Content -->
   <div class="container-fluid">
@@ -35,15 +37,15 @@
             </div>
             <div class="tab-content">
               <div class="tab-pane show active" id="basic-datatable-preview">
-                <table id="basic-datatable" class="tabla_usuarios table table-striped dt-responsive nowrap w-100">
+                <table id="tabla_usuarios" class="table table-striped dt-responsive nowrap w-100">
                   <thead>
                     <tr>
                       <th>N°</th>
                       <th>Nombre</th>
                       <th>Usuario</th>
+                      <th>Rol</th>
                       <th>Correo</th>
                       <th>Estado</th>
-                      <th>Fecha</th>
                       <th>Acciones</th>
                     </tr>
                   </thead>
@@ -55,7 +57,6 @@
           </div>
         </div>
       </div>
-
     </div>
 
     <div id="modal_nuevo_usuario" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="standard-modalLabel" aria-hidden="true">
@@ -68,22 +69,22 @@
           <form method="post" id="form_crear_usuario">
             <div class="modal-body">
               <div class="form-group mb-2">
-                <label for="" class="form-label">Ingrese el nombre</label>
+                <label for="" class="form-label">Ingrese el nombre <span class="text-danger">(*)</span></label>
                 <input type="text" name="first_name" id="first_name" class="form-control" placeholder="Ingrese el nombre completo" />
                 <span class="text-danger" id="error_first_name_usuario"></span>
               </div>
               <div class="form-group mb-2">
-                <label for="email" class="form-label">Ingrese el correo</label>
+                <label for="email" class="form-label">Ingrese el correo <span class="text-danger">(*)</span></label>
                 <input type="email" name="email" id="email" class="form-control" placeholder="Ingrese el correo" />
                 <span class="text-danger" id="error_email_usuario"></span>
               </div>
               <div class="form-group mb-2">
-                <label for="username" class="form-label">Ingrese el usuario</label>
+                <label for="username" class="form-label">Ingrese el usuario <span class="text-danger">(*)</span></label>
                 <input type="text" name="username" id="username" class="form-control" placeholder="Ingrese el usuario" />
                 <span class="text-danger" id="error_username_usuario"></span>
               </div>
               <div class="form-group mb-2">
-                <label for="password1" class="form-label">Ingrese la contraseña</label>
+                <label for="password1" class="form-label">Ingrese la contraseña <span class="text-danger">(*)</span></label>
                 <div class="input-group input-group-merge">
                   <input type="password" id="password1" name="password1" class="form-control" placeholder="Ingrese la contraseña" />
                   <div class="input-group-text" data-password="false">
@@ -93,7 +94,7 @@
                 <span class="text-danger" id="error_password1_usuario"></span>
               </div>
               <div class="form-group mb-2">
-                <label for="password2" class="form-label">Repita la contraseña</label>
+                <label for="password2" class="form-label">Repita la contraseña <span class="text-danger">(*)</span></label>
                 <div class="input-group input-group-merge">
                   <input type="password" id="password2" name="password2" class="form-control" placeholder="Ingrese la contraseña" />
                   <div class="input-group-text" data-password="false">
@@ -101,6 +102,17 @@
                   </div>
                 </div>
                 <span class="text-danger" id="error_password2_usuario"></span>
+              </div>
+              <div class="form-group mb-2">
+                <label for="rol" class="form-label">Seleccione el rol</label>
+                <select name="rol" id="rol" class="form-select">
+                  <option disabled selected>Seleccionar</option>
+                  <option value="admin">Administrador del Sistema</option>
+                  <option value="gerente">Gerente de Proyectos</option>
+                  <option value="analista">Analista de Presupuestos</option>
+                  <option value="cliente">Cliente</option>
+                  <option value="supervisor">Supervisor de Obras</option>
+                </select>
               </div>
             </div>
             <div class="modal-footer">
@@ -124,22 +136,22 @@
             <input type="text" id="user_id_edit" name="user_id_edit" hidden />
             <div class="modal-body">
               <div class="form-group mb-2">
-                <label for="first_name" class="form-label">Ingrese el nombre</label>
+                <label for="first_name" class="form-label">Ingrese el nombre <span class="text-danger">(*)</span></label>
                 <input type="text" name="first_name_edit" id="first_name_edit" class="form-control" placeholder="Ingrese el nombre completo" />
                 <span class="text-danger" id="error_first_name_usuario_edit"></span>
               </div>
               <div class="form-group mb-2">
-                <label for="email" class="form-label">Ingrese el correo</label>
+                <label for="email" class="form-label">Ingrese el correo <span class="text-danger">(*)</span></label>
                 <input type="email" name="email_edit" id="email_edit" class="form-control" placeholder="Ingrese el correo" />
                 <span class="text-danger" id="error_email_usuario_edit"></span>
               </div>
               <div class="form-group mb-2">
-                <label for="username_edit" class="form-label">Ingrese el usuario</label>
+                <label for="username_edit" class="form-label">Ingrese el usuario <span class="text-danger">(*)</span></label>
                 <input type="text" name="username_edit" id="username_edit" class="form-control" placeholder="Ingrese el usuario" />
                 <span class="text-danger" id="error_username_usuario_edit"></span>
               </div>
               <div class="form-group mb-2">
-                <label for="password1" class="form-label">Ingrese la contraseña</label>
+                <label for="password1" class="form-label">Ingrese la contraseña <span class="text-danger">(*)</span></label>
                 <input type="text" id="password1_actual_edit" name="password1_actual_edit" hidden />
                 <div class="input-group input-group-merge">
                   <input type="password" id="password1_edit" name="password1_edit" class="form-control" placeholder="Ingrese la contraseña" />
@@ -150,7 +162,7 @@
                 <span class="text-danger" id="error_password1_usuario_edit"></span>
               </div>
               <div class="form-group mb-2">
-                <label for="password2" class="form-label">Repita la contraseña</label>
+                <label for="password2" class="form-label">Repita la contraseña <span class="text-danger">(*)</span></label>
                 <div class="input-group input-group-merge">
                   <input type="password" id="password2_edit" name="password2_edit" class="form-control" placeholder="Ingrese la contraseña" />
                   <div class="input-group-text" data-password="false">
@@ -159,10 +171,21 @@
                 </div>
                 <span class="text-danger" id="error_password2_usuario_edit"></span>
               </div>
+              <div class="form-group mb-2">
+                <label for="rol_edit" class="form-label">Seleccione el rol</label>
+                <select name="rol_edit" id="rol_edit" class="form-select">
+                  <option disabled selected>Seleccionar</option>
+                  <option value="admin">Administrador del Sistema</option>
+                  <option value="gerente">Gerente de Proyectos</option>
+                  <option value="analista">Analista de Presupuestos</option>
+                  <option value="cliente">Cliente</option>
+                  <option value="supervisor">Supervisor de Obras</option>
+                </select>
+              </div>
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cerrar</button>
-              <button type="button" id="btn_actualizar_usuario" class="btn btn-primary">Guardar</button>
+              <button type="button" id="btn_actualizar_usuario" class="btn btn-primary">Actualizar</button>
             </div>
           </form>
         </div>
@@ -172,5 +195,5 @@
 {% endblock %}
 
 {% block extra_js %}
-<script src="{% static 'js/usuarios.js' %}"></script>
+  <script src="{% static 'js/usuarios.js' %}"></script>
 {% endblock %}

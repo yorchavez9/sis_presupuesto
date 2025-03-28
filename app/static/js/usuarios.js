@@ -1,51 +1,60 @@
 $(document).ready(function() {
 
-    let tabla = $('.tabla_usuarios').DataTable({
-        "destroy": true,
-        "responsive": true, // Habilita el modo responsive
-        "scrollX": true, // Permite el desplazamiento horizontal
-        "pageLength": 10,
-        "language": {
-            "url": "//cdn.datatables.net/plug-ins/1.10.25/i18n/Spanish.json"
-        }
-    });
 
     function cargarUsuarios() {
         $.ajax({
             url: "lista/",
             type: 'GET',
             dataType: 'json',
-            success: function(usuarios) {
-                tabla.clear();
-                usuarios.forEach(function(dato, index) {
-                    tabla.row.add([
-                        index + 1,
-                        dato.first_name || "Sin nombre",
-                        dato.username || "Sin usuario",
-                        dato.email || "Sin correo",
-                        dato.is_active ?
-                            '<button class="btn bg-success text-white badges btn-sm rounded btnActivar" idUsuario="' + dato.id + '" estadoUsuario="0">Activado</button>' :
-                            '<button class="btn bg-danger text-white badges btn-sm rounded btnActivar" idUsuario="' + dato.id + '" estadoUsuario="1">Desactivado</button>',
-                        dato.date_joined || "Sin fecha",
-                        `
-                        <div class="text-center">
-                            <a href="#" class="me-3 btnEditarUsuario" idUsuario="${dato.id}" data-bs-toggle="modal" data-bs-target="#modal_editar_usuario">
-                                <i class="ri-edit-box-line text-warning fs-3"></i>
-                            </a>
-                            <a href="#" class="me-3 confirm-text btnEliminarUsuario" idUsuario="${dato.id}">
-                                <i class="ri-delete-bin-line text-danger fs-3"></i>
-                            </a>
-                        </div>
-                        `
-                    ]);
+            success: usuarios => {
+                const tabla = $("#tabla_usuarios");
+                const tbody = tabla.find("tbody");
+                tbody.empty();
+                usuarios.forEach((dato, index) => {
+                    const estadoBtn = dato.is_active ? 
+                        `<button class="btn bg-success text-white badges btn-sm rounded btnActivar" 
+                         idUsuario="${dato.id}" estadoUsuario="0">Activado</button>` :
+                        `<button class="btn bg-danger text-white badges btn-sm rounded btnActivar" 
+                         idUsuario="${dato.id}" estadoUsuario="1">Desactivado</button>`;
+                    
+                    const fila = `
+                        <tr>
+                            <td>${index + 1}</td>
+                            <td>${dato.first_name || "Sin nombre"}</td>
+                            <td>${dato.username || "Sin usuario"}</td>
+                            <td>${dato.rol_display}</td>
+                            <td>${dato.email || "Sin email"}</td>
+                            <td>${estadoBtn}</td>
+                            <td>
+                                <div class="text-center">
+                                    <a href="#" class="me-3 btnEditarUsuario" idUsuario="${dato.id}" 
+                                       data-bs-toggle="modal" data-bs-target="#modal_editar_usuario">
+                                        <i class="ri-edit-box-line text-warning fs-3"></i>
+                                    </a>
+                                    <a href="#" class="me-3 confirm-text btnEliminarUsuario" 
+                                       idUsuario="${dato.id}">
+                                        <i class="ri-delete-bin-line text-danger fs-3"></i>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    `;
+                    tbody.append(fila);
                 });
-                tabla.draw();
+    
+                if ($.fn.DataTable.isDataTable(tabla)) {
+                    tabla.DataTable().destroy();
+                }
+    
+                tabla.DataTable({
+                    autoWidth: false,
+                    responsive: true
+                });
             }
         });
     }
-
+    
     cargarUsuarios();
-
 
     /* =========================================
     CREAR USUARIO
@@ -58,6 +67,7 @@ $(document).ready(function() {
         let username = $("#username").val();
         let password1 = $("#password1").val();
         let password2 = $("#password2").val();
+        let rol = $("#rol").val();
 
         if (first_name == "" || first_name == null) {
             $("#error_first_name_usuario").html("El nombre es obligatorio");
@@ -107,6 +117,7 @@ $(document).ready(function() {
             datos.append("username", username);
             datos.append("password1", password1);
             datos.append("password2", password2);
+            datos.append("rol", rol);
 
             $.ajax({
                 url: "crear/",
@@ -116,6 +127,9 @@ $(document).ready(function() {
                 contentType: false,
                 success: function(response) {
                     if (response.status) {
+                        if ($.fn.DataTable.isDataTable("#tabla_usuarios")) {
+                            $("#tabla_usuarios").DataTable().destroy();
+                        }
                         cargarUsuarios();
                         $("#modal_nuevo_usuario").modal("hide");
                         $("#form_crear_usuario")[0].reset();
@@ -142,7 +156,7 @@ $(document).ready(function() {
     /* =========================================
     EDITAR USUARIO
     ========================================= */
-    $(".tabla_usuarios").on("click", '.btnEditarUsuario', function(e){
+    $("#tabla_usuarios").on("click", '.btnEditarUsuario', function(e){
         e.preventDefault();
         let user_id = $(this).attr("idUsuario");
         const datos = new FormData();
@@ -160,6 +174,7 @@ $(document).ready(function() {
                     $("#email_edit").val(response.user.email);
                     $("#username_edit").val(response.user.username);
                     $("#password1_actual_edit").val(response.user.password);
+                    $("#rol_edit").val(response.user.rol);
                 } else {
                     Swal.fire({
                         title: "¡Error!",
@@ -177,7 +192,8 @@ $(document).ready(function() {
     /* =========================================
     ACTUALIZAR USUARIO
     ========================================= */
-    $("#btn_actualizar_usuario").click(function() {
+    $("#btn_actualizar_usuario").click(function(e) {
+        e.preventDefault();
         let isValid = true;
 
         let user_id = $("#user_id_edit").val();
@@ -187,6 +203,7 @@ $(document).ready(function() {
         let password_actual = $("#password1_actual_edit").val();
         let password1 = $("#password1_edit").val();
         let password2 = $("#password2_edit").val();
+        let rol = $("#rol_edit").val();
 
         if (first_name == "" || first_name == null) {
             $("#error_first_name_edit").html("El nombre es obligatorio");
@@ -218,7 +235,8 @@ $(document).ready(function() {
             datos.append("password_actual", password_actual);
             datos.append("password1", password1);
             datos.append("password2", password2);
-
+            datos.append("rol", rol);
+            
             $.ajax({
                 url: "actualizar/",
                 type: 'POST',
@@ -227,6 +245,9 @@ $(document).ready(function() {
                 contentType: false,
                 success: function(response) {
                     if(response.status) {
+                        if ($.fn.DataTable.isDataTable("#tabla_usuarios")) {
+                            $("#tabla_usuarios").DataTable().destroy();
+                        }
                         cargarUsuarios();
                         $("#modal_editar_usuario").modal("hide");
                         $("#form_actualizar_usuario")[0].reset();
@@ -251,7 +272,7 @@ $(document).ready(function() {
     /* =========================================
     ACTIVAR O DESACTIVAR USUARIO
     ========================================= */
-    $(".tabla_usuarios").on("click", '.btnActivar', function(e){
+    $("#tabla_usuarios").on("click", '.btnActivar', function(e){
         e.preventDefault();
         let user_id = $(this).attr("idUsuario");
         let user_estado = $(this).attr("estadoUsuario");
@@ -268,6 +289,9 @@ $(document).ready(function() {
             contentType: false,
             success: function (response) {
                 if (response.status) {
+                    if ($.fn.DataTable.isDataTable("#tabla_usuarios")) {
+                        $("#tabla_usuarios").DataTable().destroy();
+                    }
                     cargarUsuarios();
                     Swal.fire({
                         title: "¡Correcto!",
@@ -299,7 +323,7 @@ $(document).ready(function() {
     /* =========================================
     ELIMINAR USUARIO
     ========================================= */
-    $(".tabla_usuarios").on("click", '.btnEliminarUsuario', function(e){
+    $("#tabla_usuarios").on("click", '.btnEliminarUsuario', function(e){
         e.preventDefault();
         let idUsuario = $(this).attr("idUsuario");
     
@@ -322,6 +346,9 @@ $(document).ready(function() {
                     },
                     success: function (response) {
                         if (response.status) {
+                            if ($.fn.DataTable.isDataTable("#tabla_usuarios")) {
+                                $("#tabla_usuarios").DataTable().destroy();
+                            }
                             cargarUsuarios();
                             Swal.fire({
                                 title: "¡Eliminado!",
