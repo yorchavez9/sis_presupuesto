@@ -1,6 +1,107 @@
 {% extends 'layouts/base.html' %}
 {% load static %}
-{% load static %}
+{% block extra_css %}
+    <style>
+        /* Animaciones */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes float {
+    0% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+    100% {
+        transform: translateY(0px);
+    }
+}
+
+.hero-section {
+    animation: fadeIn 1s ease-in-out;
+}
+
+.hero-section .col-md-5:first-child {
+    animation: fadeInUp 0.8s ease-out 0.3s both;
+}
+
+.hero-section .col-md-5:last-child img {
+    animation: float 4s ease-in-out infinite;
+}
+
+/* Efecto hover para los servicios */
+.service-card {
+    transition: all 0.3s ease;
+    border: 1px solid transparent;
+}
+
+.service-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    border-color: rgba(0, 123, 255, 0.2);
+}
+
+/* Efecto para los proyectos */
+.demo-box {
+    transition: all 0.3s ease;
+}
+
+.demo-box:hover {
+    transform: scale(1.03);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Botones animados */
+.btn-success, .btn-info {
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s;
+}
+
+.btn-success:hover, .btn-info:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.btn-success::after, .btn-info::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 5px;
+    height: 5px;
+    background: rgba(255, 255, 255, 0.5);
+    opacity: 0;
+    border-radius: 100%;
+    transform: scale(1, 1) translate(-50%);
+    transform-origin: 50% 50%;
+}
+
+.btn-success:hover::after, .btn-info:hover::after {
+    animation: ripple 1s ease-out;
+}
+
+@keyframes ripple {
+    0% {
+        transform: scale(0, 0);
+        opacity: 0.5;
+    }
+    100% {
+        transform: scale(20, 20);
+        opacity: 0;
+    }
+}
+    </style>
+{% endblock extra_css %}
 {% block content %}
         <!-- INICIO HERO -->
         <section class="hero-section">
@@ -18,8 +119,8 @@
     
                             <p class="mb-4 font-16 text-white-50">Nuestra plataforma está diseñada para ayudarte a gestionar y cotizar proyectos de construcción de manera eficiente. Simplifica tus procesos y optimiza tus recursos.</p>
     
-                            <a href="#" target="_blank" class="btn btn-lg font-16 btn-success">Prueba Gratis <i class="mdi mdi-arrow-right ms-1"></i></a>
-                            <a href="#" target="_blank" class="btn btn-lg font-16 btn-info">Ver Demostraciones</a>
+                            <a href="#contactos" target="_blank" class="btn btn-lg font-16 btn-success">Contáctenos <i class="mdi mdi-arrow-right ms-1"></i></a>
+                            <a href="#servicios" target="_blank" class="btn btn-lg font-16 btn-info">Más..</a>
                         </div>
                     </div>
                     <div class="col-md-5 offset-md-2">
@@ -33,7 +134,7 @@
         <!-- FIN HERO -->
     
         <!-- INICIO SERVICIOS -->
-        <section class="py-5">
+        <section class="py-5" id="servicios">
             <div class="container">
                 <div class="row py-4">
                     <div class="col-lg-12">
@@ -130,118 +231,57 @@
         </section>
         <!-- FIN SERVICIOS -->
     
-        <!-- INICIO CARACTERÍSTICAS -->
-        <section class="py-5 bg-light-lighten border-top border-bottom border-light">
+        <!-- INICIO PROYECTOS EN DESARROLLO -->
+        <section class="py-5 bg-light-lighten border-top border-bottom border-light" id="proyectos">
             <div class="container">
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="text-center">
-                            <h3>Funcionalidades <span class="text-primary">Destacadas</span></h3>
-                            <p class="text-muted mt-2">Descubre las herramientas que te ayudarán a optimizar la gestión de tus proyectos de construcción.
-                            </p>
-                        </div>
-                    </div>
+            <div class="row">
+                <div class="col-lg-12">
+                <div class="text-center">
+                    <h3>Proyectos en <span class="text-primary">Desarrollo</span></h3>
+                    <p class="text-muted mt-2">Conoce los proyectos que actualmente estamos ejecutando y su estado de avance.
+                    </p>
                 </div>
-    
-                <div class="row mt-1">
-                    <div class="col-lg-4 col-md-6">
-                        <div class="demo-box text-center mt-3">
-                            <img src="{% static 'assets/images/layouts/budget-calculator.png' %}" alt="demo-img" class="img-fluid shadow-sm rounded">
-                            <h5 class="mt-3 f-17">Calculadora de Presupuestos</h5>
-                        </div>
-                    </div>
-    
-                    <div class="col-lg-4 col-md-6">
-                        <div class="demo-box text-center mt-3">
-                            <img src="{% static 'assets/images/layouts/project-management.png' %}" alt="demo-img" class="img-fluid shadow-sm rounded">
-                            <h5 class="mt-3 f-17">Gestión de Proyectos</h5>
-                        </div>
-                    </div>
-    
-                    <div class="col-lg-4 col-md-6">
-                        <div class="demo-box text-center mt-3">
-                            <img src="{% static 'assets/images/layouts/reporting.png' %}" alt="demo-img" class="img-fluid shadow-sm rounded">
-                            <h5 class="mt-3 f-17">Reportes Detallados</h5>
-                        </div>
-                    </div>
                 </div>
             </div>
-        </section>
-        <!-- FIN CARACTERÍSTICAS -->
-    
 
-        <!-- INICIO PLANES -->
-        <section class="py-5 bg-light-lighten border-top border-bottom border-light">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="text-center">
-                            <h1 class="mt-0"><i class="mdi mdi-tag-multiple"></i></h1>
-                            <h3>Elige el Plan que Mejor se Adapte a Ti</h3>
-                            <p class="text-muted mt-2">Nuestros planes están diseñados para empresas de construcción de todos los tamaños. Encuentra el que mejor se ajuste a tus necesidades.
-                            </p>
-                        </div>
+            <div class="row mt-1">
+                <div class="col-lg-4 col-md-6">
+                <div class="demo-box text-center mt-3">
+                    <img src="{% static 'img/proyectos/img_01.jpg' %}" alt="proyecto" class="img-fluid shadow-sm rounded" style="height: 200px; object-fit: cover;">
+                    <h5 class="mt-3 f-17">Edificio Residencial Aurora</h5>
+                    <p class="text-muted">Avance: 45%</p>
+                    <div class="progress mb-3">
+                    <div class="progress-bar" role="progressbar" style="width: 45%" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100"></div>
                     </div>
                 </div>
-    
-                <div class="row mt-5 pt-3">
-                    <div class="col-md-4">
-                        <div class="card card-pricing">
-                            <div class="card-body text-center">
-                                <p class="card-pricing-plan-name fw-bold text-uppercase">Plan Básico</p>
-                                <i class="card-pricing-icon ri-user-line text-primary"></i>
-                                <h2 class="card-pricing-price">$49 <span>/ mes</span></h2>
-                                <ul class="card-pricing-features">
-                                    <li>5 Proyectos Activos</li>
-                                    <li>10 GB Almacenamiento</li>
-                                    <li>Soporte por Email</li>
-                                    <li>Acceso Básico</li>
-                                </ul>
-                                <button class="btn btn-primary mt-4 mb-2 rounded-pill">Elegir Plan</button>
-                            </div>
-                        </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6">
+                <div class="demo-box text-center mt-3">
+                    <img src="{% static 'img/proyectos/img_02.jpg' %}" alt="proyecto" class="img-fluid shadow-sm rounded" style="height: 200px; object-fit: cover;">
+                    <h5 class="mt-3 f-17">Centro Comercial Plaza Norte</h5>
+                    <p class="text-muted">Avance: 75%</p>
+                    <div class="progress mb-3">
+                    <div class="progress-bar" role="progressbar" style="width: 75%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
                     </div>
-    
-                    <div class="col-md-4">
-                        <div class="card card-pricing card-pricing-recommended">
-                            <div class="card-body text-center">
-                                <div class="card-pricing-plan-tag">Recomendado</div>
-                                <p class="card-pricing-plan-name fw-bold text-uppercase">Plan Profesional</p>
-                                <i class="card-pricing-icon ri-briefcase-line text-primary"></i>
-                                <h2 class="card-pricing-price">$99 <span>/ mes</span></h2>
-                                <ul class="card-pricing-features">
-                                    <li>20 Proyectos Activos</li>
-                                    <li>50 GB Almacenamiento</li>
-                                    <li>Soporte Prioritario</li>
-                                    <li>Acceso Completo</li>
-                                </ul>
-                                <button class="btn btn-primary mt-4 mb-2 rounded-pill">Elegir Plan</button>
-                            </div>
-                        </div>
+                </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6">
+                <div class="demo-box text-center mt-3">
+                    <img src="{% static 'img/proyectos/img_03.jpg' %}" alt="proyecto" class="img-fluid shadow-sm rounded" style="height: 200px; object-fit: cover;">
+                    <h5 class="mt-3 f-17">Hospital San Miguel</h5>
+                    <p class="text-muted">Avance: 30%</p>
+                    <div class="progress mb-3">
+                    <div class="progress-bar" role="progressbar" style="width: 30%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"></div>
                     </div>
-    
-                    <div class="col-md-4">
-                        <div class="card card-pricing">
-                            <div class="card-body text-center">
-                                <p class="card-pricing-plan-name fw-bold text-uppercase">Plan Empresarial</p>
-                                <i class="card-pricing-icon ri-store-2-line text-primary"></i>
-                                <h2 class="card-pricing-price">$199 <span>/ mes</span></h2>
-                                <ul class="card-pricing-features">
-                                    <li>Proyectos Ilimitados</li>
-                                    <li>100 GB Almacenamiento</li>
-                                    <li>Soporte 24/7</li>
-                                    <li>Acceso Premium</li>
-                                </ul>
-                                <button class="btn btn-primary mt-4 mb-2 rounded-pill">Elegir Plan</button>
-                            </div>
-                        </div>
-                    </div>
+                </div>
                 </div>
             </div>
+            </div>
         </section>
-        <!-- FIN PLANES -->
-    
-    
+        <!-- FIN PROYECTOS EN DESARROLLO -->
+
          <!-- INICIO CONTACTO -->
          <section id="contactos" class="py-5 bg-light-lighten border-top border-bottom border-light">
             <div class="container">
@@ -388,5 +428,161 @@
 {% endblock content %}
 
 {% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Animación de contadores para los proyectos
+        const progressBars = document.querySelectorAll('.progress-bar');
+        
+        progressBars.forEach(bar => {
+            const targetWidth = bar.style.width;
+            bar.style.width = '0';
+            
+            setTimeout(() => {
+                bar.style.transition = 'width 1.5s ease-in-out';
+                bar.style.width = targetWidth;
+            }, 300);
+        });
+    
+        // Efecto parallax para el hero section
+        const heroSection = document.querySelector('.hero-section');
+        if (heroSection) {
+            window.addEventListener('scroll', function() {
+                const scrollPosition = window.pageYOffset;
+                heroSection.style.backgroundPositionY = scrollPosition * 0.5 + 'px';
+            });
+        }
+    
+        // Validación mejorada del formulario
+        const form = document.getElementById('form_agregar_mensaje');
+        if (form) {
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // Validación mejorada
+                const nombre = document.getElementById('agregar_nombre');
+                const correo = document.getElementById('agregar_correo');
+                const mensaje = document.getElementById('agregar_mensaje');
+                let isValid = true;
+                
+                // Reset errores
+                document.querySelectorAll('.text-danger').forEach(el => el.textContent = '');
+                
+                if (!nombre.value.trim()) {
+                    document.getElementById('error_agregar_nombre').textContent = 'El nombre es requerido';
+                    nombre.classList.add('is-invalid');
+                    isValid = false;
+                } else {
+                    nombre.classList.remove('is-invalid');
+                }
+                
+                if (!correo.value.trim() || !/^\S+@\S+\.\S+$/.test(correo.value)) {
+                    document.getElementById('error_agregar_correo').textContent = 'Ingrese un correo válido';
+                    correo.classList.add('is-invalid');
+                    isValid = false;
+                } else {
+                    correo.classList.remove('is-invalid');
+                }
+                
+                if (!mensaje.value.trim()) {
+                    document.getElementById('error_agregar_mensaje').textContent = 'El mensaje es requerido';
+                    mensaje.classList.add('is-invalid');
+                    isValid = false;
+                } else {
+                    mensaje.classList.remove('is-invalid');
+                }
+                
+                if (isValid) {
+                    const btn = document.getElementById('btn_send_message');
+                    btn.innerHTML = 'Enviando... <i class="mdi mdi-loading mdi-spin ms-1"></i>';
+                    btn.disabled = true;
+                    
+                    // Simulación de envío (reemplazar con AJAX real)
+                    setTimeout(() => {
+                        btn.innerHTML = 'Mensaje Enviado <i class="mdi mdi-check ms-1"></i>';
+                        
+                        // Mostrar notificación
+                        const toast = document.createElement('div');
+                        toast.className = 'alert alert-success position-fixed top-20 start-50 translate-middle-x';
+                        toast.style.zIndex = '9999';
+                        toast.textContent = '¡Mensaje enviado con éxito! Nos pondremos en contacto pronto.';
+                        document.body.appendChild(toast);
+                        
+                        setTimeout(() => {
+                            toast.classList.add('fade');
+                            setTimeout(() => toast.remove(), 300);
+                        }, 3000);
+                        
+                        // Reset form
+                        setTimeout(() => {
+                            form.reset();
+                            btn.innerHTML = 'Enviar Mensaje <i class="mdi mdi-telegram ms-1"></i>';
+                            btn.disabled = false;
+                        }, 2000);
+                    }, 1500);
+                }
+            });
+        }
+    
+        // Scroll suave para enlaces
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 70,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    
+        // Mostrar elementos al hacer scroll (Scroll Animation)
+        const animateOnScroll = function() {
+            const elements = document.querySelectorAll('.service-card, .demo-box, .col-md-7 form');
+            
+            elements.forEach(element => {
+                const elementPosition = element.getBoundingClientRect().top;
+                const windowHeight = window.innerHeight;
+                
+                if (elementPosition < windowHeight - 100) {
+                    element.style.opacity = '1';
+                    element.style.transform = 'translateY(0)';
+                }
+            });
+        };
+        
+        // Configuración inicial para elementos animados
+        document.querySelectorAll('.service-card, .demo-box, .col-md-7 form').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(20px)';
+            el.style.transition = 'opacity 0.6s ease-out, transform 0.6s ease-out';
+        });
+        
+        window.addEventListener('scroll', animateOnScroll);
+        animateOnScroll(); // Ejecutar al cargar la página
+    
+        // Tooltips para iconos sociales
+        const socialIcons = document.querySelectorAll('.social-list-item');
+        socialIcons.forEach(icon => {
+            const platform = icon.querySelector('i').className.split('mdi-')[1];
+            icon.setAttribute('data-bs-toggle', 'tooltip');
+            icon.setAttribute('title', `Síguenos en ${platform.charAt(0).toUpperCase() + platform.slice(1)}`);
+        });
+    
+        // Inicializar tooltips (si estás usando Bootstrap)
+        if (typeof bootstrap !== 'undefined' && bootstrap.Tooltip) {
+            const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+            tooltipTriggerList.map(function (tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl);
+            });
+        }
+    });
+</script>
 <script src="{% static 'js/send_message.js' %}"></script>
+
 {% endblock extra_js %}

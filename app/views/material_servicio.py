@@ -1,7 +1,8 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import JsonResponse
-from ..models import MaterialServicio, Proveedor, Categoria, UnidadMedida
+from ..models import MaterialServicio, Proveedor, Categoria, UnidadMedida, DetallePresupuestoMaterial
 from django.views.decorators.csrf import csrf_exempt
+from django.db.models import Sum, Count
 import os
 from django.utils import timezone
 from django.core.files.storage import default_storage
@@ -262,6 +263,21 @@ def actualizar_material_servicio(request):
                 'message': f'Error al actualizar el material/servicio: {str(e)}'
             }, status=500)
     return JsonResponse({'status': False, 'message': 'Método no permitido'}, status=405)
+
+@csrf_exempt
+def materiales_mas_utilizados(request):
+    materiales = DetallePresupuestoMaterial.objects.values(
+        'id_material_servicio__nombre'
+    ).annotate(
+        total_utilizado=Sum('cantidad'),
+        veces_utilizado=Count('id')
+    ).order_by('-total_utilizado')[:5]  # Top 5 materiales
+
+    return JsonResponse({
+        'labels': [m['id_material_servicio__nombre'] for m in materiales],
+        'series': [float(m['total_utilizado']) for m in materiales],
+        'colors': ['#727CF5', '#0ACF97', '#FA5C7C', '#FFBC00', '#5B69BC']
+    })
 
 @csrf_exempt
 def eliminar_material_servicio(request):

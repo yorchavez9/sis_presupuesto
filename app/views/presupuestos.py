@@ -24,6 +24,10 @@ from ..models import (
     MaterialServicio,
 )
 
+from django.db.models import Count, Sum, Q
+from datetime import datetime, timedelta
+from django.db.models.functions import TruncMonth
+
 import os
 import json
 from io import BytesIO
@@ -523,6 +527,37 @@ def generar_pdf_comprobante(request, presupuesto_id):
     response = HttpResponse(pdf, content_type='application/pdf')
     response['Content-Disposition'] = f'inline; filename="cotizacion_{presupuesto.serie}_{presupuesto.numero}.pdf"'
     return response
+
+
+def presupuestos_vs_real(request):
+    # Obtener los últimos 6 meses
+    end_date = datetime.now()
+    start_date = end_date - timedelta(days=180)  # 6 meses atrás
+
+    # Agrupar por mes y estado
+    datos = Presupuesto.objects.filter(
+        fecha__range=[start_date, end_date]
+    ).annotate(
+        month=TruncMonth('fecha')
+    ).values('month').annotate(
+        total=Count('id'),
+        aprobados=Count('id', filter=Q(estado='2')),
+        monto_total=Sum('sub_total'),  # Cambiado de 'total' a 'sub_total'
+        monto_aprobado=Sum('sub_total', filter=Q(estado='2'))  # Cambiado de 'total' a 'sub_total'
+    ).order_by('month')
+
+    # Preparar datos para el gráfico
+    labels = [d['month'].strftime("%b %Y") for d in datos]
+    proyectado = [d['total'] for d in datos]
+    real = [d['aprobados'] for d in datos]
+
+    return JsonResponse({
+        'labels': labels,
+        'proyectado': proyectado,
+        'real': real,
+        'monto_proyectado': [float(d['monto_total'] or 0) for d in datos],
+        'monto_real': [float(d['monto_aprobado'] or 0) for d in datos]
+    })
 
 @csrf_exempt
 def eliminar_presupuesto(request):
