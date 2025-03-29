@@ -1,588 +1,639 @@
 {% extends 'layouts/base.html' %}
 {% load static %}
 {% block extra_css %}
-    <style>
-        /* Animaciones */
-@keyframes fadeInUp {
-    from {
+  <style>
+    /* Animaciones */
+    @keyframes fadeInUp {
+      from {
         opacity: 0;
         transform: translateY(20px);
-    }
-    to {
+      }
+      to {
         opacity: 1;
         transform: translateY(0);
+      }
     }
-}
-
-@keyframes float {
-    0% {
+    
+    @keyframes float {
+      0% {
         transform: translateY(0px);
-    }
-    50% {
+      }
+      50% {
         transform: translateY(-10px);
-    }
-    100% {
+      }
+      100% {
         transform: translateY(0px);
+      }
     }
-}
-
-.hero-section {
-    animation: fadeIn 1s ease-in-out;
-}
-
-.hero-section .col-md-5:first-child {
-    animation: fadeInUp 0.8s ease-out 0.3s both;
-}
-
-.hero-section .col-md-5:last-child img {
-    animation: float 4s ease-in-out infinite;
-}
-
-/* Efecto hover para los servicios */
-.service-card {
-    transition: all 0.3s ease;
-    border: 1px solid transparent;
-}
-
-.service-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-    border-color: rgba(0, 123, 255, 0.2);
-}
-
-/* Efecto para los proyectos */
-.demo-box {
-    transition: all 0.3s ease;
-}
-
-.demo-box:hover {
-    transform: scale(1.03);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-}
-
-/* Botones animados */
-.btn-success, .btn-info {
-    position: relative;
-    overflow: hidden;
-    transition: all 0.3s;
-}
-
-.btn-success:hover, .btn-info:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-}
-
-.btn-success::after, .btn-info::after {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 5px;
-    height: 5px;
-    background: rgba(255, 255, 255, 0.5);
-    opacity: 0;
-    border-radius: 100%;
-    transform: scale(1, 1) translate(-50%);
-    transform-origin: 50% 50%;
-}
-
-.btn-success:hover::after, .btn-info:hover::after {
-    animation: ripple 1s ease-out;
-}
-
-@keyframes ripple {
-    0% {
+    
+    .hero-section {
+      animation: fadeIn 1s ease-in-out;
+    }
+    
+    .hero-section .col-md-5:first-child {
+      animation: fadeInUp 0.8s ease-out 0.3s both;
+    }
+    
+    .hero-section .col-md-5:last-child img {
+      animation: float 4s ease-in-out infinite;
+    }
+    
+    /* Efecto hover para los servicios */
+    .service-card {
+      transition: all 0.3s ease;
+      border: 1px solid transparent;
+    }
+    
+    .service-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+      border-color: rgba(0, 123, 255, 0.2);
+    }
+    
+    /* Efecto para los proyectos */
+    .demo-box {
+      transition: all 0.3s ease;
+    }
+    
+    .demo-box:hover {
+      transform: scale(1.03);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+    
+    /* Botones animados */
+    .btn-success,
+    .btn-info {
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s;
+    }
+    
+    .btn-success:hover,
+    .btn-info:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+    
+    .btn-success::after,
+    .btn-info::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 5px;
+      height: 5px;
+      background: rgba(255, 255, 255, 0.5);
+      opacity: 0;
+      border-radius: 100%;
+      transform: scale(1, 1) translate(-50%);
+      transform-origin: 50% 50%;
+    }
+    
+    .btn-success:hover::after,
+    .btn-info:hover::after {
+      animation: ripple 1s ease-out;
+    }
+    
+    @keyframes ripple {
+      0% {
         transform: scale(0, 0);
         opacity: 0.5;
-    }
-    100% {
+      }
+      100% {
         transform: scale(20, 20);
         opacity: 0;
+      }
     }
-}
-    </style>
-{% endblock extra_css %}
+
+    .hero-image-container {
+      position: relative;
+      height: 300px; /* Ajusta según el tamaño de tus imágenes */
+    }
+    
+    .hero-image {
+      position: absolute;
+      top: 0;
+      right: 0;
+      opacity: 0;
+      transition: opacity 1s ease-in-out;
+    }
+    
+    .hero-image.active {
+      opacity: 1;
+    }
+  </style>
+{% endblock %}
 {% block content %}
-        <!-- INICIO HERO -->
-        <section class="hero-section">
-            <div class="container">
-                <div class="row align-items-center">
-                    <div class="col-md-5">
-                        <div class="mt-md-4">
-                            <div>
-                                <span class="badge bg-danger font-13 rounded-pill">Nuevo</span>
-                                <span class="text-white-50 ms-1">Bienvenido a nuestra plataforma</span>
-                            </div>
-                            <h2 class="text-white fw-normal mb-4 mt-3 lh-base">
-                                Construye y Cotiza tus Proyectos de Obra con Nosotros
-                            </h2>
-    
-                            <p class="mb-4 font-16 text-white-50">Nuestra plataforma está diseñada para ayudarte a gestionar y cotizar proyectos de construcción de manera eficiente. Simplifica tus procesos y optimiza tus recursos.</p>
-    
-                            <a href="#contactos" target="_blank" class="btn btn-lg font-16 btn-success">Contáctenos <i class="mdi mdi-arrow-right ms-1"></i></a>
-                            <a href="#servicios" target="_blank" class="btn btn-lg font-16 btn-info">Más..</a>
-                        </div>
-                    </div>
-                    <div class="col-md-5 offset-md-2">
-                        <div class="text-md-end mt-3 mt-md-0">
-                            <img src="{% static 'assets/images/svg/startup.svg' %}" alt="" class="img-fluid" />
-                        </div>
-                    </div>
-                </div>
+  <!-- INICIO HERO -->
+  <section class="hero-section">
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col-md-5">
+          <div class="mt-md-4">
+            <div>
+              <span class="badge bg-danger font-13 rounded-pill">Nuevo</span>
+              <span class="text-white-50 ms-1">Bienvenido a nuestra plataforma</span>
             </div>
-        </section>
-        <!-- FIN HERO -->
-    
-        <!-- INICIO SERVICIOS -->
-        <section class="py-5" id="servicios">
-            <div class="container">
-                <div class="row py-4">
-                    <div class="col-lg-12">
-                        <div class="text-center">
-                            <h1 class="mt-0"><i class="mdi mdi-hard-hat"></i></h1>
-                            <h3>Nuestra plataforma es <span class="text-primary">flexible</span> y fácil de <span class="text-primary">personalizar</span></h3>
-                            <p class="text-muted mt-2">Diseñada para adaptarse a las necesidades de tu empresa de construcción. Simplifica la gestión de proyectos, cotizaciones y presupuestos.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-    
-                <div class="row">
-                    <div class="col-lg-4 col-md-6">
-                        <div class="text-center p-2 p-sm-3">
-                            <div class="avatar-sm m-auto">
-                                <span class="avatar-title bg-primary-lighten rounded-circle">
-                                    <i class="uil uil-calculator-alt text-primary font-24"></i>
-                                </span>
-                            </div>
-                            <h4 class="mt-3">Calculadora de Presupuestos</h4>
-                            <p class="text-muted mt-2 mb-0">Calcula costos de materiales, mano de obra y más de manera rápida y precisa.
-                            </p>
-                        </div>
-                    </div>
-    
-                    <div class="col-lg-4 col-md-6">
-                        <div class="text-center p-2 p-sm-3">
-                            <div class="avatar-sm m-auto">
-                                <span class="avatar-title bg-primary-lighten rounded-circle">
-                                    <i class="uil uil-clipboard-notes text-primary font-24"></i>
-                                </span>
-                            </div>
-                            <h4 class="mt-3">Gestión de Proyectos</h4>
-                            <p class="text-muted mt-2 mb-0">Organiza y supervisa todos tus proyectos de construcción en un solo lugar.
-                            </p>
-                        </div>
-                    </div>
-    
-                    <div class="col-lg-4 col-md-6">
-                        <div class="text-center p-2 p-sm-3">
-                            <div class="avatar-sm m-auto">
-                                <span class="avatar-title bg-primary-lighten rounded-circle">
-                                    <i class="uil uil-file-contract text-primary font-24"></i>
-                                </span>
-                            </div>
-                            <h4 class="mt-3">Cotizaciones Automatizadas</h4>
-                            <p class="text-muted mt-2 mb-0">Genera cotizaciones profesionales en minutos y envíalas directamente a tus clientes.
-                            </p>
-                        </div>
-                    </div>
-    
-                    <div class="col-lg-4 col-md-6">
-                        <div class="text-center p-2 p-sm-3">
-                            <div class="avatar-sm m-auto">
-                                <span class="avatar-title bg-primary-lighten rounded-circle">
-                                    <i class="uil uil-chart-pie-alt text-primary font-24"></i>
-                                </span>
-                            </div>
-                            <h4 class="mt-3">Reportes y Análisis</h4>
-                            <p class="text-muted mt-2 mb-0">Obtén reportes detallados y análisis de costos para tomar decisiones informadas.
-                            </p>
-                        </div>
-                    </div>
-    
-                    <div class="col-lg-4 col-md-6">
-                        <div class="text-center p-2 p-sm-3">
-                            <div class="avatar-sm m-auto">
-                                <span class="avatar-title bg-primary-lighten rounded-circle">
-                                    <i class="uil uil-users-alt text-primary font-24"></i>
-                                </span>
-                            </div>
-                            <h4 class="mt-3">Colaboración en Equipo</h4>
-                            <p class="text-muted mt-2 mb-0">Trabaja en equipo y mantén a todos los miembros del proyecto alineados.
-                            </p>
-                        </div>
-                    </div>
-    
-                    <div class="col-lg-4 col-md-6">
-                        <div class="text-center p-2 p-sm-3">
-                            <div class="avatar-sm m-auto">
-                                <span class="avatar-title bg-primary-lighten rounded-circle">
-                                    <i class="uil uil-cloud-share text-primary font-24"></i>
-                                </span>
-                            </div>
-                            <h4 class="mt-3">Acceso en la Nube</h4>
-                            <p class="text-muted mt-2 mb-0">Accede a tus proyectos y cotizaciones desde cualquier lugar y en cualquier momento.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-    
+            <h2 class="text-white fw-normal mb-4 mt-3 lh-base">Construye y Cotiza tus Proyectos de Obra con Nosotros</h2>
+
+            <p class="mb-4 font-16 text-white-50">Nuestra plataforma está diseñada para ayudarte a gestionar y cotizar proyectos de construcción de manera eficiente. Simplifica tus procesos y optimiza tus recursos.</p>
+
+            <a href="#contactos" target="_blank" class="btn btn-lg font-16 btn-success">Contáctenos <i class="mdi mdi-arrow-right ms-1"></i></a>
+            <a href="#servicios" target="_blank" class="btn btn-lg font-16 btn-info">Más..</a>
+          </div>
+        </div>
+        <div class="col-md-5 offset-md-2">
+          <div class="text-md-end mt-md-0">
+            <!-- Contenedor de imágenes con transición -->
+            <div class="hero-image-container">
+              <img src="{% static 'img/hero/img_01.png' %}" alt="Imagen 1" class="img-fluid hero-image active" />
+              <img src="{% static 'img/hero/img_02.png' %}" alt="Imagen 2" class="img-fluid hero-image" />
+              <img src="{% static 'img/hero/img_03.png' %}" alt="Imagen 3" class="img-fluid hero-image" />
             </div>
-        </section>
-        <!-- FIN SERVICIOS -->
-    
-        <!-- INICIO PROYECTOS EN DESARROLLO -->
-        <section class="py-5 bg-light-lighten border-top border-bottom border-light" id="proyectos">
-            <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                <div class="text-center">
-                    <h3>Proyectos en <span class="text-primary">Desarrollo</span></h3>
-                    <p class="text-muted mt-2">Conoce los proyectos que actualmente estamos ejecutando y su estado de avance.
-                    </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- FIN HERO -->
+
+  <!-- INICIO SERVICIOS -->
+  <section class="py-5" id="servicios">
+    <div class="container">
+      <div class="row py-4">
+        <div class="col-lg-12">
+          <div class="text-center">
+            <h1 class="mt-0"><i class="mdi mdi-hard-hat"></i></h1>
+            <h3>Nuestra plataforma es <span class="text-primary">flexible</span> y fácil de <span class="text-primary">personalizar</span></h3>
+            <p class="text-muted mt-2">Diseñada para adaptarse a las necesidades de tu empresa de construcción. Simplifica la gestión de proyectos, cotizaciones y presupuestos.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-lg-4 col-md-6">
+          <div class="text-center p-2 p-sm-3">
+            <div class="avatar-sm m-auto">
+              <span class="avatar-title bg-primary-lighten rounded-circle"><i class="uil uil-calculator-alt text-primary font-24"></i></span>
+            </div>
+            <h4 class="mt-3">Calculadora de Presupuestos</h4>
+            <p class="text-muted mt-2 mb-0">Calcula costos de materiales, mano de obra y más de manera rápida y precisa.</p>
+          </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6">
+          <div class="text-center p-2 p-sm-3">
+            <div class="avatar-sm m-auto">
+              <span class="avatar-title bg-primary-lighten rounded-circle"><i class="uil uil-clipboard-notes text-primary font-24"></i></span>
+            </div>
+            <h4 class="mt-3">Gestión de Proyectos</h4>
+            <p class="text-muted mt-2 mb-0">Organiza y supervisa todos tus proyectos de construcción en un solo lugar.</p>
+          </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6">
+          <div class="text-center p-2 p-sm-3">
+            <div class="avatar-sm m-auto">
+              <span class="avatar-title bg-primary-lighten rounded-circle"><i class="uil uil-file-contract text-primary font-24"></i></span>
+            </div>
+            <h4 class="mt-3">Cotizaciones Automatizadas</h4>
+            <p class="text-muted mt-2 mb-0">Genera cotizaciones profesionales en minutos y envíalas directamente a tus clientes.</p>
+          </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6">
+          <div class="text-center p-2 p-sm-3">
+            <div class="avatar-sm m-auto">
+              <span class="avatar-title bg-primary-lighten rounded-circle"><i class="uil uil-chart-pie-alt text-primary font-24"></i></span>
+            </div>
+            <h4 class="mt-3">Reportes y Análisis</h4>
+            <p class="text-muted mt-2 mb-0">Obtén reportes detallados y análisis de costos para tomar decisiones informadas.</p>
+          </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6">
+          <div class="text-center p-2 p-sm-3">
+            <div class="avatar-sm m-auto">
+              <span class="avatar-title bg-primary-lighten rounded-circle"><i class="uil uil-users-alt text-primary font-24"></i></span>
+            </div>
+            <h4 class="mt-3">Colaboración en Equipo</h4>
+            <p class="text-muted mt-2 mb-0">Trabaja en equipo y mantén a todos los miembros del proyecto alineados.</p>
+          </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6">
+          <div class="text-center p-2 p-sm-3">
+            <div class="avatar-sm m-auto">
+              <span class="avatar-title bg-primary-lighten rounded-circle"><i class="uil uil-cloud-share text-primary font-24"></i></span>
+            </div>
+            <h4 class="mt-3">Acceso en la Nube</h4>
+            <p class="text-muted mt-2 mb-0">Accede a tus proyectos y cotizaciones desde cualquier lugar y en cualquier momento.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- FIN SERVICIOS -->
+
+  <!-- INICIO PROYECTOS EN DESARROLLO -->
+  <section class="py-5 bg-light-lighten border-top border-bottom border-light" id="proyectos">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="text-center">
+            <h3>Proyectos en <span class="text-primary">Desarrollo</span></h3>
+            <p class="text-muted mt-2">Conoce los proyectos que actualmente estamos ejecutando y su estado de avance.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="row mt-1">
+        <div class="col-lg-4 col-md-6">
+          <div class="demo-box text-center mt-3">
+            <img src="{% static 'img/proyectos/img_01.jpg' %}" alt="proyecto" class="img-fluid shadow-sm rounded" style="height: 200px; object-fit: cover;" />
+            <h5 class="mt-3 f-17">Edificio Residencial Aurora</h5>
+            <p class="text-muted">Avance: 45%</p>
+            <div class="progress mb-3">
+              <div class="progress-bar" role="progressbar" style="width: 45%" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6">
+          <div class="demo-box text-center mt-3">
+            <img src="{% static 'img/proyectos/img_02.jpg' %}" alt="proyecto" class="img-fluid shadow-sm rounded" style="height: 200px; object-fit: cover;" />
+            <h5 class="mt-3 f-17">Centro Comercial Plaza Norte</h5>
+            <p class="text-muted">Avance: 75%</p>
+            <div class="progress mb-3">
+              <div class="progress-bar" role="progressbar" style="width: 75%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6">
+          <div class="demo-box text-center mt-3">
+            <img src="{% static 'img/proyectos/img_03.jpg' %}" alt="proyecto" class="img-fluid shadow-sm rounded" style="height: 200px; object-fit: cover;" />
+            <h5 class="mt-3 f-17">Hospital San Miguel</h5>
+            <p class="text-muted">Avance: 30%</p>
+            <div class="progress mb-3">
+              <div class="progress-bar" role="progressbar" style="width: 30%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- FIN PROYECTOS EN DESARROLLO -->
+
+  <!-- INICIO CONTACTO -->
+  <section id="contactos" class="py-5 bg-light-lighten border-top border-bottom border-light">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="text-center">
+            <h3>¿Necesitas ayuda?</h3>
+            <p class="text-muted mt-2">Nuestro equipo especializado en RRHH para construcción está listo para atenderte.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="row align-items-center mt-3">
+        <div class="col-md-4">
+          <p class="text-muted">
+            <span class="fw-bold">Soporte Técnico:</span><br /> <span class="d-block mt-1">+1 234 567 890</span>
+          </p>
+          <p class="text-muted mt-4">
+            <span class="fw-bold">Correo Electrónico:</span><br /> <span class="d-block mt-1">rrhh@construccion.com</span>
+          </p>
+          <p class="text-muted mt-4">
+            <span class="fw-bold">Dirección:</span><br /> <span class="d-block mt-1">Av. Constructores 456, Ciudad, País</span>
+          </p>
+          <p class="text-muted mt-4">
+            <span class="fw-bold">Horario de Atención:</span><br /> <span class="d-block mt-1">Lunes a Viernes, 7:00 AM - 5:00 PM</span>
+          </p>
+        </div>
+
+        <div class="col-md-7">
+          <form action="POST" id="form_agregar_mensaje">
+            <div class="row mt-4">
+              <div class="col-lg-6">
+                <div class="mb-2">
+                  <label for="agregar_nombre" class="form-label">Nombre Completo (<span class="text-danger">*</span>)</label>
+                  <input class="form-control form-control-light py-2" type="text" id="agregar_nombre" name="nombre" placeholder="Nombre..." />
+                  <span class="text-danger" id="error_agregar_nombre"></span>
                 </div>
+              </div>
+              <div class="col-lg-6">
+                <div class="mb-2">
+                  <label for="agregar_correo" class="form-label">Correo Electrónico (<span class="text-danger">*</span>)</label>
+                  <input class="form-control form-control-light py-2" type="email" id="agregar_correo" name="correo" placeholder="Ingresa tu correo..." />
+                  <span class="text-danger" id="error_agregar_correo"></span>
                 </div>
+              </div>
             </div>
 
             <div class="row mt-1">
-                <div class="col-lg-4 col-md-6">
-                <div class="demo-box text-center mt-3">
-                    <img src="{% static 'img/proyectos/img_01.jpg' %}" alt="proyecto" class="img-fluid shadow-sm rounded" style="height: 200px; object-fit: cover;">
-                    <h5 class="mt-3 f-17">Edificio Residencial Aurora</h5>
-                    <p class="text-muted">Avance: 45%</p>
-                    <div class="progress mb-3">
-                    <div class="progress-bar" role="progressbar" style="width: 45%" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100"></div>
-                    </div>
+              <div class="col-lg-12">
+                <div class="mb-2">
+                  <label for="agregar_telefono" class="form-label">Teléfono (Opcional)</label>
+                  <input class="form-control form-control-light py-2" type="text" id="agregar_telefono" name="telefono" placeholder="Teléfono..." />
                 </div>
-                </div>
+              </div>
+            </div>
 
-                <div class="col-lg-4 col-md-6">
-                <div class="demo-box text-center mt-3">
-                    <img src="{% static 'img/proyectos/img_02.jpg' %}" alt="proyecto" class="img-fluid shadow-sm rounded" style="height: 200px; object-fit: cover;">
-                    <h5 class="mt-3 f-17">Centro Comercial Plaza Norte</h5>
-                    <p class="text-muted">Avance: 75%</p>
-                    <div class="progress mb-3">
-                    <div class="progress-bar" role="progressbar" style="width: 75%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
-                    </div>
+            <div class="row mt-1">
+              <div class="col-lg-12">
+                <div class="mb-2">
+                  <label for="agregar_mensaje" class="form-label">¿Cómo podemos ayudarte? (<span class="text-danger">*</span>)</label>
+                  <textarea id="agregar_mensaje" name="mensaje" rows="4" class="form-control form-control-light" placeholder="Describe tus necesidades..."></textarea>
+                  <span class="text-danger" id="error_agregar_mensaje"></span>
                 </div>
-                </div>
+              </div>
+            </div>
 
-                <div class="col-lg-4 col-md-6">
-                <div class="demo-box text-center mt-3">
-                    <img src="{% static 'img/proyectos/img_03.jpg' %}" alt="proyecto" class="img-fluid shadow-sm rounded" style="height: 200px; object-fit: cover;">
-                    <h5 class="mt-3 f-17">Hospital San Miguel</h5>
-                    <p class="text-muted">Avance: 30%</p>
-                    <div class="progress mb-3">
-                    <div class="progress-bar" role="progressbar" style="width: 30%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"></div>
-                    </div>
-                </div>
-                </div>
+            <div class="row mt-2">
+              <div class="col-12 text-end">
+                <button class="btn btn-primary" type="submit" id="btn_send_message">Enviar Mensaje <i class="mdi mdi-telegram ms-1"></i></button>
+              </div>
             </div>
-            </div>
-        </section>
-        <!-- FIN PROYECTOS EN DESARROLLO -->
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- FIN CONTACTO -->
 
-         <!-- INICIO CONTACTO -->
-         <section id="contactos" class="py-5 bg-light-lighten border-top border-bottom border-light">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="text-center">
-                            <h3>¿Necesitas ayuda?</h3>
-                            <p class="text-muted mt-2">Nuestro equipo especializado en RRHH para construcción está listo para atenderte.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-    
-                <div class="row align-items-center mt-3">
-                    <div class="col-md-4">
-                        <p class="text-muted"><span class="fw-bold">Soporte Técnico:</span><br> <span class="d-block mt-1">+1 234 567 890</span></p>
-                        <p class="text-muted mt-4"><span class="fw-bold">Correo Electrónico:</span><br> <span class="d-block mt-1">rrhh@construccion.com</span></p>
-                        <p class="text-muted mt-4"><span class="fw-bold">Dirección:</span><br> <span class="d-block mt-1">Av. Constructores 456, Ciudad, País</span></p>
-                        <p class="text-muted mt-4"><span class="fw-bold">Horario de Atención:</span><br> <span class="d-block mt-1">Lunes a Viernes, 7:00 AM - 5:00 PM</span></p>
-                    </div>
-    
-                    <div class="col-md-7">
-                        <form action="POST" id="form_agregar_mensaje">
-                          
-                            <div class="row mt-4">
-                                <div class="col-lg-6">
-                                    <div class="mb-2">
-                                        <label for="agregar_nombre" class="form-label">Nombre Completo (<span class="text-danger">*</span>)</label>
-                                        <input class="form-control form-control-light py-2" type="text" id="agregar_nombre" name="nombre" placeholder="Nombre...">
-                                        <span class="text-danger" id="error_agregar_nombre"></span>
-                                    </div>
-                                </div>
-                                <div class="col-lg-6">
-                                    <div class="mb-2">
-                                        <label for="agregar_correo" class="form-label">Correo Electrónico (<span class="text-danger">*</span>)</label>
-                                        <input class="form-control form-control-light py-2" type="email" id="agregar_correo" name="correo" placeholder="Ingresa tu correo...">
-                                        <span class="text-danger" id="error_agregar_correo"></span>
-                                    </div>
-                                </div>
-                            </div>
-    
-                            <div class="row mt-1">
-                                <div class="col-lg-12">
-                                    <div class="mb-2">
-                                        <label for="agregar_telefono" class="form-label">Teléfono (Opcional)</label>
-                                        <input class="form-control form-control-light py-2" type="text" id="agregar_telefono" name="telefono" placeholder="Teléfono...">
-                                    </div>
-                                </div>
-                            </div>
-    
-                            <div class="row mt-1">
-                                <div class="col-lg-12">
-                                    <div class="mb-2">
-                                        <label for="agregar_mensaje" class="form-label">¿Cómo podemos ayudarte? (<span class="text-danger">*</span>)</label>
-                                        <textarea id="agregar_mensaje" name="mensaje" rows="4" class="form-control form-control-light" placeholder="Describe tus necesidades..."></textarea>
-                                        <span class="text-danger" id="error_agregar_mensaje"></span>
-                                    </div>
-                                </div>
-                            </div>
-    
-                            <div class="row mt-2">
-                                <div class="col-12 text-end">
-                                    <button class="btn btn-primary" type="submit" id="btn_send_message">Enviar Mensaje <i class="mdi mdi-telegram ms-1"></i> </button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </section>
-        <!-- FIN CONTACTO -->
-        
-        <!-- INICIO FOOTER -->
-        <footer class="bg-dark py-5">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-6">
-                        <img src="{% static 'assets/images/logo.png' %}" alt="logo" class="logo-dark" height="40" />
-                        <p class="text-light text-opacity-50 mt-4">Simplificamos la gestión de proyectos de construcción para que puedas enfocarte en lo que realmente importa: construir.
-                        </p>
-    
-                        <ul class="social-list list-inline mt-3">
-                            <li class="list-inline-item text-center">
-                                <a href="javascript: void(0);" class="social-list-item border-primary text-primary"><i class="mdi mdi-facebook"></i></a>
-                            </li>
-                            <li class="list-inline-item text-center">
-                                <a href="javascript: void(0);" class="social-list-item border-danger text-danger"><i class="mdi mdi-google"></i></a>
-                            </li>
-                            <li class="list-inline-item text-center">
-                                <a href="javascript: void(0);" class="social-list-item border-info text-info"><i class="mdi mdi-twitter"></i></a>
-                            </li>
-                            <li class="list-inline-item text-center">
-                                <a href="javascript: void(0);" class="social-list-item border-secondary text-secondary"><i class="mdi mdi-github"></i></a>
-                            </li>
-                        </ul>
-    
-                    </div>
-    
-                    <div class="col-lg-2 col-md-4 mt-3 mt-lg-0">
-                        <h5 class="text-light">Empresa</h5>
-    
-                        <ul class="list-unstyled ps-0 mb-0 mt-3">
-                            <li class="mt-2"><a href="javascript: void(0);" class="text-light text-opacity-50">Sobre Nosotros</a></li>
-                            <li class="mt-2"><a href="javascript: void(0);" class="text-light text-opacity-50">Documentación</a></li>
-                            <li class="mt-2"><a href="javascript: void(0);" class="text-light text-opacity-50">Blog</a></li>
-                            <li class="mt-2"><a href="javascript: void(0);" class="text-light text-opacity-50">Programa de Afiliados</a></li>
-                        </ul>
-    
-                    </div>
-    
-                    <div class="col-lg-2 col-md-4 mt-3 mt-lg-0">
-                        <h5 class="text-light">Recursos</h5>
-    
-                        <ul class="list-unstyled ps-0 mb-0 mt-3">
-                            <li class="mt-2"><a href="javascript: void(0);" class="text-light text-opacity-50">Calculadora de Presupuestos</a></li>
-                            <li class="mt-2"><a href="javascript: void(0);" class="text-light text-opacity-50">Gestión de Proyectos</a></li>
-                            <li class="mt-2"><a href="javascript: void(0);" class="text-light text-opacity-50">Reportes</a></li>
-                            <li class="mt-2"><a href="javascript: void(0);" class="text-light text-opacity-50">Soporte</a></li>
-                        </ul>
-                    </div>
-    
-                    <div class="col-lg-2 col-md-4 mt-3 mt-lg-0">
-                        <h5 class="text-light">Legal</h5>
-    
-                        <ul class="list-unstyled ps-0 mb-0 mt-3">
-                            <li class="mt-2"><a href="javascript: void(0);" class="text-light text-opacity-50">Política de Privacidad</a></li>
-                            <li class="mt-2"><a href="javascript: void(0);" class="text-light text-opacity-50">Términos y Condiciones</a></li>
-                        </ul>
-                    </div>
-                </div>
-    
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="mt-5">
-                            <p class="text-light text-opacity-50 mt-4 text-center mb-0">© 2018 -
-                                <script>document.write(new Date().getFullYear())</script> Netkonect Software. Todos los derechos reservados
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </footer>
-        <!-- FIN FOOTER -->
-{% endblock content %}
+  <!-- INICIO FOOTER -->
+  <footer class="bg-dark py-5">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-6">
+          <img src="{% static 'assets/images/logo.png' %}" alt="logo" class="logo-dark" height="40" />
+          <p class="text-light text-opacity-50 mt-4">Simplificamos la gestión de proyectos de construcción para que puedas enfocarte en lo que realmente importa: construir.</p>
+
+          <ul class="social-list list-inline mt-3">
+            <li class="list-inline-item text-center">
+              <a href="javascript: void(0);" class="social-list-item border-primary text-primary"><i class="mdi mdi-facebook"></i></a>
+            </li>
+            <li class="list-inline-item text-center">
+              <a href="javascript: void(0);" class="social-list-item border-danger text-danger"><i class="mdi mdi-google"></i></a>
+            </li>
+            <li class="list-inline-item text-center">
+              <a href="javascript: void(0);" class="social-list-item border-info text-info"><i class="mdi mdi-twitter"></i></a>
+            </li>
+            <li class="list-inline-item text-center">
+              <a href="javascript: void(0);" class="social-list-item border-secondary text-secondary"><i class="mdi mdi-github"></i></a>
+            </li>
+          </ul>
+        </div>
+
+        <div class="col-lg-2 col-md-4 mt-3 mt-lg-0">
+          <h5 class="text-light">Empresa</h5>
+
+          <ul class="list-unstyled ps-0 mb-0 mt-3">
+            <li class="mt-2">
+              <a href="javascript: void(0);" class="text-light text-opacity-50">Sobre Nosotros</a>
+            </li>
+            <li class="mt-2">
+              <a href="javascript: void(0);" class="text-light text-opacity-50">Documentación</a>
+            </li>
+            <li class="mt-2">
+              <a href="javascript: void(0);" class="text-light text-opacity-50">Blog</a>
+            </li>
+            <li class="mt-2">
+              <a href="javascript: void(0);" class="text-light text-opacity-50">Programa de Afiliados</a>
+            </li>
+          </ul>
+        </div>
+
+        <div class="col-lg-2 col-md-4 mt-3 mt-lg-0">
+          <h5 class="text-light">Recursos</h5>
+
+          <ul class="list-unstyled ps-0 mb-0 mt-3">
+            <li class="mt-2">
+              <a href="javascript: void(0);" class="text-light text-opacity-50">Calculadora de Presupuestos</a>
+            </li>
+            <li class="mt-2">
+              <a href="javascript: void(0);" class="text-light text-opacity-50">Gestión de Proyectos</a>
+            </li>
+            <li class="mt-2">
+              <a href="javascript: void(0);" class="text-light text-opacity-50">Reportes</a>
+            </li>
+            <li class="mt-2">
+              <a href="javascript: void(0);" class="text-light text-opacity-50">Soporte</a>
+            </li>
+          </ul>
+        </div>
+
+        <div class="col-lg-2 col-md-4 mt-3 mt-lg-0">
+          <h5 class="text-light">Legal</h5>
+
+          <ul class="list-unstyled ps-0 mb-0 mt-3">
+            <li class="mt-2">
+              <a href="javascript: void(0);" class="text-light text-opacity-50">Política de Privacidad</a>
+            </li>
+            <li class="mt-2">
+              <a href="javascript: void(0);" class="text-light text-opacity-50">Términos y Condiciones</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="mt-5">
+            <p class="text-light text-opacity-50 mt-4 text-center mb-0">
+              © 2018 -<script>
+                        document.write(new Date().getFullYear())
+                      </script>Netkonect Software. Todos los derechos reservados
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+  <!-- FIN FOOTER -->
+{% endblock %}
 
 {% block extra_js %}
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Animación de contadores para los proyectos
-        const progressBars = document.querySelectorAll('.progress-bar');
-        
-        progressBars.forEach(bar => {
-            const targetWidth = bar.style.width;
-            bar.style.width = '0';
-            
-            setTimeout(() => {
-                bar.style.transition = 'width 1.5s ease-in-out';
-                bar.style.width = targetWidth;
-            }, 300);
-        });
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const images = document.querySelectorAll('.hero-image')
+      let currentIndex = 0
     
-        // Efecto parallax para el hero section
-        const heroSection = document.querySelector('.hero-section');
-        if (heroSection) {
-            window.addEventListener('scroll', function() {
-                const scrollPosition = window.pageYOffset;
-                heroSection.style.backgroundPositionY = scrollPosition * 0.5 + 'px';
-            });
-        }
+      function changeImage() {
+        // Oculta la imagen actual
+        images[currentIndex].classList.remove('active')
     
-        // Validación mejorada del formulario
-        const form = document.getElementById('form_agregar_mensaje');
-        if (form) {
-            form.addEventListener('submit', function(e) {
-                e.preventDefault();
-                
-                // Validación mejorada
-                const nombre = document.getElementById('agregar_nombre');
-                const correo = document.getElementById('agregar_correo');
-                const mensaje = document.getElementById('agregar_mensaje');
-                let isValid = true;
-                
-                // Reset errores
-                document.querySelectorAll('.text-danger').forEach(el => el.textContent = '');
-                
-                if (!nombre.value.trim()) {
-                    document.getElementById('error_agregar_nombre').textContent = 'El nombre es requerido';
-                    nombre.classList.add('is-invalid');
-                    isValid = false;
-                } else {
-                    nombre.classList.remove('is-invalid');
-                }
-                
-                if (!correo.value.trim() || !/^\S+@\S+\.\S+$/.test(correo.value)) {
-                    document.getElementById('error_agregar_correo').textContent = 'Ingrese un correo válido';
-                    correo.classList.add('is-invalid');
-                    isValid = false;
-                } else {
-                    correo.classList.remove('is-invalid');
-                }
-                
-                if (!mensaje.value.trim()) {
-                    document.getElementById('error_agregar_mensaje').textContent = 'El mensaje es requerido';
-                    mensaje.classList.add('is-invalid');
-                    isValid = false;
-                } else {
-                    mensaje.classList.remove('is-invalid');
-                }
-                
-                if (isValid) {
-                    const btn = document.getElementById('btn_send_message');
-                    btn.innerHTML = 'Enviando... <i class="mdi mdi-loading mdi-spin ms-1"></i>';
-                    btn.disabled = true;
-                    
-                    // Simulación de envío (reemplazar con AJAX real)
-                    setTimeout(() => {
-                        btn.innerHTML = 'Mensaje Enviado <i class="mdi mdi-check ms-1"></i>';
-                        
-                        // Mostrar notificación
-                        const toast = document.createElement('div');
-                        toast.className = 'alert alert-success position-fixed top-20 start-50 translate-middle-x';
-                        toast.style.zIndex = '9999';
-                        toast.textContent = '¡Mensaje enviado con éxito! Nos pondremos en contacto pronto.';
-                        document.body.appendChild(toast);
-                        
-                        setTimeout(() => {
-                            toast.classList.add('fade');
-                            setTimeout(() => toast.remove(), 300);
-                        }, 3000);
-                        
-                        // Reset form
-                        setTimeout(() => {
-                            form.reset();
-                            btn.innerHTML = 'Enviar Mensaje <i class="mdi mdi-telegram ms-1"></i>';
-                            btn.disabled = false;
-                        }, 2000);
-                    }, 1500);
-                }
-            });
-        }
+        // Avanza al siguiente índice (con bucle)
+        currentIndex = (currentIndex + 1) % images.length
     
-        // Scroll suave para enlaces
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                e.preventDefault();
-                
-                const targetId = this.getAttribute('href');
-                if (targetId === '#') return;
-                
-                const targetElement = document.querySelector(targetId);
-                if (targetElement) {
-                    window.scrollTo({
-                        top: targetElement.offsetTop - 70,
-                        behavior: 'smooth'
-                    });
-                }
-            });
-        });
+        // Muestra la nueva imagen
+        images[currentIndex].classList.add('active')
+      }
     
-        // Mostrar elementos al hacer scroll (Scroll Animation)
-        const animateOnScroll = function() {
-            const elements = document.querySelectorAll('.service-card, .demo-box, .col-md-7 form');
-            
-            elements.forEach(element => {
-                const elementPosition = element.getBoundingClientRect().top;
-                const windowHeight = window.innerHeight;
-                
-                if (elementPosition < windowHeight - 100) {
-                    element.style.opacity = '1';
-                    element.style.transform = 'translateY(0)';
-                }
-            });
-        };
-        
-        // Configuración inicial para elementos animados
-        document.querySelectorAll('.service-card, .demo-box, .col-md-7 form').forEach(el => {
-            el.style.opacity = '0';
-            el.style.transform = 'translateY(20px)';
-            el.style.transition = 'opacity 0.6s ease-out, transform 0.6s ease-out';
-        });
-        
-        window.addEventListener('scroll', animateOnScroll);
-        animateOnScroll(); // Ejecutar al cargar la página
+      // Cambia la imagen cada 10 segundos
+      setInterval(changeImage, 10000)
     
-        // Tooltips para iconos sociales
-        const socialIcons = document.querySelectorAll('.social-list-item');
-        socialIcons.forEach(icon => {
-            const platform = icon.querySelector('i').className.split('mdi-')[1];
-            icon.setAttribute('data-bs-toggle', 'tooltip');
-            icon.setAttribute('title', `Síguenos en ${platform.charAt(0).toUpperCase() + platform.slice(1)}`);
-        });
-    
-        // Inicializar tooltips (si estás usando Bootstrap)
-        if (typeof bootstrap !== 'undefined' && bootstrap.Tooltip) {
-            const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-            tooltipTriggerList.map(function (tooltipTriggerEl) {
-                return new bootstrap.Tooltip(tooltipTriggerEl);
-            });
-        }
-    });
-</script>
-<script src="{% static 'js/send_message.js' %}"></script>
+      // Opcional: Inicia el ciclo inmediatamente
+      changeImage()
+    })
+  </script>
 
-{% endblock extra_js %}
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      // Animación de contadores para los proyectos
+      const progressBars = document.querySelectorAll('.progress-bar')
+    
+      progressBars.forEach((bar) => {
+        const targetWidth = bar.style.width
+        bar.style.width = '0'
+    
+        setTimeout(() => {
+          bar.style.transition = 'width 1.5s ease-in-out'
+          bar.style.width = targetWidth
+        }, 300)
+      })
+    
+      // Efecto parallax para el hero section
+      const heroSection = document.querySelector('.hero-section')
+      if (heroSection) {
+        window.addEventListener('scroll', function () {
+          const scrollPosition = window.pageYOffset
+          heroSection.style.backgroundPositionY = scrollPosition * 0.5 + 'px'
+        })
+      }
+    
+      // Validación mejorada del formulario
+      const form = document.getElementById('form_agregar_mensaje')
+      if (form) {
+        form.addEventListener('submit', function (e) {
+          e.preventDefault()
+    
+          // Validación mejorada
+          const nombre = document.getElementById('agregar_nombre')
+          const correo = document.getElementById('agregar_correo')
+          const mensaje = document.getElementById('agregar_mensaje')
+          let isValid = true
+    
+          // Reset errores
+          document.querySelectorAll('.text-danger').forEach((el) => (el.textContent = ''))
+    
+          if (!nombre.value.trim()) {
+            document.getElementById('error_agregar_nombre').textContent = 'El nombre es requerido'
+            nombre.classList.add('is-invalid')
+            isValid = false
+          } else {
+            nombre.classList.remove('is-invalid')
+          }
+    
+          if (!correo.value.trim() || !/^\S+@\S+\.\S+$/.test(correo.value)) {
+            document.getElementById('error_agregar_correo').textContent = 'Ingrese un correo válido'
+            correo.classList.add('is-invalid')
+            isValid = false
+          } else {
+            correo.classList.remove('is-invalid')
+          }
+    
+          if (!mensaje.value.trim()) {
+            document.getElementById('error_agregar_mensaje').textContent = 'El mensaje es requerido'
+            mensaje.classList.add('is-invalid')
+            isValid = false
+          } else {
+            mensaje.classList.remove('is-invalid')
+          }
+    
+          if (isValid) {
+            const btn = document.getElementById('btn_send_message')
+            btn.innerHTML = 'Enviando... <i class="mdi mdi-loading mdi-spin ms-1"></i>'
+            btn.disabled = true
+    
+            // Simulación de envío (reemplazar con AJAX real)
+            setTimeout(() => {
+              btn.innerHTML = 'Mensaje Enviado <i class="mdi mdi-check ms-1"></i>'
+    
+              // Mostrar notificación
+              const toast = document.createElement('div')
+              toast.className = 'alert alert-success position-fixed top-20 start-50 translate-middle-x'
+              toast.style.zIndex = '9999'
+              toast.textContent = '¡Mensaje enviado con éxito! Nos pondremos en contacto pronto.'
+              document.body.appendChild(toast)
+    
+              setTimeout(() => {
+                toast.classList.add('fade')
+                setTimeout(() => toast.remove(), 300)
+              }, 3000)
+    
+              // Reset form
+              setTimeout(() => {
+                form.reset()
+                btn.innerHTML = 'Enviar Mensaje <i class="mdi mdi-telegram ms-1"></i>'
+                btn.disabled = false
+              }, 2000)
+            }, 1500)
+          }
+        })
+      }
+    
+      // Scroll suave para enlaces
+      document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+        anchor.addEventListener('click', function (e) {
+          e.preventDefault()
+    
+          const targetId = this.getAttribute('href')
+          if (targetId === '#') return
+    
+          const targetElement = document.querySelector(targetId)
+          if (targetElement) {
+            window.scrollTo({
+              top: targetElement.offsetTop - 70,
+              behavior: 'smooth'
+            })
+          }
+        })
+      })
+    
+      // Mostrar elementos al hacer scroll (Scroll Animation)
+      const animateOnScroll = function () {
+        const elements = document.querySelectorAll('.service-card, .demo-box, .col-md-7 form')
+    
+        elements.forEach((element) => {
+          const elementPosition = element.getBoundingClientRect().top
+          const windowHeight = window.innerHeight
+    
+          if (elementPosition < windowHeight - 100) {
+            element.style.opacity = '1'
+            element.style.transform = 'translateY(0)'
+          }
+        })
+      }
+    
+      // Configuración inicial para elementos animados
+      document.querySelectorAll('.service-card, .demo-box, .col-md-7 form').forEach((el) => {
+        el.style.opacity = '0'
+        el.style.transform = 'translateY(20px)'
+        el.style.transition = 'opacity 0.6s ease-out, transform 0.6s ease-out'
+      })
+    
+      window.addEventListener('scroll', animateOnScroll)
+      animateOnScroll() // Ejecutar al cargar la página
+    
+      // Tooltips para iconos sociales
+      const socialIcons = document.querySelectorAll('.social-list-item')
+      socialIcons.forEach((icon) => {
+        const platform = icon.querySelector('i').className.split('mdi-')[1]
+        icon.setAttribute('data-bs-toggle', 'tooltip')
+        icon.setAttribute('title', `Síguenos en ${platform.charAt(0).toUpperCase() + platform.slice(1)}`)
+      })
+    
+      // Inicializar tooltips (si estás usando Bootstrap)
+      if (typeof bootstrap !== 'undefined' && bootstrap.Tooltip) {
+        const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        tooltipTriggerList.map(function (tooltipTriggerEl) {
+          return new bootstrap.Tooltip(tooltipTriggerEl)
+        })
+      }
+    })
+  </script>
+  <script src="{% static 'js/send_message.js' %}"></script>
+{% endblock %}
