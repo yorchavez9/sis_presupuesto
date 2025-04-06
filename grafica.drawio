@@ -1,0 +1,22 @@
+<mxfile host="65bd71144e">
+    <diagram id="DqE9WXuEcUf3fkfOxGQ1" name="Página-1">
+        <mxGraphModel dx="1151" dy="779" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" background="light-dark(#ffffff, #121212)" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="2" value="" style="whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="1">
+                    <mxGeometry x="80" y="120" width="880" height="880" as="geometry"/>
+                </mxCell>
+                <mxCell id="3" value="SISTEMA DE PRESUPUESTOS" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+                    <mxGeometry x="380" y="78" width="200" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="4" value="STATIC&lt;div&gt;TEMPLATE&lt;/div&gt;&lt;div&gt;JQUERY&lt;/div&gt;&lt;div&gt;JAVSCRIPT&lt;/div&gt;" style="whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="1">
+                    <mxGeometry x="150" y="320" width="270" height="270" as="geometry"/>
+                </mxCell>
+                <mxCell id="5" value="URLS&lt;div&gt;VIEWS&lt;/div&gt;&lt;div&gt;MODELO(BASE DE DATOS)&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;" style="whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="1">
+                    <mxGeometry x="520" y="320" width="260" height="260" as="geometry"/>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>

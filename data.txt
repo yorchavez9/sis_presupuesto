@@ -1,0 +1,8 @@
+https://phouse.com/listar/clientes
+
+{
+    "id": 1,
+    "nome": "João",
+    "endereco": "Rua 1, 123",
+    "telefone": "1234567890",
+}

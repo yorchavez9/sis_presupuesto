@@ -146,7 +146,7 @@ $(document).ready(function() {
                           });
                     }
                 },
-                error: function(error) {
+                error: function(error, status, xhr) {
                     console.error("Error al crear usuario:", error);
                 }
             })
