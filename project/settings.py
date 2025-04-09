@@ -65,7 +65,7 @@ WSGI_APPLICATION = 'project.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-DATABASES = {
+""" DATABASES = {
     'default': {
         'ENGINE': 'mssql',
         'NAME': 'db_presupuesto',
@@ -78,7 +78,18 @@ DATABASES = {
         },
     }
 }
-
+ """
+ 
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'db_presupuesto',
+        'USER': 'postgres',
+        'PASSWORD': 'Apuuray123',
+        'HOST': 'localhost',
+        'PORT': '5432',
+    }
+}
 
 
 # Password validation
