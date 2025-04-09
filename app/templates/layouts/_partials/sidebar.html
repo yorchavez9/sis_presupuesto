@@ -185,7 +185,7 @@
             </li>
             {% endif %}
 
-            {% if user.profile.rol == 'admin' or user.profile.rol == 'gerente' or user.profile.rol == 'supervisor' or user.profile.rol == 'analista' %}
+           {% comment %}  {% if user.profile.rol == 'admin' or user.profile.rol == 'gerente' or user.profile.rol == 'supervisor' or user.profile.rol == 'analista' %}
             <li class="side-nav-title">Reportes</li>
 
             <li class="side-nav-item">
@@ -224,7 +224,7 @@
                     </ul>
                 </div>
             </li>
-            {% endif %}
+            {% endif %} {% endcomment %}
 
             {% if user.profile.rol == 'admin' %}
             <li class="side-nav-title">Configuraciones</li>
