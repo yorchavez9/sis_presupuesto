@@ -5,6 +5,7 @@ $(document).ready(function () {
         return new Intl.NumberFormat('es-PE', { style: 'currency', currency: 'PEN' }).format(value);
     }
 
+
     function cargarPresupuestos() {
         $.ajax({
             url: 'lista-presupuestos/',
@@ -70,7 +71,7 @@ $(document).ready(function () {
                                             </a>
                                         </li>
                                         <li>
-                                            <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#modal_ver_material_servicio">
+                                            <a class="dropdown-item btnVerPresupuesto" href="#" data-bs-toggle="modal" idPresupuesto="${dato.id}" data-bs-target="#modalPresupuesto">
                                                 <i class="ri-eye-line text-primary me-2 fs-4"></i> Ver
                                             </a>
                                         </li>
@@ -250,6 +251,111 @@ $(document).ready(function () {
             }
         });
     });
+
+    /* =============================================
+    VER DETALLE PRESUPUESTO
+    ============================================= */
+
+    $("#tabla_lista_presupuesto").on("click", '.btnVerPresupuesto', function (e) {
+        e.preventDefault();
+        let presupuesto_id = $(this).attr("idPresupuesto");
+        const datos = new FormData();
+        
+        $.ajax({
+            url: `ver-detalle-presupuesto/${presupuesto_id}`,
+            type: 'GET',
+            dataType: 'json',
+            success: function (response) {
+                console.log(response);
+                if(response.success) {
+                    const data = response.data;
+                    
+                    // Mostrar información básica del presupuesto
+                    $('#modalPresupuesto #presupuesto_id').text(data.presupuesto.id);
+                    $('#modalPresupuesto #presupuesto_cliente').text(data.presupuesto.cliente.nombre);
+                    $('#modalPresupuesto #presupuesto_fecha').text(data.presupuesto.fecha);
+                    $('#modalPresupuesto #presupuesto_total').text('S/ ' + data.presupuesto.total.toFixed(2));
+                    $('#modalPresupuesto #presupuesto_estado').text(data.presupuesto.estado);
+                    $('#modalPresupuesto #presupuesto_descripcion').text(data.presupuesto.descripcion || 'Sin descripción');
+                    
+                    // Mostrar detalles de terreno
+                    let htmlTerreno = '';
+                    data.detalles_terreno.forEach(item => {
+                        htmlTerreno += `
+                            <tr>
+                                <td>${item.medida} m²</td>
+                                <td>S/ ${item.precio.toFixed(2)}</td>
+                                <td>S/ ${item.sub_total.toFixed(2)}</td>
+                            </tr>
+                        `;
+                    });
+                    $('#tabla_terreno tbody').html(htmlTerreno);
+                    $('#subtotal_terreno').text('S/ ' + data.subtotales.terreno.toFixed(2));
+                    
+                    // Mostrar detalles de materiales
+                    let htmlMateriales = '';
+                    data.detalles_materiales.forEach(item => {
+                        htmlMateriales += `
+                            <tr>
+                                <td>${item.material.nombre} (${item.material.unidad_medida})</td>
+                                <td>${item.cantidad}</td>
+                                <td>S/ ${item.precio.toFixed(2)}</td>
+                                <td>S/ ${item.sub_total.toFixed(2)}</td>
+                            </tr>
+                        `;
+                    });
+                    $('#tabla_materiales tbody').html(htmlMateriales);
+                    $('#subtotal_materiales').text('S/ ' + data.subtotales.materiales.toFixed(2));
+                    
+                    // Mostrar detalles de trabajadores
+                    let htmlTrabajadores = '';
+                    data.detalles_trabajadores.forEach(item => {
+                        htmlTrabajadores += `
+                            <tr>
+                                <td>${item.trabajador.nombre} (${item.trabajador.especialidad})</td>
+                                <td>${item.tipo_sueldo}</td>
+                                <td>${item.tiempo} días</td>
+                                <td>S/ ${item.precio.toFixed(2)}</td>
+                                <td>S/ ${item.sub_total.toFixed(2)}</td>
+                            </tr>
+                        `;
+                    });
+                    $('#tabla_trabajadores tbody').html(htmlTrabajadores);
+                    $('#subtotal_trabajadores').text('S/ ' + data.subtotales.trabajadores.toFixed(2));
+                    
+                    // Mostrar detalles de máquinas/equipos
+                    let htmlMaquinas = '';
+                    data.detalles_maquinas.forEach(item => {
+                        htmlMaquinas += `
+                            <tr>
+                                <td>${item.equipo_maquina.nombre} (${item.equipo_maquina.tipo})</td>
+                                <td>${item.tipo_costo}</td>
+                                <td>${item.tiempo} días</td>
+                                <td>S/ ${item.precio.toFixed(2)}</td>
+                                <td>S/ ${item.sub_total.toFixed(2)}</td>
+                            </tr>
+                        `;
+                    });
+                    $('#tabla_maquinas tbody').html(htmlMaquinas);
+                    $('#subtotal_maquinas').text('S/ ' + data.subtotales.maquinas.toFixed(2));
+                    
+                    // Mostrar total general
+                    $('#total_general').text('S/ ' + data.subtotales.total.toFixed(2));
+                    
+                    // Mostrar el modal
+                    $('#modalPresupuesto').modal('show');
+                } else {
+                    Swal.fire('Error', 'No se pudo cargar los detalles del presupuesto', 'error');
+                }
+            },
+            error: function (xhr, status, error) {
+                console.log(xhr, status, error);
+                Swal.fire('Error', 'Ocurrió un error al cargar los detalles', 'error');
+            }
+        });
+    });
+
+
 
     /* =========================================
       DESCARGAR COMPROBANTE PRESUPUESTO

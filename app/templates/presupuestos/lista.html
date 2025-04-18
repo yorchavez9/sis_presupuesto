@@ -92,132 +92,116 @@
     </div>
 
     {% comment %}MODAL VER PRESUPUESO{% endcomment %}
-    <div id="modal_nuevo_material_servicio" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="standard-modalLabel" aria-hidden="true">
-      <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h4 class="modal-title" id="standard-modalLabel">Nuevo Material o Servicio</h4>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    <div class="modal fade" id="modalPresupuesto" tabindex="-1" role="dialog" aria-labelledby="modalPresupuestoLabel">
+      <div class="modal-dialog modal-lg" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title" id="standard-modalLabel">Nuevo Material o Servicio</h4>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+              <div class="modal-body">
+                  <div class="row mb-4">
+                      <div class="col-md-6">
+                          <p><strong>Cliente:</strong> <span id="presupuesto_cliente"></span></p>
+                          <p><strong>Fecha:</strong> <span id="presupuesto_fecha"></span></p>
+                      </div>
+                      <div class="col-md-6 text-right">
+                          <p><strong>Estado:</strong> <span id="presupuesto_estado"></span></p>
+                          <p><strong>Total:</strong> <span id="presupuesto_total"></span></p>
+                      </div>
+                  </div>
+                  
+                  <p id="presupuesto_descripcion"></p>
+                  
+                  <div class="mt-4">
+                      <h5>Detalles de Terreno</h5>
+                      <table class="table table-bordered" id="tabla_terreno">
+                          <thead>
+                              <tr>
+                                  <th>Metros Cuadrados</th>
+                                  <th>Precio por m²</th>
+                                  <th>Subtotal</th>
+                              </tr>
+                          </thead>
+                          <tbody></tbody>
+                          <tfoot>
+                              <tr>
+                                  <th colspan="2" class="text-right">Subtotal:</th>
+                                  <th id="subtotal_terreno">S/ 0.00</th>
+                              </tr>
+                          </tfoot>
+                      </table>
+                      
+                      <h5 class="mt-4">Materiales/Servicios</h5>
+                      <table class="table table-bordered" id="tabla_materiales">
+                          <thead>
+                              <tr>
+                                  <th>Material/Servicio</th>
+                                  <th>Cantidad</th>
+                                  <th>Precio Unitario</th>
+                                  <th>Subtotal</th>
+                              </tr>
+                          </thead>
+                          <tbody></tbody>
+                          <tfoot>
+                              <tr>
+                                  <th colspan="3" class="text-right">Subtotal:</th>
+                                  <th id="subtotal_materiales">S/ 0.00</th>
+                              </tr>
+                          </tfoot>
+                      </table>
+                      
+                      <h5 class="mt-4">Trabajadores</h5>
+                      <table class="table table-bordered" id="tabla_trabajadores">
+                          <thead>
+                              <tr>
+                                  <th>Trabajador</th>
+                                  <th>Tipo</th>
+                                  <th>Tiempo</th>
+                                  <th>Precio Unitario</th>
+                                  <th>Subtotal</th>
+                              </tr>
+                          </thead>
+                          <tbody></tbody>
+                          <tfoot>
+                              <tr>
+                                  <th colspan="4" class="text-right">Subtotal:</th>
+                                  <th id="subtotal_trabajadores">S/ 0.00</th>
+                              </tr>
+                          </tfoot>
+                      </table>
+                      
+                      <h5 class="mt-4">Máquinas/Equipos</h5>
+                      <table class="table table-bordered" id="tabla_maquinas">
+                          <thead>
+                              <tr>
+                                  <th>Equipo/Máquina</th>
+                                  <th>Tipo</th>
+                                  <th>Tiempo</th>
+                                  <th>Precio Unitario</th>
+                                  <th>Subtotal</th>
+                              </tr>
+                          </thead>
+                          <tbody></tbody>
+                          <tfoot>
+                              <tr>
+                                  <th colspan="4" class="text-right">Subtotal:</th>
+                                  <th id="subtotal_maquinas">S/ 0.00</th>
+                              </tr>
+                          </tfoot>
+                      </table>
+                      
+                      <div class="text-right mt-4">
+                          <h4>Total General: <span id="total_general">S/ 0.00</span></h4>
+                      </div>
+                  </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cerrar</button>
+              </div>
           </div>
-          <form method="post" id="form_crear_material_servicio">
-            <div class="modal-body">
-              <div class="row">
-                <div class="col-md-5">
-                  <div class="form-group mb-2">
-                    <label for="nombre" class="form-label">Nombre <span class="text-danger">(*)</span></label>
-                    <input type="text" name="nombre" id="nombre" class="form-control" placeholder="Ingrese el nombre" />
-                    <span class="text-danger" id="error_nombre"></span>
-                  </div>
-                </div>
-                <div class="col-md-4">
-                  <div class="form-group mb-2">
-                    <label for="marca" class="form-label">Marca</label>
-                    <input type="text" name="marca" id="marca" class="form-control" placeholder="Ingrese la marca" />
-                    <span class="text-danger" id="error_marca"></span>
-                  </div>
-                </div>
-                <div class="col-md-3">
-                  <div class="form-group mb-2">
-                    <label for="tipo" class="form-label">Tipo <span class="text-danger">(*)</span></label>
-                    <select name="tipo" id="tipo" class="form-select">
-                      <option selected disabled>Seleccionar</option>
-                      <option value="Material">Material</option>
-                      <option value="Servicio">Servicio</option>
-                    </select>
-                    <span class="text-danger" id="error_tipo"></span>
-                  </div>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-md-6">
-                  <div class="form-group mb-2">
-                    <label for="id_proveedor" class="form-label">Proveedor <span class="text-danger">(*)</span></label>
-                    <select name="id_proveedor" id="id_proveedor" class="form-select">
-                      <select disabled selected></select>
-                    </select>
-                    <span class="text-danger" id="error_id_proveedor"></span>
-                  </div>
-                </div>
-                <div class="col-md-6">
-                  <div class="form-group mb-2">
-                    <label for="id_categoria" class="form-label">Categoría <span class="text-danger">(*)</span></label>
-                    <select name="id_categoria" id="id_categoria" class="form-select">
-                      <!-- Options should be populated dynamically -->
-                    </select>
-                    <span class="text-danger" id="error_id_categoria"></span>
-                  </div>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-md-6">
-                  <div class="form-group mb-2">
-                    <label for="id_unidad_medida" class="form-label">Unidad de Medida <span class="text-danger">(*)</span></label>
-                    <select name="id_unidad_medida" id="id_unidad_medida" class="form-select">
-                      <!-- Options should be populated dynamically -->
-                    </select>
-                    <span class="text-danger" id="error_id_unidad_medida"></span>
-                  </div>
-                </div>
-                <div class="col-md-6">
-                  <div class="form-group mb-2">
-                    <label for="precio_compra" class="form-label">Precio Compra</label>
-                    <input type="number" step="0.01" name="precio_compra" id="precio_compra" class="form-control" placeholder="Ingrese el precio de compra" />
-                  </div>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-md-6">
-                  <div class="form-group mb-2">
-                    <label for="precio_venta" class="form-label">Precio Venta <span class="text-danger">(*)</span></label>
-                    <input type="number" step="0.01" name="precio_venta" id="precio_venta" class="form-control" placeholder="Ingrese el precio de venta" />
-                    <span class="text-danger" id="error_precio_venta"></span>
-                  </div>
-                </div>
-                <div class="col-md-6">
-                  <div class="form-group mb-2">
-                    <label for="stock" class="form-label">Stock <span class="text-danger">(*)</span></label>
-                    <input type="number" name="stock" id="stock" class="form-control" placeholder="Ingrese el stock" />
-                    <span class="text-danger" id="error_stock"></span>
-                  </div>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-md-6">
-                  <div class="form-group mb-2">
-                    <label for="stock_minimo" class="form-label">Stock Mínimo <span class="text-danger">(*)</span></label>
-                    <input type="number" name="stock_minimo" id="stock_minimo" class="form-control" placeholder="Ingrese el stock mínimo" />
-                    <span class="text-danger" id="error_stock_minimo"></span>
-                  </div>
-                </div>
-                <div class="col-md-6">
-                  <div class="form-group mb-2">
-                    <label for="imagen" class="form-label">Imagen</label>
-                    <input type="file" name="imagen" id="imagen" class="form-control" />
-                  </div>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-md-12">
-                  <div class="text-center">
-                    <img src="" alt="" id="vista_previa_imagen" class="img-fluid" style="max-width: 100%; height: auto;" />
-                  </div>
-                </div>
-              </div>
-              <div class="form-group mb-2">
-                <label for="descripcion" class="form-label">Descripción</label>
-                <textarea name="descripcion" id="descripcion" class="form-control" placeholder="Ingrese la descripción"></textarea>
-              </div>
-            </div>
-
-            <div class="modal-footer">
-              <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cerrar</button>
-              <button type="button" id="btn_guardar_material_servicio" class="btn btn-primary">Guardar</button>
-            </div>
-          </form>
-        </div>
-        <!-- /.modal-content -->
       </div>
-    </div>
+  </div>
 
     
   </div>

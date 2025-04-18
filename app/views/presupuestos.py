@@ -481,6 +481,109 @@ def generar_pdf_presupuesto(request, presupuesto_id):
     response = HttpResponse(buffer, content_type='application/pdf')
     response['Content-Disposition'] = f'inline; filename="presupuesto_{presupuesto.serie}_{presupuesto.numero}.pdf"'
     return response
+
+@csrf_exempt
+def ver_detalle_prespuesto(request, presupuesto_id):
+    # Obtener el presupuesto
+    presupuesto = get_object_or_404(Presupuesto, id=presupuesto_id)
+
+    # Obtener detalles de terreno
+    detalles_terreno = DetalleMetrosTerreno.objects.filter(id_presupuesto=presupuesto)
+    # Obtener detalles de materiales/servicios
+    detalles_materiales = DetallePresupuestoMaterial.objects.filter(id_presupuesto=presupuesto)
+    # Obtener detalles de trabajadores
+    detalles_trabajadores = DetallePresupuestoTrabajador.objects.filter(id_presupuesto=presupuesto)
+    # Obtener detalles de máquinas/equipos
+    detalles_maquinas = DetallePresupuestoEquipoMaquina.objects.filter(id_presupuesto=presupuesto)
+    
+    # Calcular subtotales generales
+    subtotal_terreno = detalles_terreno.aggregate(total=Sum('sub_total'))['total'] or 0
+    subtotal_materiales = detalles_materiales.aggregate(total=Sum('sub_total'))['total'] or 0
+    subtotal_trabajadores = detalles_trabajadores.aggregate(total=Sum('sub_total'))['total'] or 0
+    subtotal_maquinas = detalles_maquinas.aggregate(total=Sum('sub_total'))['total'] or 0
+
+    # Convertir los objetos a diccionarios serializables
+    data = {
+        'presupuesto': {
+            'id': presupuesto.id,
+            'usuario': presupuesto.id_usuario.username if presupuesto.id_usuario else None,
+            'cliente': {
+                'id': presupuesto.id_cliente.id,
+                'nombre': presupuesto.id_cliente.nombre,
+                'documento': presupuesto.id_cliente.num_documento
+            },
+            'fecha': presupuesto.fecha.strftime('%Y-%m-%d'),
+            'hora': presupuesto.hora,
+            'comprobante': presupuesto.id_comprobante.comprobante if presupuesto.id_comprobante else None,
+            'serie': presupuesto.serie,
+            'numero': presupuesto.numero,
+            'sub_total': float(presupuesto.sub_total),
+            'total_impuesto': float(presupuesto.total_impuesto) if presupuesto.total_impuesto else None,
+            'total': float(presupuesto.total),
+            'descripcion': presupuesto.descripcion,
+            'condicion_pago': presupuesto.condicion_pago,
+            'plazo_ejecucion': presupuesto.plazo_ejecucion,
+            'garantia': presupuesto.garantia,
+            'notas': presupuesto.notas,
+            'observacion': presupuesto.observacion,
+            'estado': presupuesto.get_estado_display()
+        },
+        'detalles_terreno': [{
+            'id': detalle.id,
+            'medida': float(detalle.medida),
+            'precio': float(detalle.precio),
+            'sub_total': float(detalle.sub_total)
+        } for detalle in detalles_terreno],
+        'detalles_materiales': [{
+            'id': detalle.id,
+            'material': {
+                'id': detalle.id_material_servicio.id,
+                'nombre': detalle.id_material_servicio.nombre,
+                'tipo': detalle.id_material_servicio.tipo,
+                'unidad_medida': detalle.id_material_servicio.id_unidad_medida.unidad if detalle.id_material_servicio.id_unidad_medida else None
+            },
+            'cantidad': float(detalle.cantidad),
+            'precio': float(detalle.precio),
+            'sub_total': float(detalle.sub_total)
+        } for detalle in detalles_materiales],
+        'detalles_trabajadores': [{
+            'id': detalle.id,
+            'trabajador': {
+                'id': detalle.id_trabajador.id,
+                'nombre': detalle.id_trabajador.nombre,
+                'especialidad': detalle.id_trabajador.id_especialidad.especialidad if detalle.id_trabajador.id_especialidad else None
+            },
+            'tipo_sueldo': detalle.tipo_sueldo,
+            'precio': float(detalle.precio),
+            'tiempo': detalle.tiempo,
+            'sub_total': float(detalle.sub_total)
+        } for detalle in detalles_trabajadores],
+        'detalles_maquinas': [{
+            'id': detalle.id,
+            'equipo_maquina': {
+                'id': detalle.id_maquina_equipo.id,
+                'nombre': detalle.id_maquina_equipo.nombre,
+                'tipo': detalle.id_maquina_equipo.tipo
+            },
+            'tipo_costo': detalle.tipo_costo,
+            'precio': float(detalle.precio),
+            'tiempo': detalle.tiempo,
+            'sub_total': float(detalle.sub_total)
+        } for detalle in detalles_maquinas],
+        'subtotales': {
+            'terreno': float(subtotal_terreno),
+            'materiales': float(subtotal_materiales),
+            'trabajadores': float(subtotal_trabajadores),
+            'maquinas': float(subtotal_maquinas),
+            'total': float(subtotal_terreno + subtotal_materiales + subtotal_trabajadores + subtotal_maquinas)
+        }
+    }
+    
+    return JsonResponse({
+        'success': True,
+        'data': data
+    }) 
+    
     
 @csrf_exempt
 def generar_pdf_comprobante(request, presupuesto_id):
