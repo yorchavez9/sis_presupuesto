@@ -6,29 +6,29 @@
 
 {% block extra_css %}
   <script>
-    const RUTA_BASE_IMAGENES = "{% static 'img/materiales_servicios/' %}";
+    const RUTA_BASE_IMAGENES = "{% static 'img/materiales_servicios/' %}"
   </script>
   <style>
     .dropdown-toggle {
       background-color: transparent;
       border: none;
       color: #6c757d;
-  }
-  
-  .dropdown-toggle:hover {
-      color: white; 
-      background-color: #6973E3;
-  }
-  
-  .dropdown-item {
+    }
+    
+    .dropdown-toggle:hover {
+      color: white;
+      background-color: #6973e3;
+    }
+    
+    .dropdown-item {
       display: flex;
       align-items: center;
       padding: 8px 8px;
-  }
-  
-  .dropdown-item i {
+    }
+    
+    .dropdown-item i {
       margin-right: 8px;
-  }
+    }
   </style>
 {% endblock %}
 
@@ -92,121 +92,129 @@
     </div>
 
     {% comment %}MODAL VER PRESUPUESO{% endcomment %}
-    <div class="modal fade" id="modalPresupuesto" tabindex="-1" role="dialog" aria-labelledby="modalPresupuestoLabel">
-      <div class="modal-dialog modal-lg" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h4 class="modal-title" id="standard-modalLabel">Nuevo Material o Servicio</h4>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-              <div class="modal-body">
-                  <div class="row mb-4">
-                      <div class="col-md-6">
-                          <p><strong>Cliente:</strong> <span id="presupuesto_cliente"></span></p>
-                          <p><strong>Fecha:</strong> <span id="presupuesto_fecha"></span></p>
-                      </div>
-                      <div class="col-md-6 text-right">
-                          <p><strong>Estado:</strong> <span id="presupuesto_estado"></span></p>
-                          <p><strong>Total:</strong> <span id="presupuesto_total"></span></p>
-                      </div>
-                  </div>
-                  
-                  <p id="presupuesto_descripcion"></p>
-                  
-                  <div class="mt-4">
-                      <h5>Detalles de Terreno</h5>
-                      <table class="table table-bordered" id="tabla_terreno">
-                          <thead>
-                              <tr>
-                                  <th>Metros Cuadrados</th>
-                                  <th>Precio por m²</th>
-                                  <th>Subtotal</th>
-                              </tr>
-                          </thead>
-                          <tbody></tbody>
-                          <tfoot>
-                              <tr>
-                                  <th colspan="2" class="text-right">Subtotal:</th>
-                                  <th id="subtotal_terreno">S/ 0.00</th>
-                              </tr>
-                          </tfoot>
-                      </table>
-                      
-                      <h5 class="mt-4">Materiales/Servicios</h5>
-                      <table class="table table-bordered" id="tabla_materiales">
-                          <thead>
-                              <tr>
-                                  <th>Material/Servicio</th>
-                                  <th>Cantidad</th>
-                                  <th>Precio Unitario</th>
-                                  <th>Subtotal</th>
-                              </tr>
-                          </thead>
-                          <tbody></tbody>
-                          <tfoot>
-                              <tr>
-                                  <th colspan="3" class="text-right">Subtotal:</th>
-                                  <th id="subtotal_materiales">S/ 0.00</th>
-                              </tr>
-                          </tfoot>
-                      </table>
-                      
-                      <h5 class="mt-4">Trabajadores</h5>
-                      <table class="table table-bordered" id="tabla_trabajadores">
-                          <thead>
-                              <tr>
-                                  <th>Trabajador</th>
-                                  <th>Tipo</th>
-                                  <th>Tiempo</th>
-                                  <th>Precio Unitario</th>
-                                  <th>Subtotal</th>
-                              </tr>
-                          </thead>
-                          <tbody></tbody>
-                          <tfoot>
-                              <tr>
-                                  <th colspan="4" class="text-right">Subtotal:</th>
-                                  <th id="subtotal_trabajadores">S/ 0.00</th>
-                              </tr>
-                          </tfoot>
-                      </table>
-                      
-                      <h5 class="mt-4">Máquinas/Equipos</h5>
-                      <table class="table table-bordered" id="tabla_maquinas">
-                          <thead>
-                              <tr>
-                                  <th>Equipo/Máquina</th>
-                                  <th>Tipo</th>
-                                  <th>Tiempo</th>
-                                  <th>Precio Unitario</th>
-                                  <th>Subtotal</th>
-                              </tr>
-                          </thead>
-                          <tbody></tbody>
-                          <tfoot>
-                              <tr>
-                                  <th colspan="4" class="text-right">Subtotal:</th>
-                                  <th id="subtotal_maquinas">S/ 0.00</th>
-                              </tr>
-                          </tfoot>
-                      </table>
-                      
-                      <div class="text-right mt-4">
-                          <h4>Total General: <span id="total_general">S/ 0.00</span></h4>
-                      </div>
-                  </div>
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cerrar</button>
-              </div>
+    <div id="modalPresupuesto" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="standard-modalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title" id="standard-modalLabel">Nuevo Material o Servicio</h4>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
-      </div>
-  </div>
+          <div class="modal-body">
+            <div class="row mb-4">
+              <div class="col-md-6">
+                <p>
+                  <strong>Cliente:</strong> <span id="presupuesto_cliente"></span>
+                </p>
+                <p>
+                  <strong>Fecha:</strong> <span id="presupuesto_fecha"></span>
+                </p>
+              </div>
+              <div class="col-md-6 text-right">
+                <p>
+                  <strong>Estado:</strong> <span id="presupuesto_estado"></span>
+                </p>
+                <p>
+                  <strong>Total:</strong> <span id="presupuesto_total"></span>
+                </p>
+              </div>
+            </div>
 
-    
+            <p id="presupuesto_descripcion"></p>
+
+            <div class="mt-4">
+              <h5>Detalles de Terreno</h5>
+              <table class="table table-bordered" id="tabla_terreno">
+                <thead>
+                  <tr>
+                    <th>Metros Cuadrados</th>
+                    <th>Precio por m²</th>
+                    <th>Subtotal</th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+                <tfoot>
+                  <tr>
+                    <th colspan="2" class="text-right">Subtotal:</th>
+                    <th id="subtotal_terreno">S/ 0.00</th>
+                  </tr>
+                </tfoot>
+              </table>
+
+              <h5 class="mt-4">Materiales/Servicios</h5>
+              <table class="table table-bordered" id="tabla_materiales">
+                <thead>
+                  <tr>
+                    <th>Material/Servicio</th>
+                    <th>Cantidad</th>
+                    <th>Precio Unitario</th>
+                    <th>Subtotal</th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+                <tfoot>
+                  <tr>
+                    <th colspan="3" class="text-right">Subtotal:</th>
+                    <th id="subtotal_materiales">S/ 0.00</th>
+                  </tr>
+                </tfoot>
+              </table>
+
+              <h5 class="mt-4">Trabajadores</h5>
+              <table class="table table-bordered" id="tabla_trabajadores">
+                <thead>
+                  <tr>
+                    <th>Trabajador</th>
+                    <th>Tipo</th>
+                    <th>Tiempo</th>
+                    <th>Precio Unitario</th>
+                    <th>Subtotal</th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+                <tfoot>
+                  <tr>
+                    <th colspan="4" class="text-right">Subtotal:</th>
+                    <th id="subtotal_trabajadores">S/ 0.00</th>
+                  </tr>
+                </tfoot>
+              </table>
+
+              <h5 class="mt-4">Máquinas/Equipos</h5>
+              <table class="table table-bordered" id="tabla_maquinas">
+                <thead>
+                  <tr>
+                    <th>Equipo/Máquina</th>
+                    <th>Tipo</th>
+                    <th>Tiempo</th>
+                    <th>Precio Unitario</th>
+                    <th>Subtotal</th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+                <tfoot>
+                  <tr>
+                    <th colspan="4" class="text-right">Subtotal:</th>
+                    <th id="subtotal_maquinas">S/ 0.00</th>
+                  </tr>
+                </tfoot>
+              </table>
+
+              <div class="text-right mt-4">
+                <h4>Total General: <span id="total_general">S/ 0.00</span></h4>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cerrar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
   </div>
 {% endblock %}
 
 {% block extra_js %}
-<script src="{% static 'js/listar-presupuesto.js' %}"></script>
+  <script src="{% static 'js/listar-presupuesto.js' %}"></script>
 {% endblock %}

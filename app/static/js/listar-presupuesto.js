@@ -71,7 +71,7 @@ $(document).ready(function () {
                                             </a>
                                         </li>
                                         <li>
-                                            <a class="dropdown-item btnVerPresupuesto" href="#" data-bs-toggle="modal" idPresupuesto="${dato.id}" data-bs-target="#modalPresupuesto">
+                                            <a class="dropdown-item btnVerPresupuesto" href="#" idPresupuesto="${dato.id}" data-bs-toggle="modal" data-bs-target="#modalPresupuesto">
                                                 <i class="ri-eye-line text-primary me-2 fs-4"></i> Ver
                                             </a>
                                         </li>
@@ -255,12 +255,9 @@ $(document).ready(function () {
     /* =============================================
     VER DETALLE PRESUPUESTO
     ============================================= */
-
     $("#tabla_lista_presupuesto").on("click", '.btnVerPresupuesto', function (e) {
         e.preventDefault();
         let presupuesto_id = $(this).attr("idPresupuesto");
-        const datos = new FormData();
-        
         $.ajax({
             url: `ver-detalle-presupuesto/${presupuesto_id}`,
             type: 'GET',
@@ -274,7 +271,7 @@ $(document).ready(function () {
                     $('#modalPresupuesto #presupuesto_id').text(data.presupuesto.id);
                     $('#modalPresupuesto #presupuesto_cliente').text(data.presupuesto.cliente.nombre);
                     $('#modalPresupuesto #presupuesto_fecha').text(data.presupuesto.fecha);
-                    $('#modalPresupuesto #presupuesto_total').text('S/ ' + data.presupuesto.total.toFixed(2));
+                    $('#modalPresupuesto #presupuesto_total').text(formatCurrency(data.presupuesto.total));
                     $('#modalPresupuesto #presupuesto_estado').text(data.presupuesto.estado);
                     $('#modalPresupuesto #presupuesto_descripcion').text(data.presupuesto.descripcion || 'Sin descripción');
                     
@@ -284,13 +281,13 @@ $(document).ready(function () {
                         htmlTerreno += `
                             <tr>
                                 <td>${item.medida} m²</td>
-                                <td>S/ ${item.precio.toFixed(2)}</td>
-                                <td>S/ ${item.sub_total.toFixed(2)}</td>
+                                <td>${formatCurrency(item.precio)}</td>
+                                <td>${formatCurrency(item.sub_total)}</td>
                             </tr>
                         `;
                     });
                     $('#tabla_terreno tbody').html(htmlTerreno);
-                    $('#subtotal_terreno').text('S/ ' + data.subtotales.terreno.toFixed(2));
+                    $('#subtotal_terreno').text(formatCurrency(data.subtotales.terreno));
                     
                     // Mostrar detalles de materiales
                     let htmlMateriales = '';
@@ -299,13 +296,13 @@ $(document).ready(function () {
                             <tr>
                                 <td>${item.material.nombre} (${item.material.unidad_medida})</td>
                                 <td>${item.cantidad}</td>
-                                <td>S/ ${item.precio.toFixed(2)}</td>
-                                <td>S/ ${item.sub_total.toFixed(2)}</td>
+                                <td>${formatCurrency(item.precio)}</td>
+                                <td>${formatCurrency(item.sub_total)}</td>
                             </tr>
                         `;
                     });
                     $('#tabla_materiales tbody').html(htmlMateriales);
-                    $('#subtotal_materiales').text('S/ ' + data.subtotales.materiales.toFixed(2));
+                    $('#subtotal_materiales').text(formatCurrency(data.subtotales.materiales));
                     
                     // Mostrar detalles de trabajadores
                     let htmlTrabajadores = '';
@@ -315,13 +312,13 @@ $(document).ready(function () {
                                 <td>${item.trabajador.nombre} (${item.trabajador.especialidad})</td>
                                 <td>${item.tipo_sueldo}</td>
                                 <td>${item.tiempo} días</td>
-                                <td>S/ ${item.precio.toFixed(2)}</td>
-                                <td>S/ ${item.sub_total.toFixed(2)}</td>
+                                <td>${formatCurrency(item.precio)}</td>
+                                <td>${formatCurrency(item.sub_total)}</td>
                             </tr>
                         `;
                     });
                     $('#tabla_trabajadores tbody').html(htmlTrabajadores);
-                    $('#subtotal_trabajadores').text('S/ ' + data.subtotales.trabajadores.toFixed(2));
+                    $('#subtotal_trabajadores').text(formatCurrency(data.subtotales.trabajadores));
                     
                     // Mostrar detalles de máquinas/equipos
                     let htmlMaquinas = '';
@@ -331,16 +328,16 @@ $(document).ready(function () {
                                 <td>${item.equipo_maquina.nombre} (${item.equipo_maquina.tipo})</td>
                                 <td>${item.tipo_costo}</td>
                                 <td>${item.tiempo} días</td>
-                                <td>S/ ${item.precio.toFixed(2)}</td>
-                                <td>S/ ${item.sub_total.toFixed(2)}</td>
+                                <td>${formatCurrency(item.precio)}</td>
+                                <td>${formatCurrency(item.sub_total)}</td>
                             </tr>
                         `;
                     });
                     $('#tabla_maquinas tbody').html(htmlMaquinas);
-                    $('#subtotal_maquinas').text('S/ ' + data.subtotales.maquinas.toFixed(2));
+                    $('#subtotal_maquinas').text(formatCurrency(data.subtotales.maquinas));
                     
                     // Mostrar total general
-                    $('#total_general').text('S/ ' + data.subtotales.total.toFixed(2));
+                    $('#total_general').text(formatCurrency(data.subtotales.total));
                     
                     // Mostrar el modal
                     $('#modalPresupuesto').modal('show');

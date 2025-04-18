@@ -482,6 +482,9 @@ def generar_pdf_presupuesto(request, presupuesto_id):
     response['Content-Disposition'] = f'inline; filename="presupuesto_{presupuesto.serie}_{presupuesto.numero}.pdf"'
     return response
 
+
+
+
 @csrf_exempt
 def ver_detalle_prespuesto(request, presupuesto_id):
     # Obtener el presupuesto
@@ -583,6 +586,8 @@ def ver_detalle_prespuesto(request, presupuesto_id):
         'success': True,
         'data': data
     }) 
+    
+    
     
     
 @csrf_exempt
