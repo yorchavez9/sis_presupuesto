@@ -131,7 +131,7 @@
                     <form method="post" id="form_editar_comprobante">
                         {% csrf_token %}
                         <div class="modal-body">
-                            <input type="text" id="id_comprobante_edit">
+                            <input type="hidden" id="id_comprobante_edit" hidden>
                             <div class="form-group mb-2">
                                 <label for="comprobante_edit" class="form-label">Comprobante <span class="text-danger">(*)</span></label>
                                 <input type="text" name="comprobante_edit" id="comprobante_edit" class="form-control" placeholder="Ingrese el comprobante" />
