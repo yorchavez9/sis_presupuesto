@@ -1,5 +1,14 @@
 $(document).ready(function () {
 
+    // Configuración global de AJAX para incluir CSRF
+    $.ajaxSetup({
+        beforeSend: function(xhr, settings) {
+            if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url)) && !this.crossDomain) {
+                xhr.setRequestHeader("X-CSRFToken", csrftoken);
+            }
+        }
+    });
+
     function formatCurrency(value) {
         if (!value) return "S/ 0.00";
         return new Intl.NumberFormat('es-PE', { style: 'currency', currency: 'PEN' }).format(value);
@@ -255,6 +264,7 @@ $(document).ready(function () {
 
         if (isValid) {
             const datos = new FormData();
+            datos.append("csrfmiddlewaretoken", csrftoken); 
             datos.append("nombre", nombre);
             datos.append("marca", marca);
             datos.append("tipo", tipo);
@@ -313,6 +323,7 @@ $(document).ready(function () {
         let material_estado = $(this).attr("estadoMaterial");
 
         const datos = new FormData();
+        datos.append("csrfmiddlewaretoken", csrftoken); 
         datos.append("material_id", material_id);
         datos.append("material_estado", material_estado);
         $.ajax({
@@ -358,6 +369,7 @@ $(document).ready(function () {
         e.preventDefault();
         let material_servicio_id = $(this).attr("idMaterialServicio");
         const datos = new FormData();
+        datos.append("csrfmiddlewaretoken", csrftoken); 
         datos.append("material_servicio_id", material_servicio_id);
         $.ajax({
             url: "editar-meterial-servicio/",
@@ -405,6 +417,7 @@ $(document).ready(function () {
         e.preventDefault();
         let material_servicio_id = $(this).attr("idMaterialServicio");
         const datos = new FormData();
+        datos.append("csrfmiddlewaretoken", csrftoken); 
         datos.append("material_servicio_id", material_servicio_id);
         $.ajax({
             url: "ver-meterial-servicio/",
@@ -524,6 +537,7 @@ $(document).ready(function () {
 
         if (isValid) {
             const datos = new FormData();
+            datos.append("csrfmiddlewaretoken", csrftoken); 
             datos.append("material_servicio_id", material_servicio_id);
             datos.append("nombre", nombre);
             datos.append("tipo", tipo);
@@ -578,6 +592,7 @@ $(document).ready(function () {
         e.preventDefault();
         let material_servicio_id = $(this).attr("idMaterialServicio");
         const datos = new FormData();
+        datos.append("csrfmiddlewaretoken", csrftoken); 
         datos.append("material_servicio_id", material_servicio_id);
         Swal.fire({
             title: "¿Está seguro de borrar el material o servicio?",

@@ -1,7 +1,6 @@
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, get_object_or_404
 from django.http import JsonResponse
 from ..models import MaterialServicio, Proveedor, Categoria, UnidadMedida, DetallePresupuestoMaterial
-from django.views.decorators.csrf import csrf_exempt
 from django.db.models import Sum, Count
 import os
 from django.utils import timezone
@@ -86,7 +85,6 @@ def lista_materiales_servicios(request):
             return JsonResponse({'error': 'Error interno del servidor'}, status=500)
     return JsonResponse({'error': 'Método no permitido'}, status=405)
 
-@csrf_exempt
 def crear_material_servicio(request):
     if request.method == 'POST':
         try:
@@ -145,7 +143,6 @@ def crear_material_servicio(request):
         'message': 'Método no permitido'
     }, status=405)
 
-@csrf_exempt
 def activar_material_servicio(request):
     if request.method == 'POST':
         material_servicio_id = request.POST.get('material_id')
@@ -157,7 +154,6 @@ def activar_material_servicio(request):
         return JsonResponse({'status': True, 'message': message})
     return JsonResponse({'status': False, 'message': 'Método no permitido'}, status=405)
 
-@csrf_exempt
 def editar_material_servicio(request):
     if request.method == 'POST':
         material_servicio_id = request.POST.get('material_servicio_id')
@@ -189,7 +185,6 @@ def editar_material_servicio(request):
         })
     return JsonResponse({'status': False, 'message': 'Método no permitido'}, status=405)
 
-@csrf_exempt
 def ver_material_servicio(request):
     if request.method == 'POST':
         material_servicio_id = request.POST.get('material_servicio_id')
@@ -221,7 +216,6 @@ def ver_material_servicio(request):
         })
     return JsonResponse({'status': False, 'message': 'Método no permitido'}, status=405)
 
-@csrf_exempt
 def actualizar_material_servicio(request):
     if request.method == 'POST':
         try:
@@ -264,7 +258,6 @@ def actualizar_material_servicio(request):
             }, status=500)
     return JsonResponse({'status': False, 'message': 'Método no permitido'}, status=405)
 
-@csrf_exempt
 def materiales_mas_utilizados(request):
     materiales = DetallePresupuestoMaterial.objects.values(
         'id_material_servicio__nombre'
@@ -279,7 +272,6 @@ def materiales_mas_utilizados(request):
         'colors': ['#727CF5', '#0ACF97', '#FA5C7C', '#FFBC00', '#5B69BC']
     })
 
-@csrf_exempt
 def eliminar_material_servicio(request):
     if request.method == 'POST':
         material_servicio_id = request.POST.get('material_servicio_id')
