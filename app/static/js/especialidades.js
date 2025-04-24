@@ -1,6 +1,13 @@
 $(document).ready(function () {
 
-
+    // Configuración global de AJAX para incluir CSRF
+    $.ajaxSetup({
+        beforeSend: function (xhr, settings) {
+            if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url)) && !this.crossDomain) {
+                xhr.setRequestHeader("X-CSRFToken", csrftoken);
+            }
+        }
+    });
 
 
 
@@ -93,6 +100,7 @@ $(document).ready(function () {
 
         if (isValid) {
             const datos = new FormData();
+            datos.append("csrfmiddlewaretoken", csrftoken); 
             datos.append("especialidad", especialidad);
             datos.append("funcion", funcion);
 
@@ -143,6 +151,7 @@ $(document).ready(function () {
         e.preventDefault();
         let especialidad_id = $(this).attr("idEspecialidad");
         const datos = new FormData();
+        datos.append("csrfmiddlewaretoken", csrftoken); 
         datos.append("especialidad_id", especialidad_id);
         $.ajax({
             url: "editar/",
@@ -189,6 +198,7 @@ $(document).ready(function () {
 
         if (isValid) {
             const datos = new FormData();
+            datos.append("csrfmiddlewaretoken", csrftoken); 
             datos.append("especialidad_id", especialidad_id);
             datos.append("especialidad", especialidad);
             datos.append("funcion", funcion);
@@ -228,6 +238,7 @@ $(document).ready(function () {
         e.preventDefault();
         let especialidad_id = $(this).attr("idEspecialidad");
         const datos = new FormData();
+        datos.append("csrfmiddlewaretoken", csrftoken); 
         datos.append("especialidad_id", especialidad_id);
 
         Swal.fire({
