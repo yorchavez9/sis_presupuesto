@@ -1,5 +1,14 @@
 $(document).ready(function () {
 
+    // Configuración global de AJAX para incluir CSRF
+    $.ajaxSetup({
+        beforeSend: function(xhr, settings) {
+            if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url)) && !this.crossDomain) {
+                xhr.setRequestHeader("X-CSRFToken", csrftoken);
+            }
+        }
+    });
+
     /* ===========================================
     FUNCION PARA FORMATEAR FECHAS
     =========================================== */
@@ -73,6 +82,7 @@ $(document).ready(function () {
     $("#form_agregar_mensaje").submit(function (e) {
         e.preventDefault();
         const datos = {
+            csrfmiddlewaretoken: csrftoken,
             nombre: $("#agregar_nombre").val(),
             correo: $("#agregar_correo").val(),
             telefono: $("#agregar_telefono").val(),
@@ -204,6 +214,9 @@ $(document).ready(function () {
                 $.ajax({
                     url: `eliminar/${mensaje_id}/`,
                     type: 'DELETE',
+                    data: {
+                        'csrfmiddlewaretoken': csrftoken
+                    },
                     success: function (response) {
                         if (response.status) {
                             if ($.fn.DataTable.isDataTable("#tabla_mensajes")) {
