@@ -1,7 +1,8 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import JsonResponse
 from ..models import EquipoMaquinaria
-from django.views.decorators.csrf import csrf_exempt
+from decimal import Decimal
+from django.core.exceptions import ValidationError
 
 def index_equipos_maquinarias(request):
     return render(request, 'equipos_maquinarias/index.html')
@@ -28,10 +29,6 @@ def lista_equipos_maquinarias(request):
         return JsonResponse(equipos_data, safe=False)
     return JsonResponse({'error': 'Solicitud no válida'}, status=400)
 
-from decimal import Decimal
-from django.core.exceptions import ValidationError
-
-@csrf_exempt
 def crear_equipo_maquinaria(request):
     if request.method == 'POST':
         tipo = request.POST.get('tipo')
@@ -69,7 +66,6 @@ def crear_equipo_maquinaria(request):
             return JsonResponse({'status': False, 'message': f'Error inesperado: {str(e)}'}, status=500)
     return JsonResponse({'status': False, 'message': 'Método no permitido'}, status=405)
 
-@csrf_exempt
 def activar_quipo_maquinaria(request):
     if request.method == 'POST':
         maquinaria_id = request.POST.get('maquinaria_id')
@@ -81,7 +77,6 @@ def activar_quipo_maquinaria(request):
         return JsonResponse({'status': True, 'message': message})
     return JsonResponse({'status': False, 'message': 'Método no permitido'}, status=405)
 
-@csrf_exempt
 def editar_equipo_maquinaria(request):
     if request.method == 'POST':
         equipo_id = request.POST.get('equipo_id')
@@ -106,7 +101,6 @@ def editar_equipo_maquinaria(request):
     
     return JsonResponse({'status': False, 'message': 'Método no permitido'}, status=405)
 
-@csrf_exempt
 def actualizar_equipo_maquinaria(request):
     if request.method == 'POST':
         equipo_id = request.POST.get('equipo_id')
@@ -143,8 +137,6 @@ def actualizar_equipo_maquinaria(request):
             return JsonResponse({'status': False, 'message': f'Error inesperado: {str(e)}'}, status=500)
     return JsonResponse({'status': False, 'message': 'Método no permitido'}, status=405)
 
-
-@csrf_exempt
 def eliminar_equipo_maquinaria(request):
     if request.method == 'POST':
         equipo_id = request.POST.get('equipo_id')
