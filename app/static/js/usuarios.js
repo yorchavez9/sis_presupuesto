@@ -1,5 +1,15 @@
 $(document).ready(function() {
 
+     // Configuración global de AJAX para incluir CSRF
+     $.ajaxSetup({
+        beforeSend: function(xhr, settings) {
+            if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url)) && !this.crossDomain) {
+                xhr.setRequestHeader("X-CSRFToken", csrftoken);
+            }
+        }
+    });
+
+
 
     function cargarUsuarios() {
         $.ajax({
@@ -60,6 +70,7 @@ $(document).ready(function() {
     CREAR USUARIO
     ========================================= */
     $("#btn_guardar_usuario").click(function() {
+
         let isValid = true;
 
         let first_name = $("#first_name").val();
@@ -112,13 +123,13 @@ $(document).ready(function() {
 
         if (isValid) {
             const datos  = new FormData();
+            datos.append("csrfmiddlewaretoken", csrftoken); 
             datos.append("first_name", first_name);
             datos.append("email", email);
             datos.append("username", username);
             datos.append("password1", password1);
             datos.append("password2", password2);
             datos.append("rol", rol);
-
             $.ajax({
                 url: "crear/",
                 type: 'POST',
@@ -228,6 +239,7 @@ $(document).ready(function() {
 
         if (isValid) {
             const datos  = new FormData();
+            datos.append("csrfmiddlewaretoken", csrftoken); 
             datos.append("user_id", user_id);
             datos.append("first_name", first_name);
             datos.append("email", email);
@@ -341,8 +353,8 @@ $(document).ready(function() {
                 $.ajax({
                     url: `borrar/${idUsuario}/`,
                     method: "POST",
-                    headers: {
-                        'X-CSRFToken': '{{ csrf_token }}'
+                    data: {
+                        'csrfmiddlewaretoken': csrftoken
                     },
                     success: function (response) {
                         if (response.status) {
