@@ -1,8 +1,6 @@
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, get_object_or_404
 from django.http import JsonResponse
 from ..models import Comprobante
-from django.views.decorators.csrf import csrf_exempt
-import requests
 
 def index_comprobante(request):
     return render(request, 'comprobantes/index.html')
@@ -23,7 +21,6 @@ def lista_comprobantes(request):
         return JsonResponse(comprobante_data, safe=False)
     return JsonResponse({'error': 'Solicitud no válida'}, status=400)
 
-@csrf_exempt
 def crear_comprobante(request):
     if request.method == 'POST':
         comprobante = request.POST.get('comprobante')
@@ -60,7 +57,6 @@ def crear_comprobante(request):
         'message': 'Método no permitido'
     }, status=405)
 
-@csrf_exempt
 def editar_comprobante(request):
     if request.method == 'POST':
         id_comprobante = request.POST.get('id_comprobante')
@@ -78,7 +74,6 @@ def editar_comprobante(request):
     
     return JsonResponse({'status': False, 'message': 'Método no permitido'}, status=405)
 
-@csrf_exempt
 def mostrar_comprobante(request):
     if request.method == 'POST':
         id_comprobante = request.POST.get('id_comprobante')
@@ -96,7 +91,6 @@ def mostrar_comprobante(request):
     
     return JsonResponse({'status': False, 'message': 'Método no permitido'}, status=405)
 
-@csrf_exempt
 def actualizar_comprobante(request):
     if request.method == 'POST':
         id_comprobante = request.POST.get('id_comprobante')
@@ -112,7 +106,6 @@ def actualizar_comprobante(request):
         return JsonResponse({'status': True, 'message': 'Comprobante actualizada correctamente'})
     return JsonResponse({'status': False, 'message': 'Método no permitido'}, status=405)
 
-@csrf_exempt
 def eliminar_comprobante(request):
     if request.method == 'POST':
         id_comprobante = request.POST.get('id_comprobante')
