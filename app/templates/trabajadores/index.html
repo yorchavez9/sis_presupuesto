@@ -6,6 +6,23 @@
 {% block content_admin %}
     <!-- Start Content -->
     <div class="container-fluid">
+        <script>
+            function getCookie(name) {
+              let cookieValue = null;
+              if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                  const cookie = cookies[i].trim();
+                  if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                  }
+                }
+              }
+              return cookieValue;
+            }
+            const csrftoken = getCookie('csrftoken');
+          </script>
         <!-- start page title -->
         <div class="row">
             <div class="col-12">
@@ -71,6 +88,7 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <form method="post" id="form_crear_trabajador">
+                        {% csrf_token %}
                         <div class="modal-body">
                             <div class="form-group mb-2">
                                 <label for="tipo_documento" class="form-label">Selecion el tipo de documento <span class="text-danger">(*)</span></label>
@@ -164,6 +182,7 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <form method="post" id="form_editar_trabajador">
+                        {% csrf_token %}
                         <div class="modal-body">
                             
                             <input type="text" hidden id="trabajador_id_edit" />
