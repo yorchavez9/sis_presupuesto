@@ -12,6 +12,24 @@
 {% block content_admin %}
   <!-- Start Content -->
   <div class="container-fluid">
+    <script>
+      function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+          const cookies = document.cookie.split(';');
+          for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+              cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+              break;
+            }
+          }
+        }
+        return cookieValue;
+      }
+      const csrftoken = getCookie('csrftoken');
+    </script>
+
     <!-- start page title -->
     <div class="row">
       <div class="col-12">
@@ -70,6 +88,7 @@
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <form method="post" id="form_crear_encargatura">
+            {% csrf_token %}
             <div class="modal-body">
 
               <div class="row">
@@ -117,6 +136,7 @@
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <form method="post" id="form_editar_encargatura">
+            {% csrf_token %}
             <div class="modal-body">
                 <input type="hidden" id="id_encagatura_edit">
 
@@ -148,7 +168,7 @@
 
             <div class="modal-footer">
               <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cerrar</button>
-              <button type="button" id="btn_actualizar_encargatura" class="btn btn-primary">Guardar</button>
+              <button type="button" id="btn_actualizar_encargatura" class="btn btn-primary">Actualizar</button>
             </div>
           </form>
         </div>
