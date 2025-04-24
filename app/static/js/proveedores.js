@@ -1,5 +1,14 @@
 $(document).ready(function () {
 
+    // Configuración global de AJAX para incluir CSRF
+    $.ajaxSetup({
+        beforeSend: function(xhr, settings) {
+            if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url)) && !this.crossDomain) {
+                xhr.setRequestHeader("X-CSRFToken", csrftoken);
+            }
+        }
+    });
+
     let tabla = $('.tabla_proveedores').DataTable({
         "destroy": true,
         "responsive": true, // Habilita el modo responsive
@@ -202,6 +211,7 @@ $(document).ready(function () {
 
         if (isValid) {
             const datos = new FormData();
+            datos.append("csrfmiddlewaretoken", csrftoken); 
             datos.append("tipo_documento", tipo_documento);
             datos.append("num_documento", num_documento);
             datos.append("razon_social", razon_social);
@@ -254,6 +264,7 @@ $(document).ready(function () {
         e.preventDefault();
         let proveedor_id = $(this).attr("idProveedor");
         const datos = new FormData();
+        datos.append("csrfmiddlewaretoken", csrftoken); 
         datos.append("proveedor_id", proveedor_id);
         $.ajax({
             url: "editar-proveedor/",
@@ -334,6 +345,7 @@ $(document).ready(function () {
 
         if (isValid) {
             const datos = new FormData();
+            datos.append("csrfmiddlewaretoken", csrftoken); 
             datos.append("proveedor_id", proveedor_id);
             datos.append("tipo_documento", tipo_documento);
             datos.append("num_documento", num_documento);
@@ -378,6 +390,7 @@ $(document).ready(function () {
         let proveedor_estado = $(this).attr("estadoProveedor");
 
         const datos = new FormData();
+        datos.append("csrfmiddlewaretoken", csrftoken); 
         datos.append("proveedor_id", proveedor_id);
         datos.append("proveedor_estado", proveedor_estado);
 
@@ -420,6 +433,7 @@ $(document).ready(function () {
         e.preventDefault();
         let proveedor_id = $(this).attr("idProveedor");
         const datos = new FormData();
+        datos.append("csrfmiddlewaretoken", csrftoken); 
         datos.append("proveedor_id", proveedor_id);
 
         Swal.fire({
