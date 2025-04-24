@@ -55,11 +55,7 @@ $(document).ready(function () {
                                         <i class="ri-more-2-fill"></i>
                                     </button>
                                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                        <li>
-                                            <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#modal_editar_material_servicio">
-                                                <i class="ri-edit-box-line text-warning me-2 fs-4"></i> Editar
-                                            </a>
-                                        </li>
+                                       
                                         <li>
                                             <a class="dropdown-item btnImprimirPresupuesto" href="#" idPresupuesto="${dato.id}">
                                                 <i class="ri-printer-line text-success me-2 fs-4"></i> Imprimir

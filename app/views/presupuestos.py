@@ -1,17 +1,9 @@
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, get_object_or_404
 from django.http import JsonResponse, HttpResponse
-from django.contrib.auth.models import User
-from django.views.decorators.csrf import csrf_exempt
-from django.utils import timezone
-from django.core.serializers import serialize
-from django.core.files.storage import default_storage
-from django.core.files.base import ContentFile
 from django.core.exceptions import ObjectDoesNotExist
 from django.template.loader import render_to_string
 from weasyprint import HTML
 from django.db.models import Sum
-
-
 
 from ..models import (
     Presupuesto,
@@ -20,19 +12,16 @@ from ..models import (
     DetalleMetrosTerreno,
     DetallePresupuestoMaterial,
     DetallePresupuestoTrabajador,
-    DetallePresupuestoEquipoMaquina,
-    MaterialServicio,
+    DetallePresupuestoEquipoMaquina
 )
 
 from django.db.models import Count, Sum, Q
 from datetime import datetime, timedelta
 from django.db.models.functions import TruncMonth
 
-import os
 import json
 from io import BytesIO
 
-from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import letter
 from reportlab.lib import colors
 from reportlab.platypus import (
@@ -45,15 +34,12 @@ from reportlab.platypus import (
 from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.lib.pagesizes import letter
 
-
-
 def index_presupuestos(request):
     return render(request, 'presupuestos/index.html')
 
 def index_presupuestos_lista(request):
     return render(request, 'presupuestos/lista.html')
 
-@csrf_exempt
 def mostrar_sueldo_trabajador(request):
     if request.method == 'POST':
         try:
@@ -87,7 +73,6 @@ def mostrar_sueldo_trabajador(request):
 
     return JsonResponse({'status': False, 'message': 'Método no permitido'}, status=405)
 
-@csrf_exempt
 def mostrar_sueldo_maquina(request):
     if request.method == 'POST':
         try:
@@ -121,7 +106,6 @@ def mostrar_sueldo_maquina(request):
 
     return JsonResponse({'status': False, 'message': 'Método no permitido'}, status=405)
 
-@csrf_exempt
 def lista_presupuesto(request):
     if request.method == 'GET':
         try:
@@ -165,7 +149,6 @@ def lista_presupuesto(request):
     else:
         return JsonResponse({'status': 'error', 'message': 'Método no permitido'}, status=405)
     
-@csrf_exempt
 def crear_presupuesto(request):
     if request.method == 'POST':
         try:
@@ -267,7 +250,6 @@ def crear_presupuesto(request):
     else:
         return JsonResponse({'status': 'error', 'message': 'Método no permitido'}, status=405)
 
-@csrf_exempt
 def ultimo_comprobante(request):
     if request.method == 'GET':
         try:
@@ -295,7 +277,6 @@ def ultimo_comprobante(request):
     else:
         return JsonResponse({'status': 'error', 'message': 'Método no permitido'}, status=405)
     
-@csrf_exempt
 def obtener_ultimo_comprobante(request):
     if request.method == 'POST':
         try:
@@ -332,7 +313,6 @@ def obtener_ultimo_comprobante(request):
     else:
         return JsonResponse({'status': 'error', 'message': 'Método no permitido'}, status=405)
 
-@csrf_exempt
 def generar_pdf_presupuesto(request, presupuesto_id):
     # Obtener el presupuesto
     presupuesto = Presupuesto.objects.get(id=presupuesto_id)
@@ -482,10 +462,6 @@ def generar_pdf_presupuesto(request, presupuesto_id):
     response['Content-Disposition'] = f'inline; filename="presupuesto_{presupuesto.serie}_{presupuesto.numero}.pdf"'
     return response
 
-
-
-
-@csrf_exempt
 def ver_detalle_prespuesto(request, presupuesto_id):
     # Obtener el presupuesto
     presupuesto = get_object_or_404(Presupuesto, id=presupuesto_id)
@@ -586,11 +562,7 @@ def ver_detalle_prespuesto(request, presupuesto_id):
         'success': True,
         'data': data
     }) 
-    
-    
-    
-    
-@csrf_exempt
+       
 def generar_pdf_comprobante(request, presupuesto_id):
     # Obtener el presupuesto
     presupuesto = get_object_or_404(Presupuesto, id=presupuesto_id)
@@ -636,7 +608,6 @@ def generar_pdf_comprobante(request, presupuesto_id):
     response['Content-Disposition'] = f'inline; filename="cotizacion_{presupuesto.serie}_{presupuesto.numero}.pdf"'
     return response
 
-@csrf_exempt
 def cambiar_estado_presupuesto(request):
     try:
         presupuesto_id = request.POST.get('id')
@@ -665,8 +636,6 @@ def cambiar_estado_presupuesto(request):
         
     except Exception as e:
         return JsonResponse({'success': False, 'error': str(e)}, status=500)
-
-
 
 def presupuestos_vs_real(request):
     # Obtener los últimos 6 meses
@@ -698,8 +667,6 @@ def presupuestos_vs_real(request):
         'monto_real': [float(d['monto_aprobado'] or 0) for d in datos]
     })
     
-
-@csrf_exempt
 def eliminar_presupuesto(request):
     if request.method == 'POST':
         id_presupuesto = request.POST.get('id_presupuesto')

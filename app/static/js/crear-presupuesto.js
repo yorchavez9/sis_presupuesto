@@ -1,3 +1,12 @@
+// Configuración global de AJAX para incluir CSRF
+$.ajaxSetup({
+    beforeSend: function(xhr, settings) {
+        if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url)) && !this.crossDomain) {
+            xhr.setRequestHeader("X-CSRFToken", csrftoken);
+        }
+    }
+});
+
 function cargarFecha() {
     let ahora = new Date();
     let fechaFormateada = ahora.toISOString().split("T")[0];
@@ -148,6 +157,7 @@ $("#btn_crear_presupuesto").click(function (e) {
 
     if(isValid){
         const datos = new FormData();
+        datos.append("csrfmiddlewaretoken", csrftoken); 
         datos.append("id_usuario", id_usuario);
         datos.append("id_cliente", id_cliente);
         datos.append("fecha", fecha);
