@@ -1,5 +1,12 @@
 $(document).ready(function () {
-
+    // Configuración global de AJAX para incluir CSRF
+    $.ajaxSetup({
+        beforeSend: function(xhr, settings) {
+            if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url)) && !this.crossDomain) {
+                xhr.setRequestHeader("X-CSRFToken", csrftoken);
+            }
+        }
+    });
 
     function cargarClientes() {
         $.ajax({
@@ -202,6 +209,7 @@ $(document).ready(function () {
 
         if (isValid) {
             const datos = new FormData();
+            datos.append("csrfmiddlewaretoken", csrftoken);
             datos.append("tipo_documento", tipo_documento);
             datos.append("num_documento", num_documento);
             datos.append("nombre", nombre);
@@ -328,6 +336,7 @@ $(document).ready(function () {
 
         if (isValid) {
             const datos = new FormData();
+            datos.append("csrfmiddlewaretoken", csrftoken);
             datos.append("cliente_id", cliente_id);
             datos.append("tipo_documento", tipo_documento);
             datos.append("num_documento", num_documento);
@@ -382,6 +391,7 @@ $(document).ready(function () {
         let cliente_estado = $(this).attr("estadoCliente");
 
         const datos = new FormData();
+        datos.append("csrfmiddlewaretoken", csrftoken);
         datos.append("cliente_id", cliente_id);
         datos.append("cliente_estado", cliente_estado);
 
@@ -430,6 +440,7 @@ $(document).ready(function () {
         e.preventDefault();
         let cliente_id = $(this).attr("idCliente");
         const datos = new FormData();
+        datos.append("csrfmiddlewaretoken", csrftoken);
         datos.append("cliente_id", cliente_id);
 
         Swal.fire({
