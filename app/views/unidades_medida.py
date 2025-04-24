@@ -1,8 +1,6 @@
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, get_object_or_404
 from django.http import JsonResponse
 from ..models import UnidadMedida
-from django.views.decorators.csrf import csrf_exempt
-import requests
 
 def index_unidades_medida(request):
     return render(request, 'unidadMedidas/index.html')
@@ -21,7 +19,6 @@ def lista_unidades_medida(request):
         return JsonResponse(unidades_data, safe=False)
     return JsonResponse({'error': 'Solicitud no válida'}, status=400)
 
-@csrf_exempt
 def crear_unidad_medida(request):
     if request.method == 'POST':
         unidad = request.POST.get('unidad')
@@ -35,7 +32,6 @@ def crear_unidad_medida(request):
         return JsonResponse({'status': True, 'message': 'Unidad de medida creada exitosamente', 'unidad_id': nueva_unidad.id})
     return JsonResponse({'status': False, 'message': 'Método no permitido'}, status=405)
 
-@csrf_exempt
 def activar_unidad_medida(request):
     if request.method == 'POST':
         unidad_id = request.POST.get('unidad_id')
@@ -47,7 +43,6 @@ def activar_unidad_medida(request):
         return JsonResponse({'status': True, 'message': message})
     return JsonResponse({'status': False, 'message': 'Método no permitido'}, status=405)
 
-@csrf_exempt
 def editar_unidad_medida(request):
     if request.method == 'POST':
         unidad_id = request.POST.get('unidad_id')
@@ -64,7 +59,6 @@ def editar_unidad_medida(request):
     
     return JsonResponse({'status': False, 'message': 'Método no permitido'}, status=405)
 
-@csrf_exempt
 def actualizar_unidad_medida(request):
     if request.method == 'POST':
         unidad_id = request.POST.get('unidad_id')
@@ -78,7 +72,6 @@ def actualizar_unidad_medida(request):
         return JsonResponse({'status': True, 'message': 'Unidad de medida actualizada correctamente'})
     return JsonResponse({'status': False, 'message': 'Método no permitido'}, status=405)
 
-@csrf_exempt
 def eliminar_unidad_medida(request):
     if request.method == 'POST':
         unidad_id = request.POST.get('unidad_id')

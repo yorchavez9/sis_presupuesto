@@ -1,8 +1,6 @@
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, get_object_or_404
 from django.http import JsonResponse
 from ..models import Categoria
-from django.views.decorators.csrf import csrf_exempt
-import requests
 
 def index_categorias(request):
     return render(request, 'categorias/index.html')
@@ -21,7 +19,6 @@ def lista_categorias(request):
         return JsonResponse(categorias_data, safe=False)
     return JsonResponse({'error': 'Solicitud no válida'}, status=400)
 
-@csrf_exempt
 def crear_categoria(request):
     if request.method == 'POST':
         categoria = request.POST.get('categoria')
@@ -37,7 +34,6 @@ def crear_categoria(request):
         return JsonResponse({'status': True, 'message': 'Categoría creada exitosamente', 'categoria_id': nueva_categoria.id})
     return JsonResponse({'status': False, 'message': 'Método no permitido'}, status=405)
 
-@csrf_exempt
 def activar_categoria(request):
     if request.method == 'POST':
         categoria_id = request.POST.get('categoria_id')
@@ -49,7 +45,6 @@ def activar_categoria(request):
         return JsonResponse({'status': True, 'message': message})
     return JsonResponse({'status': False, 'message': 'Método no permitido'}, status=405)
 
-@csrf_exempt
 def editar_categoria(request):
     if request.method == 'POST':
         categoria_id = request.POST.get('categoria_id')
@@ -66,7 +61,6 @@ def editar_categoria(request):
     
     return JsonResponse({'status': False, 'message': 'Método no permitido'}, status=405)
 
-@csrf_exempt
 def actualizar_categoria(request):
     if request.method == 'POST':
         categoria_id = request.POST.get('categoria_id')
@@ -81,7 +75,6 @@ def actualizar_categoria(request):
         return JsonResponse({'status': True, 'message': 'Categoría actualizada correctamente'})
     return JsonResponse({'status': False, 'message': 'Método no permitido'}, status=405)
 
-@csrf_exempt
 def eliminar_categoria(request):
     if request.method == 'POST':
         categoria_id = request.POST.get('categoria_id')

@@ -1,16 +1,12 @@
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, get_object_or_404
 from django.http import JsonResponse
 from django.contrib.auth.models import User
-from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.hashers import make_password
 from ..models import Profile
 
-
-@csrf_exempt
 def index_usuario(request):
     return render(request, 'usuarios/index.html')
 
-@csrf_exempt # Solo estos roles pueden ver la lista
 def lista_usuarios(request):
     if request.method == 'GET':
         usuarios = User.objects.all().order_by('-date_joined')
@@ -40,7 +36,6 @@ def lista_usuarios(request):
         return JsonResponse(usuarios_data, safe=False)
     return JsonResponse({'error': 'Solicitud no válida'}, status=400)
 
-@csrf_exempt  # Roles que pueden crear usuarios
 def crear_usuario(request):
     if request.method == 'POST':
         password = request.POST.get('password1')
@@ -83,7 +78,7 @@ def crear_usuario(request):
 
     return JsonResponse({'status': False, 'message': 'Método no permitido'}, status=405)
 
-@csrf_exempt # Solo estos roles pueden activar/desactivar
+ # Solo estos roles pueden activar/desactivar
 def activar_usuario(request):
     if request.method == 'POST':
         user_id = request.POST.get('user_id')
@@ -104,8 +99,6 @@ def activar_usuario(request):
         return JsonResponse({'status': True, 'message': message})
     
     return JsonResponse({'status': False, 'message': 'Método no permitido'}, status=405)
-
-@csrf_exempt# Solo super admin puede borrar usuarios
 def borrar_usuario(request, user_id):
     if request.method == 'POST':
         # No permitir que un usuario se elimine a sí mismo
@@ -120,8 +113,6 @@ def borrar_usuario(request, user_id):
         return JsonResponse({'status': True, 'message': 'Usuario eliminado correctamente'})
     
     return JsonResponse({'status': False, 'message': 'Método no permitido'}, status=405)
-
-@csrf_exempt
 def editar_usuario(request):
     if request.method == 'POST':
         user_id = request.POST.get('user_id')
@@ -149,8 +140,6 @@ def editar_usuario(request):
         })
     
     return JsonResponse({'status': False, 'message': 'Método no permitido'}, status=405)
-
-@csrf_exempt
 def actualizar_usuario(request):
     if request.method == 'POST':
         user_id = request.POST.get('user_id')

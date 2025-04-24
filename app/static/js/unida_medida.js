@@ -1,5 +1,14 @@
 $(document).ready(function () {
 
+    // Configuración global de AJAX para incluir CSRF
+    $.ajaxSetup({
+        beforeSend: function(xhr, settings) {
+            if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url)) && !this.crossDomain) {
+                xhr.setRequestHeader("X-CSRFToken", csrftoken);
+            }
+        }
+    });
+
     let tabla = $('.tabla_unidades_medida').DataTable({
         "destroy": true,
         "responsive": true, // Habilita el modo responsive
@@ -76,6 +85,7 @@ $(document).ready(function () {
 
         if (isValid) {
             const datos = new FormData();
+            datos.append("csrfmiddlewaretoken", csrftoken);
             datos.append("unidad", unidad);
             datos.append("descripcion", descripcion);
 
@@ -126,6 +136,7 @@ $(document).ready(function () {
         e.preventDefault();
         let unidad_id = $(this).attr("idUnidad");
         const datos = new FormData();
+        datos.append("csrfmiddlewaretoken", csrftoken);
         datos.append("unidad_id", unidad_id);
         $.ajax({
             url: "editar/",
@@ -172,6 +183,7 @@ $(document).ready(function () {
 
         if (isValid) {
             const datos = new FormData();
+            datos.append("csrfmiddlewaretoken", csrftoken);
             datos.append("unidad_id", unidad_id);
             datos.append("unidad", unidad);
             datos.append("descripcion", descripcion);
@@ -211,6 +223,7 @@ $(document).ready(function () {
         e.preventDefault();
         let unidad_id = $(this).attr("idUnidad");
         const datos = new FormData();
+        datos.append("csrfmiddlewaretoken", csrftoken);
         datos.append("unidad_id", unidad_id);
 
         Swal.fire({

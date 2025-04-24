@@ -1,5 +1,14 @@
 $(document).ready(function () {
 
+    // Configuración global de AJAX para incluir CSRF
+    $.ajaxSetup({
+        beforeSend: function(xhr, settings) {
+            if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url)) && !this.crossDomain) {
+                xhr.setRequestHeader("X-CSRFToken", csrftoken);
+            }
+        }
+    });
+
     $('input').each(function () {
         // Guardar el valor por defecto
         $(this).data('default', $(this).val());
@@ -106,6 +115,7 @@ $(document).ready(function () {
 
         if (isValid) {
             const datos = new FormData();
+            datos.append("csrfmiddlewaretoken", csrftoken); 
             datos.append("tipo", tipo);
             datos.append("nombre", nombre);
             datos.append("marca", marca);
@@ -167,6 +177,7 @@ $(document).ready(function () {
         let maquinaria_estado = $(this).attr("estadoMaquinaria");
 
         const datos = new FormData();
+        datos.append("csrfmiddlewaretoken", csrftoken); 
         datos.append("maquinaria_id", maquinaria_id);
         datos.append("maquinaria_estado", maquinaria_estado);
 
@@ -212,6 +223,7 @@ $(document).ready(function () {
         e.preventDefault();
         let equipo_id = $(this).attr("idEquipo");
         const datos = new FormData();
+        datos.append("csrfmiddlewaretoken", csrftoken); 
         datos.append("equipo_id", equipo_id);
         $.ajax({
             url: "editar/",
@@ -283,6 +295,7 @@ $(document).ready(function () {
 
         if (isValid) {
             const datos = new FormData();
+            datos.append("csrfmiddlewaretoken", csrftoken); 
             datos.append("equipo_id", equipo_id);
             datos.append("tipo", tipo);
             datos.append("nombre", nombre);
@@ -330,6 +343,7 @@ $(document).ready(function () {
         e.preventDefault();
         let equipo_id = $(this).attr("idEquipo");
         const datos = new FormData();
+        datos.append("csrfmiddlewaretoken", csrftoken); 
         datos.append("equipo_id", equipo_id);
 
         Swal.fire({

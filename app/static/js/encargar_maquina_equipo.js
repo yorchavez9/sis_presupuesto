@@ -1,4 +1,15 @@
 $(document).ready(function () {
+
+     // Configuración global de AJAX para incluir CSRF
+     $.ajaxSetup({
+        beforeSend: function(xhr, settings) {
+            if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url)) && !this.crossDomain) {
+                xhr.setRequestHeader("X-CSRFToken", csrftoken);
+            }
+        }
+    });
+
+
     function inicializarTabla() {
         return $('.tabla_encargatura_equipo_maquina').DataTable({
             "destroy": true,
@@ -140,6 +151,7 @@ $(document).ready(function () {
 
         if (isValid) {
             const datos = new FormData();
+            datos.append("csrfmiddlewaretoken", csrftoken);
             datos.append("id_trabajador", id_trabajador);
             datos.append("id_equipo_maquina", id_equipo_maquina);
             datos.append("descripcion", descripcion);
@@ -183,6 +195,7 @@ $(document).ready(function () {
         e.preventDefault();
         let encargatura_id = $(this).attr("idEncargatura");
         const datos = new FormData();
+        datos.append("csrfmiddlewaretoken", csrftoken);
         datos.append("encargatura_id", encargatura_id);
         $.ajax({
             url: "editar-encargar-maquina-equipo/",
@@ -241,6 +254,7 @@ $(document).ready(function () {
 
         if (isValid) {
             const datos = new FormData();
+            datos.append("csrfmiddlewaretoken", csrftoken);
             datos.append("id_encargatura", id_encargatura);
             datos.append("id_trabajador", id_trabajador);
             datos.append("id_equipo_maquina", id_equipo_maquina);
@@ -284,6 +298,7 @@ $(document).ready(function () {
         e.preventDefault();
         let id_encargatura = $(this).attr("idEncargatura");
         const datos = new FormData();
+        datos.append("csrfmiddlewaretoken", csrftoken);
         datos.append("id_encargatura", id_encargatura);
         Swal.fire({
             title: "¿Está seguro de borrar la encargatura?",

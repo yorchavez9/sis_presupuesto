@@ -1,6 +1,5 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import JsonResponse
-from django.views.decorators.csrf import csrf_exempt
 from ..models import Mensaje
 import json
 
@@ -25,7 +24,7 @@ def lista_mensajes(request):
         return JsonResponse(mensajes_data, safe=False)
     return JsonResponse({'error': 'Método no permitido'}, status=405)
 
-@csrf_exempt
+
 def crear_mensaje(request):
     if request.method == 'POST':
         try:
@@ -58,7 +57,7 @@ def ver_mensaje(request, mensaje_id):
         return JsonResponse({'status': True, 'mensaje': mensaje_data})
     return JsonResponse({'status': False, 'message': 'Método no permitido'}, status=405)
 
-@csrf_exempt
+
 def eliminar_mensaje(request, mensaje_id):
     if request.method == 'DELETE':
         mensaje = get_object_or_404(Mensaje, pk=mensaje_id)
@@ -66,7 +65,7 @@ def eliminar_mensaje(request, mensaje_id):
         return JsonResponse({'status': True, 'message': 'Mensaje eliminado correctamente'})
     return JsonResponse({'status': False, 'message': 'Método no permitido'}, status=405)
 
-@csrf_exempt
+
 def marcar_leido(request, mensaje_id):
     if request.method == 'POST':
         try:
@@ -95,7 +94,7 @@ def obtener_mensaje(request, mensaje_id):
     return JsonResponse({'status': False, 'message': 'Método no permitido'}, status=405)
 
 
-@csrf_exempt
+
 def marcar_como_leido(request, mensaje_id):
     if request.method == 'POST':
         try:

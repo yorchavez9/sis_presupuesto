@@ -1,5 +1,14 @@
 $(document).ready(function () {
 
+     // Configuración global de AJAX para incluir CSRF
+     $.ajaxSetup({
+        beforeSend: function(xhr, settings) {
+            if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url)) && !this.crossDomain) {
+                xhr.setRequestHeader("X-CSRFToken", csrftoken);
+            }
+        }
+    });
+
     let tabla = $('.tabla_comprobantes').DataTable({
         "destroy": true,
         "responsive": true,
@@ -86,6 +95,7 @@ $(document).ready(function () {
 
         if (isValid) {
             const datos = new FormData();
+            datos.append("csrfmiddlewaretoken", csrftoken); 
             datos.append("comprobante", comprobante.toUpperCase());
             datos.append("serie", serie);
             datos.append("folio_inicial", folio_inicial);
@@ -141,6 +151,7 @@ $(document).ready(function () {
         e.preventDefault();
         let id_comprobante = $(this).attr("idComprobante");
         const datos = new FormData();
+        datos.append("csrfmiddlewaretoken", csrftoken); 
         datos.append("id_comprobante", id_comprobante);
         $.ajax({
             url: "editar/",
@@ -213,6 +224,7 @@ $(document).ready(function () {
 
         if (isValid) {
             const datos = new FormData();
+            datos.append("csrfmiddlewaretoken", csrftoken); 
             datos.append("id_comprobante", id_comprobante);
             datos.append("comprobante", comprobante);
             datos.append("serie", serie);
@@ -254,6 +266,7 @@ $(document).ready(function () {
         e.preventDefault();
         let id_comprobante = $(this).attr("idComprobante");
         const datos = new FormData();
+        datos.append("csrfmiddlewaretoken", csrftoken); 
         datos.append("id_comprobante", id_comprobante);
 
         Swal.fire({

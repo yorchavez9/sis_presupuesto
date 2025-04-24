@@ -1,14 +1,10 @@
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, get_object_or_404
 from django.template.loader import render_to_string
 from django.http import JsonResponse, HttpResponse
 from ..models import Cliente
-from django.views.decorators.csrf import csrf_exempt
-from django.contrib.auth.hashers import make_password
 import requests
-from django.template.loader import get_template
 import json
 from weasyprint import HTML
-from django.utils.dateparse import parse_date
 
 def index_clientes(request):
     return render(request, 'clientes/index.html')
@@ -34,7 +30,6 @@ def lista_clientes(request):
         return JsonResponse(clientes_data, safe=False)
     return JsonResponse({'error': 'Solicitud no válida'}, status=400)
 
-@csrf_exempt
 def lista_clientes_reporte(request):
     if request.method == 'POST':
         print(request.POST)
@@ -112,8 +107,6 @@ def consulta_ruc(request, numero):
     except requests.exceptions.RequestException as e:
         return JsonResponse({'error': str(e)}, status=500)
 
-@csrf_exempt
-
 def crear_cliente(request):
     if request.method == 'POST':
         tipo_documento = request.POST.get('tipo_documento')
@@ -141,7 +134,6 @@ def crear_cliente(request):
 
     return JsonResponse({'status': False, 'message': 'Método no permitido'}, status=405)
 
-@csrf_exempt
 def activar_cliente(request):
     if request.method == 'POST':
         cliente_id = request.POST.get('cliente_id')
@@ -153,7 +145,6 @@ def activar_cliente(request):
         return JsonResponse({'status': True, 'message': message})
     return JsonResponse({'status': False, 'message': 'Método no permitido'}, status=405)
 
-@csrf_exempt
 def editar_cliente(request):
     if request.method == 'POST':
         cliente_id = request.POST.get('cliente_id')
@@ -173,7 +164,6 @@ def editar_cliente(request):
     
     return JsonResponse({'status': False, 'message': 'Método no permitido'}, status=405)
 
-@csrf_exempt
 def actualizar_cliente(request):
     if request.method == 'POST':
         cliente_id = request.POST.get('cliente_id')
@@ -191,7 +181,6 @@ def actualizar_cliente(request):
         return JsonResponse({'status': True, 'message': 'Cliente actualizado correctamente'})
     return JsonResponse({'status': False, 'message': 'Método no permitido'}, status=405)
 
-@csrf_exempt
 def eliminar_cliente(request):
     if request.method == 'POST':
         cliente_id = request.POST.get('cliente_id')
@@ -200,7 +189,6 @@ def eliminar_cliente(request):
         return JsonResponse({'status': True, 'message': 'Cliente eliminado exitosamente'})
     return JsonResponse({'status': False, 'message': 'Método no permitido'}, status=405)
 
-@csrf_exempt
 def generar_reporte_pdf(request, desde_fecha=None, hasta_fecha=None):
     # Si no se proporcionan fechas, obtener todos los clientes
     if desde_fecha is None or hasta_fecha is None:

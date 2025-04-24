@@ -1,6 +1,13 @@
 $(document).ready(function () {
 
-
+    // Configuración global de AJAX para incluir CSRF
+    $.ajaxSetup({
+        beforeSend: function (xhr, settings) {
+            if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url)) && !this.crossDomain) {
+                xhr.setRequestHeader("X-CSRFToken", csrftoken);
+            }
+        }
+    });
 
 
     $('input').each(function () {
@@ -163,6 +170,7 @@ $(document).ready(function () {
 
         if (isValid) {
             const datos = new FormData();
+            datos.append("csrfmiddlewaretoken", csrftoken);
             datos.append("tipo_documento", tipo_documento);
             datos.append("num_documento", num_documento);
             datos.append("nombre", nombre);
@@ -214,6 +222,7 @@ $(document).ready(function () {
         e.preventDefault();
         let trabajador_id = $(this).attr("idTrabajador");
         const datos = new FormData();
+        datos.append("csrfmiddlewaretoken", csrftoken);
         datos.append("trabajador_id", trabajador_id);
         $.ajax({
             url: "editar-trabajador/",
@@ -301,6 +310,7 @@ $(document).ready(function () {
 
         if (isValid) {
             const datos = new FormData();
+            datos.append("csrfmiddlewaretoken", csrftoken);
             datos.append("trabajador_id", trabajador_id);
             datos.append("tipo_documento", tipo_documento);
             datos.append("num_documento", num_documento);
@@ -351,6 +361,7 @@ $(document).ready(function () {
         let trabajador_estado = $(this).attr("estadoTrabajador");
 
         const datos = new FormData();
+        datos.append("csrfmiddlewaretoken", csrftoken);
         datos.append("trabajador_id", trabajador_id);
         datos.append("trabajador_estado", trabajador_estado);
 
@@ -393,6 +404,7 @@ $(document).ready(function () {
         e.preventDefault();
         let trabajador_id = $(this).attr("idTrabajador");
         const datos = new FormData();
+        datos.append("csrfmiddlewaretoken", csrftoken);
         datos.append("trabajador_id", trabajador_id);
 
         Swal.fire({
