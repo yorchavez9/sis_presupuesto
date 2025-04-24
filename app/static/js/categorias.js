@@ -1,5 +1,16 @@
 $(document).ready(function () {
 
+    // Configuración global de AJAX para incluir CSRF
+    $.ajaxSetup({
+        beforeSend: function(xhr, settings) {
+            if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url)) && !this.crossDomain) {
+                xhr.setRequestHeader("X-CSRFToken", csrftoken);
+            }
+        }
+    });
+
+
+
     let tabla = $('.tabla_categorias').DataTable({
         "destroy": true,
         "responsive": true, // Habilita el modo responsive
@@ -69,6 +80,7 @@ $(document).ready(function () {
 
         if (isValid) {
             const datos = new FormData();
+            datos.append("csrfmiddlewaretoken", csrftoken);
             datos.append("categoria", categoria);
             datos.append("descripcion", descripcion);
             datos.append("tipo", tipo);
@@ -175,6 +187,7 @@ $(document).ready(function () {
 
         if (isValid) {
             const datos = new FormData();
+            datos.append("csrfmiddlewaretoken", csrftoken); 
             datos.append("categoria_id", categoria_id);
             datos.append("categoria", categoria);
             datos.append("descripcion", descripcion);
@@ -215,6 +228,7 @@ $(document).ready(function () {
         e.preventDefault();
         let categoria_id = $(this).attr("idCategoria");
         const datos = new FormData();
+        datos.append("csrfmiddlewaretoken", csrftoken); 
         datos.append("categoria_id", categoria_id);
 
         Swal.fire({
